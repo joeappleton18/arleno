@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import PropTypes from "prop-types";
 import Head from "next/head";
+import { MDXProvider } from "@mdx-js/react";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../config/theme";

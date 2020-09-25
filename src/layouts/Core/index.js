@@ -1,21 +1,27 @@
 import { useState, useRef, useEffect } from "react";
 
 import AppBar from "@material-ui/core/AppBar";
+import Container from "@material-ui/core/Container";
 import clsx from "clsx";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles, fade } from "@material-ui/core/styles";
+import { makeStyles, fade, useTheme } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import IconButton from "@material-ui/core/IconButton";
-import Draw from "./Draw";
-import MobileMenu from "./MobileMenu";
+
+
 import MenuIcon from "@material-ui/icons/Menu";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import InputBase from "@material-ui/core/InputBase";
 import Badge from "@material-ui/core/Badge";
-import notesConfig from "../../config/notes";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import { MDXProvider } from "@mdx-js/react";
+import Draw from "./Draw";
+import MobileMenu from "./MobileMenu";
+import notesConfig from "../../config/notes";
+import RemarkComponents from "../../components/Remark";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -27,6 +33,14 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.easeOut,
     }),
+  },
+  contentShift: {
+    marginLeft: theme.drawerWidth,
+    transition: theme.transitions.create("margin", {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginLeft: theme.drawer.width,
   },
   toolBar: {
     color: "#fff",
@@ -100,6 +114,8 @@ const Core = ({ children }) => {
   const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [mobileMoreAnchorEl] = useState(null);
+  const theme = useTheme();
+  const desktop = useMediaQuery(theme.breakpoints.up("sm"));
 
   const handleDrawerOpen = () => {
     setDrawerOpen(true);
@@ -108,6 +124,10 @@ const Core = ({ children }) => {
   const handleDrawerClose = () => {
     setDrawerOpen(false);
   };
+
+  useEffect(() => {
+    setDrawerOpen(desktop);
+  }, [desktop]);
 
   return (
     <div className={classes.grow}>
@@ -177,11 +197,19 @@ const Core = ({ children }) => {
         </Toolbar>
       </AppBar>
       <Draw drawerOpen={drawerOpen} onDrawerClose={handleDrawerClose} />
-      {/**mobileMenuId, mobileMoreAnchorEl  */}
       <MobileMenu
         mobileMenuId={mobileMenuId}
         mobileMoreAnchorEl={mobileMoreAnchorEl}
       />
+      <Container
+        className={clsx({
+          [classes.contentShift]: drawerOpen,
+        })}
+        maxWidth={drawerOpen ? "md" : "lg"}
+        id="content"
+      >
+        <MDXProvider components={RemarkComponents}>{children}</MDXProvider>
+      </Container>
     </div>
   );
 };

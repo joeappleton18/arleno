@@ -1,6 +1,6 @@
 const notes = {
   course: "Database Systems",
-  sidebar: [{}],
+  sidebar: ["index"],
 };
 
 export default notes;
