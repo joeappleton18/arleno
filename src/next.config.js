@@ -1,3 +1,8 @@
+const withMDX = require("@next/mdx")({
+  extension: /\.mdx?$/,
+});
+
 module.exports = {
-  distDir: '../.next',
-}
+  distDir: "../.next",
+  pageExtensions: ["js", "jsx", "mdx"],
+};
