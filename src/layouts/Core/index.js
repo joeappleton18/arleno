@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-
+import "whatwg-fetch";
 import AppBar from "@material-ui/core/AppBar";
 import Container from "@material-ui/core/Container";
 import clsx from "clsx";
@@ -8,7 +8,6 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles, fade, useTheme } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import IconButton from "@material-ui/core/IconButton";
-
 
 import MenuIcon from "@material-ui/icons/Menu";
 import MoreIcon from "@material-ui/icons/MoreVert";
@@ -128,6 +127,15 @@ const Core = ({ children }) => {
   useEffect(() => {
     setDrawerOpen(desktop);
   }, [desktop]);
+
+  useEffect(() => {
+    notesConfig.sidebar.forEach(async (i) => {
+      const file = await import("../../pages/" + i + ".mdx");
+      const comp = (
+        <MDXProvider components={RemarkComponents}>{children}</MDXProvider>
+      );
+    });
+  }, []);
 
   return (
     <div className={classes.grow}>
