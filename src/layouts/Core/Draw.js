@@ -4,6 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import Divider from "@material-ui/core/Divider";
+import MenuList from "./MenuList";
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
@@ -50,7 +51,7 @@ const Draw = (props) => {
         </IconButton>
       </div>
       <Divider />
-      {/*<MenuList /> */}
+      <MenuList />
       <Divider />
     </Drawer>
   );

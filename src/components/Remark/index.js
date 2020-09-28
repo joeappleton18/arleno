@@ -5,6 +5,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import textToHash from "./../../utils/textToHash";
 import CodeBlock from "./CodeBlock";
 
 const ClickListener = ({ children, ...props }) => (
@@ -77,10 +78,18 @@ const RemarkComponents = {
     return memo(THead);
   })(),
 
+  h2: (() => {
+    const H2 = (props) => (
+      <h2 name={textToHash(props.children)}> {props.children} </h2>
+    );
+
+    return H2;
+  })(),
   code: (() => {
     const Code = (props) => <CodeBlock {...props} />;
     return memo(Code);
   })(),
+
   blockquote: (() => {
     const Blockquote = (props) => {
       debugger;

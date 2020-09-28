@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import "whatwg-fetch";
 import AppBar from "@material-ui/core/AppBar";
 import Container from "@material-ui/core/Container";
 import clsx from "clsx";

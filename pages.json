@@ -1,0 +1,47 @@
+[
+  {
+    "headings": [
+      {
+        "type": "heading",
+        "depth": 1,
+        "children": [
+          {
+            "type": "text",
+            "value": "Course Overview",
+            "position": {
+              "start": { "line": 3, "column": 3, "offset": 59 },
+              "end": { "line": 3, "column": 18, "offset": 74 },
+              "indent": []
+            }
+          }
+        ],
+        "position": {
+          "start": { "line": 3, "column": 1, "offset": 57 },
+          "end": { "line": 3, "column": 18, "offset": 74 },
+          "indent": []
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 2,
+        "children": [
+          {
+            "type": "text",
+            "value": "Course Schedule",
+            "position": {
+              "start": { "line": 14, "column": 4, "offset": 516 },
+              "end": { "line": 14, "column": 19, "offset": 531 },
+              "indent": []
+            }
+          }
+        ],
+        "position": {
+          "start": { "line": 14, "column": 1, "offset": 513 },
+          "end": { "line": 14, "column": 19, "offset": 531 },
+          "indent": []
+        }
+      }
+    ],
+    "pageName": "index.mdx"
+  }
+]
