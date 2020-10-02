@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Git, Facebook, Google } from "../Buttons";
 import Typography from "@material-ui/core/Typography";
 import { useFirebase } from "../../services/firebase";
+import { useStores } from "../../stores/index";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -19,12 +20,14 @@ const useStyles = makeStyles((theme) => ({
 const Login = (props) => {
   const { onClick } = props;
   const classes = useStyles();
-  const fb = useFirebase();
+  const fbService = useFirebase();
+  const userStore = useStores().user;
 
   const handleClick = async (network) => {
     try {
-      const user = await fb.auth.signInWithProvider(network);
-      console.log("user has singed in", user);
+      const user = await fbService.auth.signInWithProvider(network);
+      const userRef = await fbService.user.read(user.user.uid);
+      userStore.setUser(userRef.data());
     } catch (e) {
       console.error("could not log user in:", e);
     }

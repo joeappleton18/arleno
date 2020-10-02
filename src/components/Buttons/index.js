@@ -4,7 +4,8 @@ import Button from "@material-ui/core/Button";
 import { SocialIcon } from "react-social-icons";
 
 const styles = {
-  root: {
+  root: { 
+    cursor: "pointer",
     background: "linear-gradient(45deg, #111111 30%, #222222 90%)",
     borderRadius: 3,
     border: 0,

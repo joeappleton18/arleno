@@ -21,6 +21,7 @@ import notesConfig from "../../config/notes";
 import RemarkComponents from "../../components/Remark";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import MenuItem from "@material-ui/core/MenuItem";
+import { useStores } from "../../stores/";
 import Menu from "@material-ui/core/Menu";
 import Login from "../../components/Login";
 import ProfileFrom from "../../components/ProfileForm";
@@ -117,10 +118,11 @@ const Core = ({ children }) => {
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.up("sm"));
   const [anchorEl, setAnchorEl] = useState(null);
+  const [profileFormOpen, setProfileFormOpen] = useState(false);
+  const userStore = useStores().user;
 
   const isMenuOpen = Boolean(anchorEl);
   const handleProfileMenuOpen = (event) => {
-    debugger;
     setAnchorEl(event.currentTarget);
   };
 
@@ -135,6 +137,12 @@ const Core = ({ children }) => {
   const handleDrawerClose = () => {
     setDrawerOpen(false);
   };
+
+  useEffect(() => {
+    if (userStore.user && userStore.user.joinStage === 1) {
+      setProfileFormOpen(true);
+    }
+  }, [userStore.user]);
 
   useEffect(() => {
     setDrawerOpen(desktop);
@@ -234,7 +242,7 @@ const Core = ({ children }) => {
               <MoreIcon />
             </IconButton>
             {renderMenu}
-            <ProfileFrom />
+            <ProfileFrom open={profileFormOpen} />
           </div>
         </Toolbar>
       </AppBar>

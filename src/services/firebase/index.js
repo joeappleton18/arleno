@@ -5,6 +5,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/analytics";
 import authService from "./authService";
+import userService from "./userService";
 
 const analytics = dynamic(() => import("firebase/analytics"));
 
@@ -22,10 +23,15 @@ class firebaseService {
           ? firebaseDevelopmentConfig
           : firebaseProductionConfig
       );
-
+      const db = firebase.firestore();
       this.firebase = firebase;
       const auth = firebase.auth;
       this.auth = new authService(auth);
+      this.user = new userService(
+        db,
+        firebase.firestore.FieldValue.serverTimestamp(),
+        this
+      );
     }
   }
 }

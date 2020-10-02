@@ -7,7 +7,7 @@
     "node": "10"
   },
   "scripts": {
-    "dev": "next src/",
+    "dev": "NODE_OPTIONS='--inspect' next dev src/",
     "build": "next build src/",
     "start": "next start src/",
     "serve": "npm run build && firebase emulators:start --only functions,hosting",
@@ -26,6 +26,7 @@
     "@mdx-js/tag": "^0.20.3",
     "@next/mdx": "^9.5.2",
     "axios": "^0.20.0",
+    "cloudinary-react": "^1.6.6",
     "clsx": "^1.1.1",
     "del": "^5.1.0",
     "firebase": "^7.21.1",

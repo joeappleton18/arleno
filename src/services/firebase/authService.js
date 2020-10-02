@@ -1,11 +1,8 @@
+import { useStores } from "../../stores";
 class authService {
   constructor(auth) {
     this.authClass = auth;
     this.auth = auth();
-    this.auth.onAuthStateChanged((user) => {
-      console.log("user logged in");
-      console.log(user);
-    });
     this.microsoftAuthProvider = new auth.OAuthProvider("microsoft.com");
     this.gitHubProvider = new auth.GithubAuthProvider();
     this.facebookProvider = new auth.FacebookAuthProvider();

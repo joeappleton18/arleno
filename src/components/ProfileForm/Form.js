@@ -3,6 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import { FormButton } from "../Buttons/index";
 import { useForm } from "react-hook-form";
+import { useStores } from "../../stores/";
 import Typography from "@material-ui/core/Typography";
 import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
@@ -23,8 +24,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Form = () => {
   const classes = useStyles();
+  const userStore = useStores().user;
   const { register, handleSubmit, watch, errors } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: userStore.user,
   });
 
   const onSubmit = (data) => console.log(data);

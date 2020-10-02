@@ -50,7 +50,7 @@ const Draw = (props) => {
           )}
         </IconButton>
       </div>
-      <Divider />
+      <Divider /> 
       <MenuList />
       <Divider />
     </Drawer>
