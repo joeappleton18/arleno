@@ -3,6 +3,19 @@ import { red } from "@material-ui/core/colors";
 
 // Create a theme instance.
 const theme = createMuiTheme({
+  overrides: {
+    MuiFormLabel: {
+      root: {
+        color: "black",
+        fontSize: 13,
+        "&$focused": {
+          color: "black",
+          fontWeight: "bold",
+        },
+      },
+    },
+  },
+
   drawer: { width: 400 },
   typography: {
     fontSize: 20,

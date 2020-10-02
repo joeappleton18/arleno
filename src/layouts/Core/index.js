@@ -23,6 +23,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import Login from "../../components/Login";
+import ProfileFrom from "../../components/ProfileForm";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -233,6 +234,7 @@ const Core = ({ children }) => {
               <MoreIcon />
             </IconButton>
             {renderMenu}
+            <ProfileFrom />
           </div>
         </Toolbar>
       </AppBar>

@@ -3,8 +3,6 @@ import { withStyles, createStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { SocialIcon } from "react-social-icons";
 
-
-
 const styles = {
   root: {
     background: "linear-gradient(45deg, #111111 30%, #222222 90%)",
@@ -28,6 +26,28 @@ const facebookStyles = {
     root: {
       ...styles.root,
       background: "linear-gradient(45deg, #385898 30%, #385898 90%)",
+    },
+  },
+};
+
+const simpleGreyButtonStyles = {
+  ...styles,
+  ...{
+    root: {
+      ...styles.root,
+      background: "linear-gradient(45deg, #979797 30%, #979797 90%)",
+      height: 30,
+    },
+  },
+};
+
+const formButton = {
+  ...styles,
+  ...{
+    root: {
+      ...styles.root,
+      background: "linear-gradient(45deg, #C781FF 100%, #E57373 100%)",
+      height: 50,
     },
   },
 };
@@ -122,4 +142,38 @@ const Google = withStyles(googleStyles)((props) => {
   );
 });
 
-export { Git, Facebook, Google };
+const SimpleGreyButton = withStyles(simpleGreyButtonStyles)((props) => {
+  const { classes, text, ...other } = props;
+
+  return (
+    <Button
+      {...other}
+      classes={{
+        root: classes.root,
+        label: classes.label,
+      }}
+      disableFocusRipple
+    >
+      {text}
+    </Button>
+  );
+});
+
+const FormButton = withStyles(formButton)((props) => {
+  const { classes, text, ...other } = props;
+
+  return (
+    <Button
+      {...other}
+      classes={{
+        root: classes.root,
+        label: classes.label,
+      }}
+      disableFocusRipple
+    >
+      {text}
+    </Button>
+  );
+});
+
+export { Git, Facebook, Google, SimpleGreyButton, FormButton };
