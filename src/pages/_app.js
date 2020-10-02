@@ -3,6 +3,7 @@ import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../config/theme";
+import { FirebaseProvider } from "./../services/firebase";
 import { StoresProvider } from "./../stores";
 import CoreLayout from "../layouts/Core";
 import notesConfig from "../config/notes";
@@ -31,14 +32,16 @@ export default function MyApp(props) {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      <StoresProvider>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <CoreLayout>
-            <Component {...pageProps} />
-          </CoreLayout>
-        </ThemeProvider>
-      </StoresProvider>
+      <FirebaseProvider>
+        <StoresProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <CoreLayout>
+              <Component {...pageProps} />
+            </CoreLayout>
+          </ThemeProvider>
+        </StoresProvider>
+      </FirebaseProvider>
     </>
   );
 }

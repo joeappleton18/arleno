@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles, fade, useTheme } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import IconButton from "@material-ui/core/IconButton";
-
+import Button from "@material-ui/core/Button";
 import MenuIcon from "@material-ui/icons/Menu";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import InputBase from "@material-ui/core/InputBase";
@@ -20,6 +20,9 @@ import MobileMenu from "./MobileMenu";
 import notesConfig from "../../config/notes";
 import RemarkComponents from "../../components/Remark";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
+import Login from "../../components/Login";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -106,14 +109,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const mobileMenuId = "primary-search-account-menu-mobile";
-
 const Core = ({ children }) => {
   const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [mobileMoreAnchorEl] = useState(null);
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.up("sm"));
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const isMenuOpen = Boolean(anchorEl);
+  const handleProfileMenuOpen = (event) => {
+    debugger;
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleProfileMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleDrawerOpen = () => {
     setDrawerOpen(true);
@@ -135,6 +147,22 @@ const Core = ({ children }) => {
       );
     });
   }, []);
+
+  const menuId = "primary-search-account-menu";
+  const mobileMenuId = "primary-search-mobile-menu";
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      open={isMenuOpen}
+      onClose={handleProfileMenuClose}
+    >
+      <Login />
+    </Menu>
+  );
 
   return (
     <div className={classes.grow}>
@@ -182,6 +210,10 @@ const Core = ({ children }) => {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
+
+            <Button color="inherit" onClick={handleProfileMenuOpen}>
+              Login
+            </Button>
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -200,6 +232,7 @@ const Core = ({ children }) => {
             >
               <MoreIcon />
             </IconButton>
+            {renderMenu}
           </div>
         </Toolbar>
       </AppBar>

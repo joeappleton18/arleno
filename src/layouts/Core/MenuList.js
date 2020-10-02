@@ -18,13 +18,15 @@ const useStyles = makeStyles((theme) => ({
   },
 
   heading: {
-    fontWeight: "strong",
+    fontWeight: "bold",
+    fontSize: "20px",
   },
   nested: {
     paddingLeft: theme.spacing(4),
   },
   subListItem: {
     marginLeft: theme.spacing(1),
+    fontSize: "15px",
   },
 }));
 
@@ -42,6 +44,7 @@ const WeekItem = ({ item }) => {
           <StarBorder />
         </ListItemIcon> */}
         <ListItemText
+          classes={{ primary: classes.heading }}
           className={classes.heading}
           primary={item.headings.find((h) => h.depth === 1).children[0].value}
         />
@@ -56,7 +59,7 @@ const WeekItem = ({ item }) => {
                 href={
                   (item.pageName.split(".")[0] == "index"
                     ? ""
-                    : item.pageName.split(".")[0] == "index") +
+                    : item.pageName.split(".")[0]) +
                   "/#" +
                   textTOHash(h.children[0].value)
                 }
@@ -64,6 +67,7 @@ const WeekItem = ({ item }) => {
                 <ListItem button className={classes.nested}>
                   <>
                     <ListItemText
+                      classes={{ primary: classes.subListItem }}
                       className={classes.subListItem}
                       primary={h.children[0].value}
                     />
@@ -82,14 +86,13 @@ const MenuList = () => {
   const [open, setOpen] = React.useState(true);
   const classes = useStyles();
 
-  debugger;
-
   const handleClick = () => {
     setOpen(!open);
   };
 
   return (
     <List
+      dense
       component="nav"
       aria-labelledby="nested-list-subheader"
       className={classes.root}

@@ -3,7 +3,7 @@ import { red } from "@material-ui/core/colors";
 
 // Create a theme instance.
 const theme = createMuiTheme({
-  drawer: { width: 300 },
+  drawer: { width: 400 },
   typography: {
     fontSize: 20,
     h1: {
