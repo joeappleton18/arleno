@@ -38,6 +38,7 @@ const Form = (props) => {
       <Grid spacing={3} container display="flex" justify="center">
         <Grid item xs={6}>
           <TextField
+            fullWidth
             error={errors.firstName}
             name="firstName"
             className={classes.form}
@@ -56,6 +57,7 @@ const Form = (props) => {
         </Grid>
         <Grid item xs={6}>
           <TextField
+            fullWidth
             error={errors.lastName}
             name="lastName"
             className={classes.form}

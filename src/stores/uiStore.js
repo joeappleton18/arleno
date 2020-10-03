@@ -4,6 +4,7 @@ const uiStore = () => {
   const [alert, setAlert] = useState("");
   const [alertType, setAlertType] = useState("");
   const [alertOpen, setAlertOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const deployAlert = (message, type) => {
     setAlertOpen(true);
@@ -18,6 +19,8 @@ const uiStore = () => {
     setAlertOpen,
     deployAlert,
     alertType,
+    loading,
+    setLoading,
   };
 };
 

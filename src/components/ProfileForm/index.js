@@ -68,10 +68,9 @@ const Dialog = withStyles((theme) => ({
   },
   paper: {
     width: "100vw",
-    height: "850px",
+    marginBottom: theme.spacing(3),
     [theme.breakpoints.up("md")]: {
       width: "40vw",
-      height: "850px",
     },
     backgroundColor: "white",
     backgroundColor: "#D8D8D8",
@@ -173,11 +172,23 @@ function ProfileForm(props) {
             </Image>
           )}
 
-          <SimpleGreyButton text={"Edit/Add Photo"} onClick={handleClick} />
+          <SimpleGreyButton
+            text={
+              (userStore.user && userStore.user.photoURL ? "Edit" : "Add") +
+              " Photo"
+            }
+            onClick={handleClick}
+          />
         </DialogTitle>
         <DialogContent dividers>
-          <Typography variant={"body2"} gutterBottom>
-            Let's get you started. I need to know a little more please.
+          <Typography
+            variant={"body2"}
+            gutterBottom
+            style={{ textAlign: "center" }}
+          >
+            {firstUpdate
+              ? "Let's get you started. I need to know a little more please."
+              : 'Update and click "All Done"'}
           </Typography>
           <Divider />
           <Form onSubmit={handleSubmit} />

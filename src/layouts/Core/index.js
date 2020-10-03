@@ -16,18 +16,16 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { MDXProvider } from "@mdx-js/react";
 import Draw from "./Draw";
-import MobileMenu from "./MobileMenu";
 import notesConfig from "../../config/notes";
 import RemarkComponents from "../../components/Remark";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import MenuItem from "@material-ui/core/MenuItem";
 import { useStores } from "../../stores/";
 import Menu from "@material-ui/core/Menu";
 import Login from "../../components/Login";
 import ProfileFrom from "../../components/ProfileForm";
-import { useIsFocusVisible } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
+import LoggedInMenu from "./LoggedInMenu";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -117,7 +115,6 @@ const useStyles = makeStyles((theme) => ({
 const Core = ({ children }) => {
   const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [mobileMoreAnchorEl] = useState(null);
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.up("sm"));
   const [anchorEl, setAnchorEl] = useState(null);
@@ -125,6 +122,7 @@ const Core = ({ children }) => {
   const [firstProfileFormComplete, setFirstProfileFormComplete] = useState(
     false
   );
+  const [loggedInAnchorEl, setLoggedInAnchorEl] = useState(null);
   const userStore = useStores().user;
   const uiStore = useStores().uiStore;
 
@@ -181,13 +179,36 @@ const Core = ({ children }) => {
     </Menu>
   );
 
+  const renderSearch = (
+    <div className={classes.search}>
+      <div className={classes.searchIcon}>
+        <SearchIcon />
+      </div>
+      <InputBase
+        placeholder="Search…"
+        classes={{
+          root: classes.inputRoot,
+          input: classes.inputInput,
+        }}
+        inputProps={{ "aria-label": "search" }}
+      />
+    </div>
+  );
+
   const handleAlertClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
     uiStore.setAlertOpen(false);
     uiStore.setAlert("");
-    uiStore.setOpen(false);
+  };
+
+  const handleLoggedInMenuClick = (t) => {
+    setLoggedInAnchorEl(null);
+    if (t === "logout") {
+      //
+    }
+    setProfileFormOpen(true);
   };
 
   const Alert = (props) => (
@@ -232,38 +253,42 @@ const Core = ({ children }) => {
           <Typography className={classes.title} variant="h6" noWrap>
             {notesConfig.course}
           </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search" }}
-            />
-          </div>
+
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
+            {userStore.user && (
+              <IconButton
+                aria-label="show 17 new notifications"
+                color="inherit"
+              >
+                <Badge badgeContent={17} color="secondary">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+            )}
 
-            <Button color="inherit" onClick={handleProfileMenuOpen}>
-              Login
-            </Button>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-haspopup="true"
-              color="inherit"
-            >
-              <AccountCircleIcon />
-            </IconButton>
+            {!userStore.user && (
+              <Button color="inherit" onClick={handleProfileMenuOpen}>
+                Login/Join
+              </Button>
+            )}
+            {userStore.user && (
+              <IconButton
+                edge="end"
+                aria-label="account of current user"
+                aria-haspopup="true"
+                color="inherit"
+              >
+                <AccountCircleIcon
+                  onClick={(e) => setLoggedInAnchorEl(e.currentTarget)}
+                />
+              </IconButton>
+            )}
+            <LoggedInMenu
+              anchorEl={loggedInAnchorEl}
+              onClose={() => setLoggedInAnchorEl(null)}
+              onClick={handleLoggedInMenuClick}
+            />
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
@@ -287,10 +312,6 @@ const Core = ({ children }) => {
         </Toolbar>
       </AppBar>
       <Draw drawerOpen={drawerOpen} onDrawerClose={handleDrawerClose} />
-      <MobileMenu
-        mobileMenuId={mobileMenuId}
-        mobileMoreAnchorEl={mobileMoreAnchorEl}
-      />
       <Container
         className={clsx({
           [classes.contentShift]: drawerOpen,
