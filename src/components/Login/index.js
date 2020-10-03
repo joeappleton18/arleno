@@ -8,17 +8,14 @@ import { useStores } from "../../stores/index";
 
 const useStyles = makeStyles((theme) => ({
   button: {
-    background: "black",
-    color: "white",
-  },
-  button: {
     marginTop: theme.spacing(2),
     cursor: "pointer",
+    marginLeft: theme.spacing(1),
+    marginRight:  theme.spacing(1)
   },
 }));
 
 const Login = (props) => {
-  const { onClick } = props;
   const classes = useStyles();
   const fbService = useFirebase();
   const userStore = useStores().user;
@@ -41,8 +38,7 @@ const Login = (props) => {
       alignItems="center"
     >
       <Typography variant="h6" color="primary">
-        {" "}
-        Login/Join With{" "}
+        Login/Join With
       </Typography>
       <Divider variant="middle" />
       <Git className={classes.button} onClick={() => handleClick("git")} />

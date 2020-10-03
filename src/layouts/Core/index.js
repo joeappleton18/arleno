@@ -25,6 +25,9 @@ import { useStores } from "../../stores/";
 import Menu from "@material-ui/core/Menu";
 import Login from "../../components/Login";
 import ProfileFrom from "../../components/ProfileForm";
+import { useIsFocusVisible } from "@material-ui/core";
+import MuiAlert from "@material-ui/lab/Alert";
+import Snackbar from "@material-ui/core/Snackbar";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -119,7 +122,11 @@ const Core = ({ children }) => {
   const desktop = useMediaQuery(theme.breakpoints.up("sm"));
   const [anchorEl, setAnchorEl] = useState(null);
   const [profileFormOpen, setProfileFormOpen] = useState(false);
+  const [firstProfileFormComplete, setFirstProfileFormComplete] = useState(
+    false
+  );
   const userStore = useStores().user;
+  const uiStore = useStores().uiStore;
 
   const isMenuOpen = Boolean(anchorEl);
   const handleProfileMenuOpen = (event) => {
@@ -141,6 +148,7 @@ const Core = ({ children }) => {
   useEffect(() => {
     if (userStore.user && userStore.user.joinStage === 1) {
       setProfileFormOpen(true);
+      setFirstProfileFormComplete(true);
     }
   }, [userStore.user]);
 
@@ -171,6 +179,31 @@ const Core = ({ children }) => {
     >
       <Login />
     </Menu>
+  );
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    uiStore.setAlertOpen(false);
+    uiStore.setAlert("");
+    uiStore.setOpen(false);
+  };
+
+  const Alert = (props) => (
+    <MuiAlert elevation={6} variant="filled" {...props} />
+  );
+
+  const SnackBar = () => (
+    <Snackbar
+      open={uiStore.alertOpen}
+      autoHideDuration={2000}
+      onClose={handleAlertClose}
+    >
+      <Alert onClose={handleAlertClose} severity={uiStore.alertType}>
+        {uiStore.alert}
+      </Alert>
+    </Snackbar>
   );
 
   return (
@@ -242,7 +275,14 @@ const Core = ({ children }) => {
               <MoreIcon />
             </IconButton>
             {renderMenu}
-            <ProfileFrom open={profileFormOpen} />
+            <ProfileFrom
+              open={profileFormOpen}
+              onSubmit={() => {
+                setProfileFormOpen(false);
+                setFirstProfileFormComplete(false);
+              }}
+              firstUpdate={firstProfileFormComplete}
+            />
           </div>
         </Toolbar>
       </AppBar>
@@ -259,6 +299,7 @@ const Core = ({ children }) => {
         id="content"
       >
         <MDXProvider components={RemarkComponents}>{children}</MDXProvider>
+        <SnackBar />
       </Container>
     </div>
   );

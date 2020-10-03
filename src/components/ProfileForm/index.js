@@ -13,6 +13,7 @@ import Form from "./Form";
 import { useStores } from "../../stores";
 import { useFirebase } from "../../services/firebase";
 import { Image, Transformation } from "cloudinary-react";
+
 const styles = (theme) => ({
   root: {
     margin: 0,
@@ -67,10 +68,10 @@ const Dialog = withStyles((theme) => ({
   },
   paper: {
     width: "100vw",
-    height: "800px",
+    height: "850px",
     [theme.breakpoints.up("md")]: {
       width: "40vw",
-      height: "500px",
+      height: "850px",
     },
     backgroundColor: "white",
     backgroundColor: "#D8D8D8",
@@ -80,16 +81,37 @@ const Dialog = withStyles((theme) => ({
   },
 }))(MuiDialog);
 
-function ProfileForm({ open }) {
+function ProfileForm(props) {
+  const { open, onSubmit, firstUpdate } = props;
   let uploadWidget;
   const fbService = useFirebase();
   const userStore = useStores().user;
+  const uiStore = useStores().uiStore;
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
   const handleClose = () => {
-    setOpen(false);
+    if (!firstUpdate) {
+      onSubmit();
+    }
+  };
+
+  const updateUser = async (newUser) => {
+    try {
+      await fbService.user.update(newUser, userStore.user.uid);
+
+      userStore.setUser({
+        ...userStore.user,
+        ...newUser,
+      });
+    } catch (e) {
+      console.log("could not update photo");
+    }
+  };
+
+  const handleSubmit = (data) => {
+    const user = { ...data, ...{ joinStage: 2 } };
+    updateUser(user);
+    uiStore.deployAlert("I have updated your profile", "success");
+    onSubmit();
   };
 
   useEffect(() => {
@@ -100,21 +122,11 @@ function ProfileForm({ open }) {
       },
       async (error, result) => {
         if (!error && result && result.event === "success") {
-          try {
-            await fbService.user.update(
-              {
-                photoURL: result.info.public_id,
-              },
-              userStore.user.uid
-            );
+          const newUser = {
+            photoURL: result.info.public_id,
+          };
 
-            userStore.setUser({
-              ...userStore.user,
-              ...{ photoURL: result.info.public_id },
-            });
-          } catch (e) {
-            console.log("could not update photo");
-          }
+          updateUser(newUser);
         }
       }
     );
@@ -141,7 +153,10 @@ function ProfileForm({ open }) {
         aria-labelledby="customized-dialog-title"
         open={open}
       >
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+        <DialogTitle
+          id="customized-dialog-title"
+          onClose={firstUpdate ? false : handleClose}
+        >
           {userStore.user && !userStore.user.photoURL && (
             <img
               src="avatar-placeholder.png"
@@ -165,7 +180,7 @@ function ProfileForm({ open }) {
             Let's get you started. I need to know a little more please.
           </Typography>
           <Divider />
-          <Form />
+          <Form onSubmit={handleSubmit} />
         </DialogContent>
       </Dialog>
     </div>

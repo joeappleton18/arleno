@@ -22,7 +22,8 @@ const useStyles = makeStyles((theme) => ({
   error: { fontSize: 15, textAlign: "left" },
 }));
 
-const Form = () => {
+const Form = (props) => {
+  const { onSubmit } = props;
   const classes = useStyles();
   const userStore = useStores().user;
   const { register, handleSubmit, watch, errors } = useForm({
@@ -30,10 +31,10 @@ const Form = () => {
     defaultValues: userStore.user,
   });
 
-  const onSubmit = (data) => console.log(data);
+  const handleFormSubmit = (data) => onSubmit(data);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(handleFormSubmit)}>
       <Grid spacing={3} container display="flex" justify="center">
         <Grid item xs={6}>
           <TextField
