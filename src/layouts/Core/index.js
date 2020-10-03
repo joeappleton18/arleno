@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
   toolBar: {
     color: "#fff",
-    background: "linear-gradient(90deg, #9EA7FC 0%, #65B6F7 124.87%)",
+    background: `linear-gradient(90deg, ${theme.palette.light} 0%, ${theme.palette.dark} 124.87%)`,
   },
   appBarShift: {
     width: `calc(100% - ${theme.drawer.width}px)`,
@@ -250,9 +250,11 @@ const Core = ({ children }) => {
               <MenuIcon />
             </IconButton>
           )}
-          <Typography className={classes.title} variant="h6" noWrap>
-            {notesConfig.course}
-          </Typography>
+          {!drawerOpen && (
+            <Typography className={classes.title} variant="h6" noWrap>
+              {notesConfig.course}
+            </Typography>
+          )}
 
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>

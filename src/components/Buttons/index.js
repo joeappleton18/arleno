@@ -1,10 +1,11 @@
 import clsx from "clsx";
-import { withStyles, createStyles } from "@material-ui/core/styles";
+import { withStyles, createStyles, useTheme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { SocialIcon } from "react-social-icons";
+import { themeObj } from "../../config/theme";
 
 const styles = {
-  root: { 
+  root: {
     cursor: "pointer",
     background: "linear-gradient(45deg, #111111 30%, #222222 90%)",
     borderRadius: 3,
@@ -14,7 +15,7 @@ const styles = {
     width: 300,
     fontSize: "15px",
     padding: "0 30px",
-    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+    boxShadow: `0 1.5px 2.5px 1px ${themeObj.palette.primary.dark}`,
   },
   label: {
     textTransform: "capitalize",
@@ -36,7 +37,7 @@ const simpleGreyButtonStyles = {
   ...{
     root: {
       ...styles.root,
-      background: "linear-gradient(45deg, #979797 30%, #979797 90%)",
+      background: `linear-gradient(45deg, ${themeObj.palette.primary.medium} 30%, ${themeObj.palette.primary.medium} 90%)`,
       height: 30,
     },
   },
@@ -47,7 +48,8 @@ const formButton = {
   ...{
     root: {
       ...styles.root,
-      background: "linear-gradient(45deg, #C781FF 100%, #E57373 100%)",
+      background: `linear-gradient(45deg, ${themeObj.palette.primary.dark} 30%, ${themeObj.palette.primary.dark} 90%)`,
+
       height: 50,
     },
   },

@@ -5,6 +5,7 @@ import IconButton from "@material-ui/core/IconButton";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import Divider from "@material-ui/core/Divider";
 import MenuList from "./MenuList";
+import notesConfig from "../../config/notes";
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
@@ -18,10 +19,11 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     padding: theme.spacing(0, 1),
+    paddingLeft: "4%",
     color: "#fff",
     backgroundColor: theme.palette.primary.dark,
     ...theme.mixins.toolbar,
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
   },
 }));
 
@@ -41,7 +43,9 @@ const Draw = (props) => {
       }}
     >
       <div className={classes.drawerHeader}>
-        <Typography variant="h6"> Course Notes </Typography>
+        <Typography variant="h6" style={{ textAlign: "center" }}>
+          {notesConfig.course}
+        </Typography>
         <IconButton onClick={onDrawerClose}>
           {theme.direction === "ltr" ? (
             <ChevronLeftIcon />
