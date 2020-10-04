@@ -20,6 +20,7 @@ import notesConfig from "../../config/notes";
 import RemarkComponents from "../../components/Remark";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStores } from "../../stores/";
+import { useFirebase } from "../../services/firebase";
 import Menu from "@material-ui/core/Menu";
 import Login from "../../components/Login";
 import ProfileFrom from "../../components/ProfileForm";
@@ -128,6 +129,7 @@ const Core = ({ children }) => {
   const [loggedInAnchorEl, setLoggedInAnchorEl] = useState(null);
   const userStore = useStores().user;
   const uiStore = useStores().uiStore;
+  const authService = useFirebase().auth;
 
   const isMenuOpen = Boolean(anchorEl);
   const handleProfileMenuOpen = (event) => {
@@ -178,7 +180,11 @@ const Core = ({ children }) => {
       open={isMenuOpen}
       onClose={handleProfileMenuClose}
     >
-      <Login />
+      <Login
+        onClose={() => {
+          setAnchorEl(null);
+        }}
+      />
     </Menu>
   );
 
@@ -203,13 +209,20 @@ const Core = ({ children }) => {
       return;
     }
     uiStore.setAlertOpen(false);
-    uiStore.setAlert("");
   };
 
-  const handleLoggedInMenuClick = (t) => {
+  const handleLoggedInMenuClick = async (t) => {
     setLoggedInAnchorEl(null);
     if (t === "logout") {
-      //
+      try {
+        await authService.signOut();
+        userStore.setUser({});
+        debugger;
+        uiStore.deployAlert("Signed Out", "success");
+        return;
+      } catch (e) {
+        console.log("logged out");
+      }
     }
     setProfileFormOpen(true);
   };
@@ -261,7 +274,7 @@ const Core = ({ children }) => {
 
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            {userStore.user && (
+            {userStore.user.email && (
               <IconButton
                 aria-label="show 17 new notifications"
                 color="inherit"
@@ -272,12 +285,12 @@ const Core = ({ children }) => {
               </IconButton>
             )}
 
-            {!userStore.user && (
+            {!userStore.user.email && (
               <Button color="inherit" onClick={handleProfileMenuOpen}>
                 Login/Join
               </Button>
             )}
-            {userStore.user && (
+            {Boolean(userStore.user.email) && (
               <IconButton
                 edge="end"
                 aria-label="account of current user"

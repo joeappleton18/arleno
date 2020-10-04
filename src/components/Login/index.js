@@ -11,11 +11,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     cursor: "pointer",
     marginLeft: theme.spacing(1),
-    marginRight:  theme.spacing(1)
+    marginRight: theme.spacing(1),
   },
 }));
 
 const Login = (props) => {
+  const { onClose } = props;
   const classes = useStyles();
   const fbService = useFirebase();
   const userStore = useStores().user;
@@ -25,6 +26,7 @@ const Login = (props) => {
       const user = await fbService.auth.signInWithProvider(network);
       const userRef = await fbService.user.read(user.user.uid);
       userStore.setUser(userRef.data());
+      onClose();
     } catch (e) {
       console.error("could not log user in:", e);
     }

@@ -29,10 +29,8 @@ const AuthListener = () => {
       }
 
       const userRef = await userService.read(user.uid);
-      await userStore.setUser(userRef.data());
-
+      userStore.setUser(userRef.data());
       const { uid } = userRef.data();
-
       presenceService.connectedRef.on("value", async (snap) => {
         if (!snap.val()) {
           presenceService.setStatus("offline", uid);

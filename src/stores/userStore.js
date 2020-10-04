@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const userStore = () => {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({});
   return {
     user,
     setUser,
