@@ -1,6 +1,6 @@
 const path = require("path");
 
-const { https, auth } = require("firebase-functions");
+const { https, auth, database } = require("firebase-functions");
 const { default: next } = require("next");
 const admin = require("firebase-admin");
 
@@ -35,3 +35,18 @@ exports.userDeleted = auth.user().onDelete((user) => {
   const { uid } = user;
   return db.collection("users").doc(uid).delete();
 });
+
+exports.onUserStatusChanged = database
+  .ref("/status/{uid}")
+  .onUpdate(async (change, context) => {
+    const eventStatus = change.after.val();
+    const statusSnapshot = await change.after.ref.once("value");
+    const status = statusSnapshot.val();
+    console.log(status, eventStatus);
+
+    if (status.last_changed > eventStatus.last_changed) {
+      return null;
+    }
+    eventStatus.last_changed = new Date(eventStatus.last_changed);
+    return db.collection("status").doc(context.params.uid).set(eventStatus);
+  });

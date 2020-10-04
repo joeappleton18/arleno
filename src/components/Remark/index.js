@@ -3,6 +3,7 @@ import { withStyles, makeStyles } from "@material-ui/core/styles";
 import MuiTable from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
+import Typography from "@material-ui/core/Typography";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import textToHash from "./../../utils/textToHash";
@@ -45,6 +46,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RemarkComponents = {
+  li: (() => {
+    const li = (props) => (
+      <li>
+        <Typography style={{ marginTop: "0.8%" }} variant="body1" {...props} />
+      </li>
+    );
+    return memo(li);
+  })(),
+
+  p: (() => {
+    const P = (props) => (
+      <Typography style={{ marginTop: "0.8%" }} variant="body1" {...props} />
+    );
+    return memo(P);
+  })(),
   table: (() => {
     const Table = (props) => <MuiTable {...props} />;
     return memo(Table);
@@ -89,25 +105,21 @@ const RemarkComponents = {
     const Code = (props) => <CodeBlock {...props} />;
     return memo(Code);
   })(),
-
   blockquote: (() => {
-    const Blockquote = (props) => {
-      debugger;
-      return (
-        <p
-          style={{
-            borderLeft: "4px solid grey",
-            padding: 8,
-            color: "grey",
-            lineHeight: 1,
-          }}
-        >
-          {props.children.props.children.props.children}
-        </p>
-      );
-    };
-
-    return memo(Blockquote);
+    const BlockQuote = (props) => (
+      <Typography
+        style={{
+          borderLeft: "4px solid grey",
+          padding: 8,
+          color: "grey",
+          lineHeight: 1,
+          margin: "1% 0% 1% 0%",
+        }}
+        variant="body1"
+        {...props}
+      />
+    );
+    return memo(BlockQuote);
   })(),
 };
 

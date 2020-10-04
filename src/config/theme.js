@@ -3,6 +3,17 @@ import { red } from "@material-ui/core/colors";
 
 const themeObj = {
   overrides: {
+    MuiTableCell: {
+      root: {
+        fontSize: "1rem",
+      },
+    },
+    MuiAlert: {
+      message: {
+        "&div": { fontWeight: "20" },
+        fontSize: "1rem",
+      },
+    },
     MuiFormLabel: {
       root: {
         color: "black",
@@ -19,21 +30,25 @@ const themeObj = {
   typography: {
     fontSize: 20,
     h1: {
-      fontSize: "2.5rem",
+      fontSize: "2.0rem",
       lineHeight: 2,
     },
     h2: {
-      fontSize: "2.0rem",
+      fontSize: "1.4rem",
       lineHeight: 1.5,
     },
 
     h3: {
-      fontSize: "1.5rem",
+      fontSize: "1.4rem",
       lineHeight: 1.5,
     },
 
     h6: {
       fontSize: "1.4rem",
+    },
+
+    body1: {
+      fontSize: "1rem",
     },
   },
 

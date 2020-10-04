@@ -10,18 +10,15 @@ import { StoresProvider, useStores } from "./../stores";
 import CoreLayout from "../layouts/Core";
 import notesConfig from "../config/notes";
 
-/** css imports  **/
-
-import "prismjs/themes/prism.css";
-import { setUseProxies } from "immer";
-
 const AuthListener = () => {
   const fb = useFirebase();
   const userStore = useStores().user;
   const authService = fb.auth;
   const userService = fb.user;
+  const presenceService = fb.presenceService;
 
   useEffect(() => {
+    debugger;
     if (!authService) {
       return;
     }
@@ -30,8 +27,22 @@ const AuthListener = () => {
       if (!user) {
         return;
       }
+
       const userRef = await userService.read(user.uid);
-      userStore.setUser(userRef.data());
+      await userStore.setUser(userRef.data());
+
+      const { uid } = userRef.data();
+
+      presenceService.connectedRef.on("value", async (snap) => {
+        if (!snap.val()) {
+          presenceService.setStatus("offline", uid);
+        }
+
+        if (snap.val()) {
+          await presenceService.onDisconnect(uid);
+          await presenceService.setRtStatus("online", uid);
+        }
+      });
     });
   }, []);
 
@@ -53,6 +64,7 @@ export default function MyApp(props) {
     <>
       <Head>
         <title>{notesConfig.course || ""}</title>
+        {/*<link rel="stylesheet" href="prism.css" />*/}
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"

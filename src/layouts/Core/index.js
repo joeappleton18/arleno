@@ -38,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.easeOut,
     }),
   },
+  container: {
+    paddingTop: theme.spacing(7),
+  },
   contentShift: {
     marginLeft: theme.drawerWidth,
     transition: theme.transitions.create("margin", {
@@ -231,9 +234,9 @@ const Core = ({ children }) => {
     <div className={classes.grow}>
       {" "}
       <AppBar
+        position="fixed"
         className={classes.appBar}
         elevation={0}
-        position="static"
         className={clsx({
           [classes.appBarShift]: drawerOpen,
         })}
@@ -317,6 +320,7 @@ const Core = ({ children }) => {
       <Container
         className={clsx({
           [classes.contentShift]: drawerOpen,
+          [classes.container]: true,
         })}
         maxWidth={drawerOpen ? "md" : "lg"}
         id="content"
