@@ -18,19 +18,31 @@ const AuthListener = () => {
   const presenceService = fb.presenceService;
 
   useEffect(() => {
-    debugger;
     if (!authService) {
       return;
     }
 
     authService.auth.onAuthStateChanged(async (user) => {
-      if (!user) {
+      if (!user || user.uid) {
         return;
       }
 
-      const userRef = await userService.read(user.uid);
+      const { uid, email, photoURL } = user;
+      debugger;
+      const userRef = await userService.read(uid);
+      /**
+       * When a user joins, firebase functions creates a user for us.
+       * However, the auth function fires before the database has time to update.
+       * As such we need to manually set the joinStage
+       */
+
+      if (!userRef.exists) {
+        userStore.setUser({ uid, email, photoURL, joinStage: 1 });
+        return;
+      }
+
       userStore.setUser(userRef.data());
-      const { uid } = userRef.data();
+
       presenceService.connectedRef.on("value", async (snap) => {
         if (!snap.val()) {
           presenceService.setStatus("offline", uid);

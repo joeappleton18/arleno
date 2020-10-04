@@ -282,7 +282,7 @@ const Core = ({ children }) => {
 
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            {userStore.user.email && (
+            {userStore.user && userStore.user.email && (
               <>
                 <IconButton
                   aria-label="show 17 new notifications"
@@ -310,11 +310,12 @@ const Core = ({ children }) => {
               </>
             )}
 
-            {!userStore.user.email && (
-              <Button color="inherit" onClick={handleProfileMenuOpen}>
-                Login/Join
-              </Button>
-            )}
+            {!userStore.user ||
+              (!userStore.user.email && (
+                <Button color="inherit" onClick={handleProfileMenuOpen}>
+                  Login/Join
+                </Button>
+              ))}
 
             <LoggedInMenu
               anchorEl={loggedInAnchorEl}
