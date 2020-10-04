@@ -12,7 +12,7 @@ import Divider from "@material-ui/core/Divider";
 import Form from "./Form";
 import { useStores } from "../../stores";
 import { useFirebase } from "../../services/firebase";
-import { Image, Transformation } from "cloudinary-react";
+import ProfilePicture from "../../components/ProfilePicture";
 
 const styles = (theme) => ({
   root: {
@@ -135,16 +135,6 @@ function ProfileForm(props) {
     uploadWidget.open();
   };
 
-  const transform = (
-    <Transformation
-      width="80"
-      height="80"
-      gravity="face"
-      crop="thumb"
-      radius="max"
-    />
-  );
-
   return (
     <div>
       <Dialog
@@ -156,21 +146,7 @@ function ProfileForm(props) {
           id="customized-dialog-title"
           onClose={firstUpdate ? false : handleClose}
         >
-          {userStore.user && !userStore.user.photoURL && (
-            <img
-              src="avatar-placeholder.png"
-              style={{ display: "block", margin: "0 auto" }}
-            />
-          )}
-
-          {userStore.user && userStore.user.photoURL && (
-            <Image
-              style={{ display: "block", margin: "0 auto" }}
-              publicId={userStore.user.photoURL}
-            >
-              {transform}
-            </Image>
-          )}
+          <ProfilePicture />
 
           <SimpleGreyButton
             text={

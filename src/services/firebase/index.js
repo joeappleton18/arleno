@@ -30,6 +30,7 @@ class firebaseService {
       const auth = firebase.auth;
       this.auth = new authService(auth);
 
+
       this.presenceService = new presenceService(
         db,
         rtdb,

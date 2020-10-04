@@ -27,6 +27,8 @@ import ProfileFrom from "../../components/ProfileForm";
 import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 import LoggedInMenu from "./LoggedInMenu";
+import ProfilePhoto from "../../components/ProfilePicture";
+import ArrowDropDownCircleIcon from "@material-ui/icons/ArrowDropDownCircle";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -49,6 +51,12 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
     marginLeft: theme.drawer.width,
+  },
+
+  profileName: {
+    marginTop: theme.spacing(2),
+    marginLeft: theme.spacing(1),
+    fontWeight: "bold",
   },
   toolBar: {
     color: "#fff",
@@ -275,14 +283,31 @@ const Core = ({ children }) => {
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             {userStore.user.email && (
-              <IconButton
-                aria-label="show 17 new notifications"
-                color="inherit"
-              >
-                <Badge badgeContent={17} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
+              <>
+                <IconButton
+                  aria-label="show 17 new notifications"
+                  color="inherit"
+                >
+                  <Badge badgeContent={17} color="secondary">
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
+                {/* <ProfilePhoto size={40} />{" "} */}
+                <Typography className={classes.profileName}>
+                  {" "}
+                  {userStore.user.firstName}
+                </Typography>
+                <IconButton
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-haspopup="true"
+                  color="inherit"
+                >
+                  <ArrowDropDownCircleIcon
+                    onClick={(e) => setLoggedInAnchorEl(e.currentTarget)}
+                  />
+                </IconButton>
+              </>
             )}
 
             {!userStore.user.email && (
@@ -290,18 +315,7 @@ const Core = ({ children }) => {
                 Login/Join
               </Button>
             )}
-            {Boolean(userStore.user.email) && (
-              <IconButton
-                edge="end"
-                aria-label="account of current user"
-                aria-haspopup="true"
-                color="inherit"
-              >
-                <AccountCircleIcon
-                  onClick={(e) => setLoggedInAnchorEl(e.currentTarget)}
-                />
-              </IconButton>
-            )}
+
             <LoggedInMenu
               anchorEl={loggedInAnchorEl}
               onClose={() => setLoggedInAnchorEl(null)}
