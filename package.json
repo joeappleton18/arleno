@@ -14,7 +14,8 @@
     "shell": "npm run build && firebase functions:shell",
     "predeploy": "npm --prefix \"$PROJECT_DIR\" install && npm --prefix \"$PROJECT_DIR\" run build",
     "deploy": "firebase deploy --only functions,hosting",
-    "logs": "firebase functions:log"
+    "logs": "firebase functions:log",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@hookform/resolvers": "^0.1.1",
@@ -50,8 +51,14 @@
     "yup": "^0.29.3"
   },
   "devDependencies": {
+    "@testing-library/dom": "^7.24.3",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.0.4",
+    "babel-jest": "^26.3.0",
     "firebase-functions-test": "^0.1.6",
-    "firebase-tools": "^8.6.0"
+    "firebase-tools": "^8.6.0",
+    "jest": "^26.4.2",
+    "jest-dom": "^4.0.0"
   },
   "license": "MIT"
 }

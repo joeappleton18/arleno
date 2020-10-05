@@ -23,12 +23,11 @@ const AuthListener = () => {
     }
 
     authService.auth.onAuthStateChanged(async (user) => {
-      if (!user || user.uid) {
+      if (!user || !user.uid) {
         return;
       }
 
       const { uid, email, photoURL } = user;
-      debugger;
       const userRef = await userService.read(uid);
       /**
        * When a user joins, firebase functions creates a user for us.
@@ -36,12 +35,8 @@ const AuthListener = () => {
        * As such we need to manually set the joinStage
        */
 
-      if (!userRef.exists) {
-        userStore.setUser({ uid, email, photoURL, joinStage: 1 });
-        return;
-      }
-
-      userStore.setUser(userRef.data());
+      const defaultUser = { uid, email, photoURL, joinStage: 1 };
+      userStore.setUser({ ...defaultUser, ...userRef.data() });
 
       presenceService.connectedRef.on("value", async (snap) => {
         if (!snap.val()) {

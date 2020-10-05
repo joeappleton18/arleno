@@ -157,9 +157,13 @@ const Core = ({ children }) => {
   };
 
   useEffect(() => {
-    if (userStore.user && userStore.user.joinStage === 1) {
-      setProfileFormOpen(true);
+    if (
+      userStore.user &&
+      userStore.user.joinStage === 1 &&
+      userStore.user.email
+    ) {
       setFirstProfileFormComplete(true);
+      setTimeout(setProfileFormOpen(true), 0);
     }
   }, [userStore.user]);
 

@@ -28,16 +28,16 @@ class authService {
   signInWithProvider(platform) {
     switch (platform) {
       case "microsoft":
-        return this.auth.signInWithPopup(this.microsoftAuthProvider);
+        return this.auth.signInWithRedirect(this.microsoftAuthProvider);
         break;
       case "google":
-        return this.auth.signInWithPopup(this.googleAuthProvider);
+        return this.auth.signInWithRedirect(this.googleAuthProvider);
         break;
       case "git":
-        return this.auth.signInWithPopup(this.gitHubProvider);
+        return this.auth.signInWithRedirect(this.gitHubProvider);
         break;
       case "facebook":
-        return this.auth.signInWithPopup(this.facebookProvider);
+        return this.auth.signInWithRedirect(this.facebookProvider);
       case "default":
         throw Error("no supported sign in method provided");
         break;

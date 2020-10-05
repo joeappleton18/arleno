@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
@@ -26,10 +27,18 @@ const Form = (props) => {
   const { onSubmit } = props;
   const classes = useStyles();
   const userStore = useStores().user;
-  const { register, handleSubmit, watch, errors } = useForm({
+  const { register, handleSubmit, watch, errors, reset } = useForm({
     resolver: yupResolver(schema),
     defaultValues: userStore.user,
   });
+
+  /**
+   * attempt to rehydrate the form
+   */
+
+  useEffect(() => {
+    reset(userStore.user);
+  }, [userStore.user]);
 
   const handleFormSubmit = (data) => onSubmit(data);
 
