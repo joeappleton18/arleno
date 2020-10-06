@@ -44,10 +44,10 @@ const Login = (props) => {
       </Typography>
       <Divider variant="middle" />
       <Git className={classes.button} onClick={() => handleClick("git")} />
-      <Facebook
+      {/*<Facebook
         className={classes.button}
         onClick={() => handleClick("facebook")}
-      />
+     />*/}
       <Google
         className={classes.button}
         onClick={() => handleClick("google")}
