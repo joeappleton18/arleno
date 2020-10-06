@@ -29,6 +29,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import LoggedInMenu from "./LoggedInMenu";
 import ProfilePhoto from "../../components/ProfilePicture";
 import ArrowDropDownCircleIcon from "@material-ui/icons/ArrowDropDownCircle";
+import AvatarGroup from "../../components/AvatarGroup";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -111,13 +112,13 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   sectionDesktop: {
-    display: "none",
+    display: "flex",
     [theme.breakpoints.up("md")]: {
       display: "flex",
     },
   },
   sectionMobile: {
-    display: "flex",
+    display: "none",
     [theme.breakpoints.up("md")]: {
       display: "none",
     },
@@ -283,6 +284,8 @@ const Core = ({ children }) => {
               {notesConfig.course}
             </Typography>
           )}
+
+          {<AvatarGroup />}
 
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>

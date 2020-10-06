@@ -101,8 +101,21 @@ function ProfileForm(props) {
         ...userStore.user,
         ...newUser,
       });
+
+      await fbService.presenceService.setStatus("online", userStore.user.uid, {
+        ...userStore.user,
+        ...newUser,
+      });
+      await fbService.presenceService.setRtStatus(
+        "online",
+        userStore.user.uid,
+        {
+          ...userStore.user,
+          ...newUser,
+        }
+      );
     } catch (e) {
-      console.log("could not update photo");
+      console.log("could not update photo", e);
     }
   };
 

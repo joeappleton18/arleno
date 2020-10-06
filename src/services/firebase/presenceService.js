@@ -18,20 +18,25 @@ class presenceService {
     };
   }
 
-  setStatus(state, id) {
-    return this.statusRef.doc(id).set(this.setPresence(state));
+  setStatus(state, id, data) {
+    return this.statusRef.doc(id).set({ ...this.setPresence(state), ...data });
   }
 
-  setRtStatus(state, id) {
-    debugger;
-    this.rtdb.ref("/status/" + id).set(this.setPresence(state, true));
+  setRtStatus(state, id, data) {
+    this.rtdb
+      .ref("/status/" + id)
+      .set({ ...this.setPresence(state, true), ...data });
   }
 
-  onDisconnect(id) {
+  onDisconnect(id, data) {
     return this.rtdb
       .ref("/status/" + id)
       .onDisconnect()
-      .set(this.setPresence("offline", true));
+      .set({ ...this.setPresence("offline", true), ...data });
+  }
+
+  readOnlineUpdate() {
+    return this.statusRef.where("state", "==", "online");
   }
 }
 

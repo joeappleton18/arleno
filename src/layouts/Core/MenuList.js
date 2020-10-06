@@ -40,9 +40,6 @@ const WeekItem = ({ item }) => {
   return (
     <>
       <ListItem button onClick={handleClick}>
-        {/*<ListItemIcon>
-          <StarBorder />
-        </ListItemIcon> */}
         <ListItemText
           classes={{ primary: classes.heading }}
           className={classes.heading}
@@ -53,8 +50,8 @@ const WeekItem = ({ item }) => {
       <Collapse in={open} timeout="auto" unmountOnExit>
         {item.headings
           .filter((h) => h.depth === 2)
-          .map((h) => (
-            <List component="div" disablePadding>
+          .map((h, i) => (
+            <List index={i} component="div" disablePadding>
               <Link
                 href={
                   (item.pageName.split(".")[0] == "index"
@@ -97,8 +94,8 @@ const MenuList = () => {
       aria-labelledby="nested-list-subheader"
       className={classes.root}
     >
-      {menuItems.map((i) => (
-        <WeekItem item={i} />
+      {menuItems.map((i, k) => (
+        <WeekItem key={k} item={i} />
       ))}
     </List>
   );

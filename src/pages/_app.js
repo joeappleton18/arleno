@@ -38,15 +38,44 @@ const AuthListener = () => {
       const defaultUser = { uid, email, photoURL, joinStage: 1 };
       userStore.setUser({ ...defaultUser, ...userRef.data() });
 
+      /***
+       * Presence Detector
+       */
       presenceService.connectedRef.on("value", async (snap) => {
         if (!snap.val()) {
-          presenceService.setStatus("offline", uid);
+          presenceService.setStatus(
+            "offline",
+            uid,
+            userRef.data() || defaultUser
+          );
         }
 
         if (snap.val()) {
-          await presenceService.onDisconnect(uid);
-          await presenceService.setRtStatus("online", uid);
+          await presenceService.onDisconnect(uid, userStore.users);
+          await presenceService.setRtStatus(
+            "online",
+            uid,
+            userRef.data() || defaultUser
+          );
         }
+      });
+      /**
+       * ensure that we update the user online if they update their profile
+       */
+      /* userService.readOnlineUpdate().onSnapshot(async (doc) => {
+        await presenceService.setRtStatus("online", uid, doc.data());
+        await presenceService.setRtStatus("online", uid, doc.data());
+      });*/
+
+      /**
+       * get online user
+       */
+      presenceService.readOnlineUpdate().onSnapshot((snap) => {
+        let users = [];
+        snap.forEach((doc) => {
+          users.push(doc.data());
+        });
+        userStore.setOnlineUsers(users);
       });
     });
   }, []);

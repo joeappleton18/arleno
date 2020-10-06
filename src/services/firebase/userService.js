@@ -32,6 +32,10 @@ class userService {
     };
   }
 
+  readUserUpdate(id) {
+    return this.ref.doc(id);
+  }
+
   create(user, id) {
     user.created = this.timeStamp;
     return this.ref.doc(id).set(user);

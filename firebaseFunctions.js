@@ -31,8 +31,9 @@ exports.userCreated = auth.user().onCreate((user) => {
     .set({ uid, email, photoURL, joinStage: 1 });
 });
 
-exports.userDeleted = auth.user().onDelete((user) => {
+exports.userDeleted = auth.user().onDelete(async (user) => {
   const { uid } = user;
+  await db.collection("status").doc(uid).delete();
   return db.collection("users").doc(uid).delete();
 });
 

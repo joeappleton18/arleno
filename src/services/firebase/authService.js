@@ -3,7 +3,7 @@ class authService {
   constructor(auth) {
     this.authClass = auth;
     this.auth = auth();
-    this.microsoftAuthProvider = new auth.OAuthProvider("microsoft.com");
+    //this.microsoftAuthProvider = new auth.OAuthProvider("microsoft.com");
     this.gitHubProvider = new auth.GithubAuthProvider();
     this.facebookProvider = new auth.FacebookAuthProvider();
     this.googleAuthProvider = new auth.GoogleAuthProvider();
@@ -28,7 +28,7 @@ class authService {
   signInWithProvider(platform) {
     switch (platform) {
       case "microsoft":
-        return this.auth.signInWithRedirect(this.microsoftAuthProvider);
+        // return this.auth.signInWithRedirect(this.microsoftAuthProvider);
         break;
       case "google":
         return this.auth.signInWithRedirect(this.googleAuthProvider);
