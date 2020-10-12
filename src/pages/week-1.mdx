@@ -164,7 +164,7 @@ Let's try and take things a little further and use node to manipulate a mongo da
 - Visit, in your browser, `http://localhost:8080`
 - After execution, if you open up the mongo command shell (see above) and run the following commands:
   - `use student`
-  - `db.student.find({})`
+  - `db.students.find({})`
 - You should see a list of students in your database
 
 ```js
@@ -203,7 +203,7 @@ server.on("request", async (req, res) => {
 server.listen(8080);
 ```
 
-Let's explore above code.
+Let's explore the above code.
 
 Firstly you can see that we set up a a variable to hold the connection url (l.5). The number after the colon is the port that database server is listening, 27017 it the default port.
 

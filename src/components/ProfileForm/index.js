@@ -159,7 +159,7 @@ function ProfileForm(props) {
           id="customized-dialog-title"
           onClose={firstUpdate ? false : handleClose}
         >
-          <ProfilePicture />
+          <ProfilePicture photoURL={userStore.user.photoURL} />
 
           <SimpleGreyButton
             text={
