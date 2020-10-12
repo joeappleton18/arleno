@@ -102,15 +102,19 @@ It is most convenient to configure a local development environment. This process
 
 Here is hoping that went smoothly; if it did, we are now ready to proceed with our first node application.
 
+## Task 1
+
+Follow the instructions above to set up your own development environment. Further to the above installation steps, you may also want to install [Robot 3T](https://robomongo.org/).
+
 ## Sample Applications
 
 <MuiAlert severity="info">
   <AlertTitle>
     <strong>Tip </strong>
   </AlertTitle>
-  I don't advise that you just copy and past these code blocks in, you will not
-  learn anything. Instead, you should type the examples in and consider what
-  each line of code is doing.
+  I don't advise that you just copy and past these code blocks in, you will not learn
+  anything. Instead, you should type the examples in and consider what each line
+  of code is doing.
 </MuiAlert>
 
 - First we need to create a folder where all of our practical work will live for this module, e.g. "database-systems/". You'll want to place this folder under version control.
@@ -159,8 +163,8 @@ Let's try and take things a little further and use node to manipulate a mongo da
 - Finally construct the program below and run `node sample_2.js`
 - Visit, in your browser, `http://localhost:8080`
 - After execution, if you open up the mongo command shell (see above) and run the following commands:
-  - `use students`
-  - `db.students.find({})`
+  - `use student`
+  - `db.student.find({})`
 - You should see a list of students in your database
 
 ```js
@@ -207,7 +211,40 @@ Notice how we pre-append the keyword async to our http handler function (l.9). F
 
 Next, in the handler function, we are connecting to MongoDB and selecting the student database (l.23 - l.24). We then select the collection students and insert our students records in bulk (l.24 - l.25).
 
+## Task 2 Implement the Sample Applications
+
+Implement the above two samples for yourself. Type in the code, as you go along review the sections of the [node](https://nodejs.org/en/docs/) and [https://docs.mongodb.com/](https://docs.mongodb.com/) documentation that relate to the code that we are typing in.
+
+## Task 3 Making a Wine Tasting Database
+
+- [Download](https://www.kaggle.com/zynicide/wine-reviews) this JSON file containing ~130k wine reviews
+- Place it in your week-1 directory
+- Create a file called dataReader.js
+  - Workout how to extract the wine review data and insert it into a new mongo db database collection called "tastes" that lives in a database called "wineTasting".
+
+Use the following documentation to help you:
+
+[insertMany - to insert data ](https://docs.mongodb.com/manual/reference/method/db.collection.insertMany/)  
+[fsPromise to read the file](https://devdocs.io/node/fs#fs_fspromises_readfile_path_options)  
+[JSON.parse to parse the file](https://devdocs.io/javascript/global_objects/json/parse)
+
+- Can you work out how to, after the records have inserted, log to the console the duration it took to insert the records and the number of records inserted
+
+### Solutions (should you get stuck)
+
+[Click here for a video solution](https://solent.cloud.panopto.eu/Panopto/Pages/Embed.aspx?id=7d0de931-fe1a-4c2f-a6c9-ac4d009b4d89&autoplay=false&offerviewer=true&showtitle=true&showbrand=false&start=0&interactivity=all)
+
+## Task 4 Create an API (Optional)
+
+- Can you create an index.js file and construct a basic api that reads specific data
+  from the wine db
+- Let's keep things very basic. Your app should have the following functionality
+- As a web users if I visit http://localhost:"your port"/country/italy I get a list of wine reviews from Italy in jason format
+- Consider setting up further routes to that further filter the data. Try and achieve this by not using any external node packages
+
 ### Documentation
+
+[A more readable version of the node docs](https://devdocs.io/node/fs#fs_fspromises_readfile_path_options)
 
 [An interesting and quick read about NodeJS HTTP handling. We will use this protocol heavily throughout this module. ](https://nodejs.org/en/docs/guides/anatomy-of-an-http-transaction/)
 

@@ -25,23 +25,26 @@ const Schedule = () => (
         </TableRow>
         <TableRow>
           <TableCell align="right">2</TableCell>
-          <TableCell align="right">Exploring Node And JSON</TableCell>
+          <TableCell align="right">
+            Exploring Node And Express and Templates
+          </TableCell>
         </TableRow>
         <TableRow>
           <TableCell align="right">3</TableCell>
           <TableCell align="right">
-            Introducing Express, Mongoose and Typescript
+            No Sql data planning and modeling{" "}
           </TableCell>
         </TableRow>
         <TableRow>
           <TableCell align="right">4</TableCell>
           <TableCell align="right">
-            Three Tier Web Application Structure
+            Translating data models into Mongo queries and Presenting Data in
+            Templates
           </TableCell>
         </TableRow>
         <TableRow>
           <TableCell align="right">5</TableCell>
-          <TableCell align="right">Presenting Data in Templates</TableCell>
+          <TableCell align="right">Assessment Checkin</TableCell>
         </TableRow>
         <TableRow>
           <TableCell align="right">6</TableCell>
@@ -51,11 +54,14 @@ const Schedule = () => (
         </TableRow>
         <TableRow>
           <TableCell align="right">7</TableCell>
-          <TableCell align="right">Catch Up and Assessment Check-In</TableCell>
+          <TableCell align="right">Advanced Mongo Features</TableCell>
         </TableRow>
         <TableRow>
           <TableCell align="right">9</TableCell>
-          <TableCell align="right">Advanced NoSql Modeling</TableCell>
+          <TableCell align="right">
+            {" "}
+            Using Further Services to Enhance Your Data
+          </TableCell>
         </TableRow>
         <TableRow>
           <TableCell align="right">10</TableCell>
