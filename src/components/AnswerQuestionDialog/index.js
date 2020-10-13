@@ -8,22 +8,36 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import ProfilePicture from "../ProfilePicture";
-
+import FollowIcon from "@material-ui/icons/RssFeed";
+import AnswerIcon from "@material-ui/icons/Create";
+import Grid from "@material-ui/core/Grid";
 const useStyles = makeStyles((theme) => ({
   text: { background: theme.palette.primary.main, cursor: "pointer" },
   question: { marginTop: theme.spacing(2) },
+  button: { background: theme.palette.primary.light, color: "white" },
+  buttonRoot: {
+    display: "flex",
+    "& p": {
+      color: theme.palette.primary.dark,
+      marginLeft: "2%",
+      marginRight: "2%",
+      marginTop: "5%",
+    },
+  },
 }));
 
 const styles = (theme) => ({
   root: {
     margin: 0,
     padding: theme.spacing(2),
+    background: "white",
   },
   closeButton: {
     position: "absolute",
     right: theme.spacing(1),
     top: theme.spacing(1),
     color: theme.palette.grey[500],
+    background: `linear-gradient(45deg, #03A9F4 30%, #B3E5FC 90%)`,
   },
   quote: {
     fontStyle: "italic",
@@ -113,11 +127,16 @@ function CustomizedDialogs(props) {
           title=""
           onClose={handleClose}
         >
-          {children}
+          <Grid container>
+            <Grid item xs={11}>
+              {children}
+            </Grid>
+          </Grid>
         </DialogTitle>
         <DialogContent dividers>
           <ProfilePicture
             name={{ first: "Joe", last: "Appleton" }}
+            size={50}
             center={false}
           />
           <Typography variant="h6" className={classes.question} gutterBottom>
@@ -125,6 +144,19 @@ function CustomizedDialogs(props) {
             dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
             ac consectetur ac, vestibulum at eros?
           </Typography>
+
+          <Grid container spacing={2} >
+            <Grid item xs={12} sm={4} className={classes.buttonRoot}>
+              <IconButton aria-label="close" className={classes.button}>
+                <AnswerIcon />
+              </IconButton>
+              <Typography> Answer </Typography>
+              <IconButton aria-label="close" className={classes.button}>
+                <FollowIcon />
+              </IconButton>
+              <Typography> Follow </Typography>
+            </Grid>
+          </Grid>
         </DialogContent>
       </Dialog>
     </div>

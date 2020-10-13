@@ -39,7 +39,9 @@ const ProfilePicture = (props) => {
 
   const checkUrl = (url) => (url.match(/^https*/) ? { type: "fetch" } : {});
 
-  const photoStyles = center ? { display: "block", margin: "0 auto" } : {};
+  const photoStyles = center
+    ? { display: "block", margin: "0 auto", width: size, height: size }
+    : { width: size, height: size };
 
   const renderImage = () => {
     if (!photoURL) {
