@@ -10,19 +10,38 @@ import Typography from "@material-ui/core/Typography";
 import ProfilePicture from "../ProfilePicture";
 import FollowIcon from "@material-ui/icons/RssFeed";
 import AnswerIcon from "@material-ui/icons/Create";
+import { useStores } from "../../stores/";
+import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
+import ThumbUpAltFilledIcon from "@material-ui/icons/ThumbUpAltOutlined";
+import AvatarGroup from "../AvatarGroup/";
+
 import Grid from "@material-ui/core/Grid";
+import Divider from "@material-ui/core/Divider";
+
 const useStyles = makeStyles((theme) => ({
   text: { background: theme.palette.primary.main, cursor: "pointer" },
   question: { marginTop: theme.spacing(2) },
   button: { background: theme.palette.primary.light, color: "white" },
+  photoSection: {
+    display: "flex",
+  },
   buttonRoot: {
     display: "flex",
     "& p": {
-      color: theme.palette.primary.dark,
+      color: theme.palette.primary.main,
       marginLeft: "2%",
       marginRight: "2%",
       marginTop: "5%",
     },
+  },
+  answerArea: {
+    marginTop: theme.spacing(2),
+  },
+  likeArea: {},
+
+  likeIcon: {
+    color: theme.palette.primary.main,
+    cursor: "pointer",
   },
 }));
 
@@ -32,6 +51,7 @@ const styles = (theme) => ({
     padding: theme.spacing(2),
     background: "white",
   },
+
   closeButton: {
     position: "absolute",
     right: theme.spacing(1),
@@ -99,6 +119,54 @@ const Dialog = withStyles((theme) => ({
   },
 }))(MuiDialog);
 
+const Answer = (props) => {
+  const { photo, children } = props;
+  const classes = useStyles();
+  const userStore = useStores().user;
+  const tmpUserArray = [
+    {
+      photoURL: "wsh3t9dsa1wo5ummmm7h",
+      lastName: "Appleton",
+      firstName: "Joe",
+    },
+    {
+      photoURL: "wsh3t9dsa1wo5ummmm7h",
+      lastName: "Appleton",
+      firstName: "Joe",
+    },
+    {
+      photoURL: "wsh3t9dsa1wo5ummmm7h",
+      lastName: "Appleton",
+      firstName: "Joe",
+    },
+    {
+      photoURL: "wsh3t9dsa1wo5ummmm7h",
+      lastName: "Appleton",
+      firstName: "Joe",
+    },
+  ];
+
+  return (
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        {photo}
+      </Grid>
+      <Grid item xs={12}>
+        {children}
+      </Grid>
+      <Grid item xs={12} className={classes.photoSection}>
+        <ThumbUpAltOutlinedIcon className={classes.likeIcon} />
+        <AvatarGroup
+          style={{ marginLeft: "0.2%", marginTop: "0.2%" }}
+          photos={tmpUserArray}
+          onlineBadge={false}
+          size={30}
+        />
+      </Grid>
+    </Grid>
+  );
+};
+
 function CustomizedDialogs(props) {
   const classes = useStyles();
   const { children } = props;
@@ -145,7 +213,7 @@ function CustomizedDialogs(props) {
             ac consectetur ac, vestibulum at eros?
           </Typography>
 
-          <Grid container spacing={2} >
+          <Grid container spacing={2}>
             <Grid item xs={12} sm={4} className={classes.buttonRoot}>
               <IconButton aria-label="close" className={classes.button}>
                 <AnswerIcon />
@@ -155,6 +223,25 @@ function CustomizedDialogs(props) {
                 <FollowIcon />
               </IconButton>
               <Typography> Follow </Typography>
+            </Grid>
+          </Grid>
+          <Grid container spacing={2}>
+            <Grid item xs={12} className={classes.answerArea}>
+              <Divider style={{ marginBottom: "2%" }} />
+              <Answer
+                photo={
+                  <ProfilePicture
+                    name={{ first: "Joe", last: "Appleton" }}
+                    size={50}
+                    center={false}
+                  />
+                }
+              >
+                Cras mattis consectetur purus sit amet fermentum. Cras justo
+                odio, dapibus ac facilisis in, egestas eget quam. Morbi leo
+                risus, porta ac consectetur ac, vestibulum at eros?
+              </Answer>
+              <Divider style={{ marginTop: "2%" }} />
             </Grid>
           </Grid>
         </DialogContent>

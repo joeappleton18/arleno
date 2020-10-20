@@ -50,6 +50,7 @@ The above example uses the express package to create a new web-server that liste
 
 - Create a new folder called `week_2`
 - Open VSCode pointing to the location of your `week_2` folder
+- Within `week_2`, create a file called `index.js`
 - Run the command `npm init -y`
 - We can now install exspress, `npm install express --save`
 - To make our lives a little easier, we are also going to install nodemon. Run `npm install nodemon --save-dev`. Nodedemon is a useful tool that recompiles our applications in realtime. This means we don't need to keep running `node 'our application name'` to reflect our latest changes.
@@ -61,7 +62,8 @@ The above example uses the express package to create a new web-server that liste
   }
 ```
 
-Next, type in the sample application , to run the application execute the following terminal command `npm run dev`.
+- Next, type in the sample application into `index,js`
+- To run the application execute the following terminal command `npm run dev`.
 
 ## Serving HTML files
 
@@ -163,4 +165,18 @@ Using EJS, we now have some dynamic capabilities within our HTML views. The firs
 
 We've reached the main task for this week. Over the next several weeks we are going to be making a wine tasting application. You will be familiar with the wine [tasting data set from last week](https://www.kaggle.com/zynicide/wine-reviews). It contains 130k tastings; however, interestingly there are only around 25 wine tasters.
 
-Your main task for this week is to further explore the dataset and mock up a 4 page website using ejs templates that could be used to present the wine data in a meaningful way. **Note**, at this point we are not processing any data. Rather, we are mocking up what the data could look like. [You can use my example site as a starting point](example-website.zip). Notice how I am using Twitter Bootstrap to quickly generate a site. This is something you are more than welcome to do for your assessment. [You can read more about Bootstrap on the official site](https://getbootstrap.com/).
+Your main task for this week is to further explore the dataset and mock up a 4 page website using ejs templates that could be used to present the wine data in a meaningful way. **Note**, at this point we are not processing any data. Rather, we are mocking up what the data could look like. [You can use my example site as a starting point](https://ssu-my.sharepoint.com/:u:/g/personal/joe_appleton_solent_ac_uk/EZL8OjP32PlArSd4JWv2bNQBYZh9uaV1wbGABTGn3rjrQQ?e=afqOKI). Notice how I am using Twitter Bootstrap to quickly generate a site. This is something you are more than welcome to do for your assessment. [You can read more about Bootstrap on the official site](https://getbootstrap.com/).
+
+To begin with you can start to break your application down as below:
+
+```js
+<%- include('header'); -%>
+<h1>
+  Title
+</h1>
+<p>
+  My page
+</p>
+<%- include('footer'); -%>
+
+```

@@ -9,18 +9,18 @@ import Badge from "@material-ui/core/Badge";
 import { useStores } from "../../stores";
 
 const cloudinaryUrl = `http://res.cloudinary.com/${cloudinaryConfig.cloudName}/image`;
-const transformation = "c_thumb,g_face,h_80,r_max,w_80";
-const constructUrl = (image, type) =>
-  `${cloudinaryUrl}/${type}/${transformation}/${image}`;
+const transformation = (size) => `c_thumb,g_face,h_${size},r_max,w_${size}`;
+const constructUrl = (image, type, size) =>
+  `${cloudinaryUrl}/${type}/${transformation(size)}/${image}`;
 
-const getUrl = (image) => {
+const getUrl = (image, size) => {
   if (!image) {
     return;
   }
 
   return image.match(/^https*/)
-    ? constructUrl(image, "fetch")
-    : constructUrl(image, "upload");
+    ? constructUrl(image, "fetch", size)
+    : constructUrl(image, "upload", size);
 };
 
 const StyledBadge = withStyles((theme) => ({
@@ -41,34 +41,62 @@ const StyledBadge = withStyles((theme) => ({
   },
 }))(Badge);
 
-const OnlineAvatar = ({ src }) => (
-  <StyledBadge
-    overlap="circle"
-    anchorOrigin={{
-      vertical: "bottom",
-      horizontal: "right",
-    }}
-    variant="dot"
-  >
-    <Avatar alt="Remy Sharp" style={{ border: "2px solid white" }} src={src} />
-  </StyledBadge>
-);
+const OnlineAvatar = ({ src, alt, online, size }) =>
+  online ? (
+    <StyledBadge
+      overlap="circle"
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "right",
+      }}
+      variant="dot"
+    >
+      <Avatar
+        alt={alt}
+        style={{
+          border: "2px solid white",
+          width: size + "px",
+          height: size + "px",
+        }}
+        src={src}
+      />
+    </StyledBadge>
+  ) : (
+    <Avatar
+      alt={alt}
+      style={{
+        border: "2px solid white",
+        width: size + "px",
+        height: size + "px",
+      }}
+      src={src}
+    />
+  );
 
 const AvatarGroup = (props) => {
+  const { photos, onlineBadge, size, ...other } = props;
   const userStore = useStores().user;
 
   console.log(userStore.onlineUsers);
 
   return (
-    <MaterialAvatarGroup max={15}>
-      {userStore.onlineUsers.map((u) => (
+    <MaterialAvatarGroup max={15} {...other}>
+      {photos.map((u) => (
         <OnlineAvatar
+          size={size}
           alt={`${u.firstName} '' ' ', ${u.lastName} `}
-          src={getUrl(u.photoURL || 0)}
+          src={getUrl(u.photoURL || 0, size)}
+          online={onlineBadge}
         />
       ))}
     </MaterialAvatarGroup>
   );
+};
+
+AvatarGroup.defaultProps = {
+  photos: [],
+  onlineBadge: true,
+  size: 50,
 };
 
 export default AvatarGroup;

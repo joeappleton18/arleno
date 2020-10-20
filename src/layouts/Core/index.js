@@ -267,7 +267,7 @@ const Core = ({ children }) => {
             </Typography>
           )}
 
-          {<AvatarGroup />}
+          {<AvatarGroup photos={userStore.onlineUsers} />}
 
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
@@ -342,7 +342,6 @@ const Core = ({ children }) => {
         maxWidth={drawerOpen ? "md" : "lg"}
         id="content"
       >
-        
         <MDXProvider components={RemarkComponents}>{children}</MDXProvider>
         <SnackBar />
       </Container>
