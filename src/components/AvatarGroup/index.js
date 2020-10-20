@@ -81,8 +81,9 @@ const AvatarGroup = (props) => {
 
   return (
     <MaterialAvatarGroup max={15} {...other}>
-      {photos.map((u) => (
+      {photos.map((u, i) => (
         <OnlineAvatar
+          key={i}
           size={size}
           alt={`${u.firstName} '' ' ', ${u.lastName} `}
           src={getUrl(u.photoURL || 0, size)}

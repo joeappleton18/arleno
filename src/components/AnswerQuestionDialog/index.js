@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import MuiDialog from "@material-ui/core/Dialog";
@@ -12,11 +13,10 @@ import FollowIcon from "@material-ui/icons/RssFeed";
 import AnswerIcon from "@material-ui/icons/Create";
 import { useStores } from "../../stores/";
 import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
-import ThumbUpAltFilledIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import AvatarGroup from "../AvatarGroup/";
-
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
+import Editor from "../RichEditor/";
 
 const useStyles = makeStyles((theme) => ({
   text: { background: theme.palette.primary.main, cursor: "pointer" },
@@ -170,7 +170,7 @@ const Answer = (props) => {
 function CustomizedDialogs(props) {
   const classes = useStyles();
   const { children } = props;
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(true);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -223,6 +223,9 @@ function CustomizedDialogs(props) {
                 <FollowIcon />
               </IconButton>
               <Typography> Follow </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Editor />
             </Grid>
           </Grid>
           <Grid container spacing={2}>
