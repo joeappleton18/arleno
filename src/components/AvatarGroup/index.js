@@ -80,7 +80,7 @@ const AvatarGroup = (props) => {
   console.log(userStore.onlineUsers);
 
   return (
-    <MaterialAvatarGroup max={15} {...other}>
+    <MaterialAvatarGroup max={10} {...other}>
       {photos.map((u) => (
         <OnlineAvatar
           size={size}

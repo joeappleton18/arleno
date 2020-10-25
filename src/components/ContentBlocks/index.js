@@ -38,13 +38,12 @@ const Schedule = () => (
         <TableRow>
           <TableCell align="right">4</TableCell>
           <TableCell align="right">
-            Translating data models into Mongo queries and Presenting Data in
-            Templates
+            Completing the MCV stack
           </TableCell>
         </TableRow>
         <TableRow>
           <TableCell align="right">5</TableCell>
-          <TableCell align="right">Assessment Checkin</TableCell>
+          <TableCell align="right">Handling Updates</TableCell>
         </TableRow>
         <TableRow>
           <TableCell align="right">6</TableCell>
@@ -54,13 +53,13 @@ const Schedule = () => (
         </TableRow>
         <TableRow>
           <TableCell align="right">7</TableCell>
-          <TableCell align="right">Advanced Mongo Features</TableCell>
+          <TableCell align="right">Authentication</TableCell>
         </TableRow>
         <TableRow>
           <TableCell align="right">9</TableCell>
           <TableCell align="right">
             {" "}
-            Using Further Services to Enhance Your Data
+            Advanced Mongo Features
           </TableCell>
         </TableRow>
         <TableRow>
