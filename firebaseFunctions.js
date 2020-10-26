@@ -43,7 +43,6 @@ exports.onUserStatusChanged = database
     const eventStatus = change.after.val();
     const statusSnapshot = await change.after.ref.once("value");
     const status = statusSnapshot.val();
-    console.log(status, eventStatus);
 
     if (status.last_changed > eventStatus.last_changed) {
       return null;

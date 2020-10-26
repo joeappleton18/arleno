@@ -1,5 +1,7 @@
 import MUIRichTextEditor from "mui-rte";
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import { createMuiTheme, MuiThemeProvider, makeStyles } from "@material-ui/core/styles";
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 
 export const defaultTheme = createMuiTheme({
   palette: {
@@ -8,6 +10,8 @@ export const defaultTheme = createMuiTheme({
     },
   },
 });
+
+
 
 Object.assign(defaultTheme, {
   overrides: {
@@ -38,16 +42,30 @@ Object.assign(defaultTheme, {
         color: "#333333",
         textDecoration: "underline",
       },
+      replySection: {
+
+      },
     },
   },
 });
 
-const RichEditor = () => (
+const RichEditor = () =>  {
+ return (
   <>
     <MuiThemeProvider theme={defaultTheme}>
-      <MUIRichTextEditor label="Start typing..." />
+      <Grid container spacing={1}>
+         <Grid item xs={12}>
+          <MUIRichTextEditor label="Start typing..." />
+        </Grid>
+        <Grid item xs={12} >
+          <Button variant="contained" color="secondary">
+            Submit Answer
+          </Button>
+        </Grid>
+      </Grid>
+    
     </MuiThemeProvider>
   </>
-);
+)};
 
 export default RichEditor;

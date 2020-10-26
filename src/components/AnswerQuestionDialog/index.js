@@ -1,6 +1,7 @@
+import {useRef} from 'react';
 import { useState } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
+import { Link, animateScroll as scroll } from "react-scroll";
 import MuiDialog from "@material-ui/core/Dialog";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
@@ -171,6 +172,8 @@ function CustomizedDialogs(props) {
   const classes = useStyles();
   const { children } = props;
   const [open, setOpen] = useState(true);
+  const [showAnswerBox, setShowAnswerBox] = useState(false);
+  const buttonRef = useRef(null)
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -178,6 +181,15 @@ function CustomizedDialogs(props) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleClickAnswer = () => {
+    if (!showAnswerBox) {
+      buttonRef.current.scrollIntoView();
+    }
+    setShowAnswerBox(!showAnswerBox);
+    
+  
+  }
 
   return (
     <div>
@@ -216,7 +228,7 @@ function CustomizedDialogs(props) {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={4} className={classes.buttonRoot}>
               <IconButton aria-label="close" className={classes.button}>
-                <AnswerIcon />
+                <AnswerIcon  onClick={handleClickAnswer}/>
               </IconButton>
               <Typography> Answer </Typography>
               <IconButton aria-label="close" className={classes.button}>
@@ -224,11 +236,11 @@ function CustomizedDialogs(props) {
               </IconButton>
               <Typography> Follow </Typography>
             </Grid>
-            <Grid item xs={12}>
+            {showAnswerBox && <Grid item xs={12}>
               <Editor />
-            </Grid>
+            </Grid>}
           </Grid>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} ref={buttonRef}>
             <Grid item xs={12} className={classes.answerArea}>
               <Divider style={{ marginBottom: "2%" }} />
               <Answer
@@ -244,7 +256,7 @@ function CustomizedDialogs(props) {
                 odio, dapibus ac facilisis in, egestas eget quam. Morbi leo
                 risus, porta ac consectetur ac, vestibulum at eros?
               </Answer>
-              <Divider style={{ marginTop: "2%" }} />
+              <Divider   style={{ marginTop: "2%" }} />
             </Grid>
           </Grid>
         </DialogContent>
