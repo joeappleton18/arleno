@@ -1,8 +1,5 @@
 import Avatar from "@material-ui/core/Avatar";
 import MaterialAvatarGroup from "@material-ui/lab/AvatarGroup";
-import { useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { Image, Transformation } from "cloudinary-react";
 import cloudinaryConfig from "../../config/cloudinary";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Badge from "@material-ui/core/Badge";
@@ -13,7 +10,7 @@ const transformation = (size) => `c_thumb,g_face,h_${size},r_max,w_${size}`;
 const constructUrl = (image, type, size) =>
   `${cloudinaryUrl}/${type}/${transformation(size)}/${image}`;
 
-const getUrl = (image, size) => {
+export const getUrl = (image, size) => {
   if (!image) {
     return;
   }
@@ -41,7 +38,7 @@ const StyledBadge = withStyles((theme) => ({
   },
 }))(Badge);
 
-const OnlineAvatar = ({ src, alt, online, size }) =>
+export const OnlineAvatar = ({ src, alt, online, size }) =>
   online ? (
     <StyledBadge
       overlap="circle"
@@ -62,16 +59,16 @@ const OnlineAvatar = ({ src, alt, online, size }) =>
       />
     </StyledBadge>
   ) : (
-    <Avatar
-      alt={alt}
-      style={{
-        border: "2px solid white",
-        width: size + "px",
-        height: size + "px",
-      }}
-      src={src}
-    />
-  );
+      <Avatar
+        alt={alt}
+        style={{
+          border: "2px solid white",
+          width: size + "px",
+          height: size + "px",
+        }}
+        src={src}
+      />
+    );
 
 const AvatarGroup = (props) => {
   const { photos, onlineBadge, size, ...other } = props;

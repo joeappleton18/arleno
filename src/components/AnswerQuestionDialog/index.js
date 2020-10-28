@@ -1,7 +1,6 @@
-import {useRef} from 'react';
+import { useRef, useEffect } from 'react';
 import { useState } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
-import { Link, animateScroll as scroll } from "react-scroll";
 import MuiDialog from "@material-ui/core/Dialog";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
@@ -13,6 +12,7 @@ import ProfilePicture from "../ProfilePicture";
 import FollowIcon from "@material-ui/icons/RssFeed";
 import AnswerIcon from "@material-ui/icons/Create";
 import { useStores } from "../../stores/";
+import { useFirebase } from "../../services/firebase";
 import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import AvatarGroup from "../AvatarGroup/";
 import Grid from "@material-ui/core/Grid";
@@ -168,12 +168,55 @@ const Answer = (props) => {
   );
 };
 
-function CustomizedDialogs(props) {
+const AnswerQuestionDialog = (props) => {
+
+  const { children, id, question } = props;
   const classes = useStyles();
-  const { children } = props;
   const [open, setOpen] = useState(true);
+  const [photoURL, setPhotoURL] = useState("");
   const [showAnswerBox, setShowAnswerBox] = useState(false);
-  const buttonRef = useRef(null)
+  const [userName, setUserName] = useState();
+  const [date, setDate] = useState(Date.now());
+  const buttonRef = useRef(null);
+  const fb = useFirebase();
+  const userStore = useStores().user;
+
+
+  useEffect(() => {
+
+    if (!userStore.user) {
+      return;
+    }
+
+
+    const setQuestion = async (fb, id, user, question) => {
+      const questionRef = await fb.question.read(id);
+
+      if (!questionRef.exists) {
+        const qx = {
+          userName: user.firstName + user.lastName,
+          question: question,
+          photoURL: user.photoURL,
+          answers: 0
+        }
+
+        try {
+          await fb.question.create(qx, id);
+          setPhotoURL(qx.photoURL);
+          setUserName(qx.userName);
+        } catch (e) {
+          console.log('error could not create question', e)
+        }
+
+      } else {
+        const qx = await questionRef.data();
+        setPhotoURL(qx.photoURL);
+        setUserName(qx.userName);
+        setDate(qx.created.toDate());
+      }
+    }
+    setQuestion(fb, id, userStore.user, question, children);
+  }, [id, fb, userStore.user, question, children])
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -187,8 +230,8 @@ function CustomizedDialogs(props) {
       buttonRef.current.scrollIntoView();
     }
     setShowAnswerBox(!showAnswerBox);
-    
-  
+
+
   }
 
   return (
@@ -214,21 +257,22 @@ function CustomizedDialogs(props) {
           </Grid>
         </DialogTitle>
         <DialogContent dividers>
+
           <ProfilePicture
-            name={{ first: "Joe", last: "Appleton" }}
+            name={userName}
             size={50}
+            photoURL={photoURL}
             center={false}
+            date={date}
           />
           <Typography variant="h6" className={classes.question} gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-            ac consectetur ac, vestibulum at eros?
+            {question}
           </Typography>
 
           <Grid container spacing={2}>
             <Grid item xs={12} sm={4} className={classes.buttonRoot}>
               <IconButton aria-label="close" className={classes.button}>
-                <AnswerIcon  onClick={handleClickAnswer}/>
+                <AnswerIcon onClick={handleClickAnswer} />
               </IconButton>
               <Typography> Answer </Typography>
               <IconButton aria-label="close" className={classes.button}>
@@ -256,7 +300,7 @@ function CustomizedDialogs(props) {
                 odio, dapibus ac facilisis in, egestas eget quam. Morbi leo
                 risus, porta ac consectetur ac, vestibulum at eros?
               </Answer>
-              <Divider   style={{ marginTop: "2%" }} />
+              <Divider style={{ marginTop: "2%" }} />
             </Grid>
           </Grid>
         </DialogContent>
@@ -265,4 +309,4 @@ function CustomizedDialogs(props) {
   );
 }
 
-export default CustomizedDialogs;
+export default AnswerQuestionDialog;

@@ -2,6 +2,8 @@ import MUIRichTextEditor from "mui-rte";
 import { createMuiTheme, MuiThemeProvider, makeStyles } from "@material-ui/core/styles";
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import { EditorState } from 'draft-js'
+
 
 export const defaultTheme = createMuiTheme({
   palette: {
@@ -49,23 +51,24 @@ Object.assign(defaultTheme, {
   },
 });
 
-const RichEditor = () =>  {
- return (
-  <>
-    <MuiThemeProvider theme={defaultTheme}>
-      <Grid container spacing={1}>
-         <Grid item xs={12}>
-          <MUIRichTextEditor label="Start typing..." />
-        </Grid>
-        <Grid item xs={12} >
-          <Button variant="contained" color="secondary">
-            Submit Answer
+const RichEditor = () => {
+  return (
+    <>
+      <MuiThemeProvider theme={defaultTheme}>
+        <Grid container spacing={1}>
+          <Grid item xs={12}>
+            <MUIRichTextEditor label="Enter your answer here... 😊" controls={["title", "bold", "italic", "underline", "strikethrough", "link", "numberList", "bulletList", "quote", "code"]} />
+          </Grid>
+          <Grid item xs={12} >
+            <Button variant="contained" color="secondary">
+              Submit Answer
           </Button>
+          </Grid>
         </Grid>
-      </Grid>
-    
-    </MuiThemeProvider>
-  </>
-)};
+
+      </MuiThemeProvider>
+    </>
+  )
+};
 
 export default RichEditor;

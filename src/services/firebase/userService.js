@@ -1,5 +1,3 @@
-import React, { useEffect } from "react";
-
 class userService {
   constructor(db, timeStamp, root) {
     this.root = root;

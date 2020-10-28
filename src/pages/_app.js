@@ -64,7 +64,7 @@ const AuthListener = () => {
   const userStore = useStores().user;
   const authService = fb.auth;
   const userService = fb.user;
-  const presenceService = fb.presenceService;
+  const presenceService = fb.presence;
 
   useEffect(() => {
     if (!authService) {
