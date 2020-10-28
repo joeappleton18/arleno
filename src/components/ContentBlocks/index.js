@@ -43,16 +43,22 @@ const Schedule = () => (
         </TableRow>
         <TableRow>
           <TableCell align="right">5</TableCell>
-          <TableCell align="right">Handling Updates</TableCell>
+          <TableCell align="right">
+            Completing the MCV stack
+          </TableCell>
         </TableRow>
         <TableRow>
           <TableCell align="right">6</TableCell>
+          <TableCell align="right">Handling Updates</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell align="right">7</TableCell>
           <TableCell align="right">
             Deploying to a Serverless Infrastructure
           </TableCell>
         </TableRow>
         <TableRow>
-          <TableCell align="right">7</TableCell>
+          <TableCell align="right">8</TableCell>
           <TableCell align="right">Authentication</TableCell>
         </TableRow>
         <TableRow>
