@@ -3,6 +3,7 @@ class questionService {
     this.root = root;
     this.timeStamp = timeStamp;
     this.ref = db.collection("questions");
+
   }
 
 
@@ -11,10 +12,19 @@ class questionService {
     return this.ref.doc(id).set(question);
   }
 
+  createAnswer(answer, questionId, id) {
+    answer.created = this.timeStamp;
+    return this.ref.doc(questionId)
+      .collection("answers")
+      .doc(id)
+      .set(answer);
+  }
+
   update(question, id) {
     user.updated = this.timeStamp;
     return this.ref.doc(id).update(question);
   }
+
 
   read(id = null) {
     return id ? this.ref.doc(id).get() : this.ref.get();

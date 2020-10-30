@@ -21,7 +21,17 @@ const useStyles = makeStyles((theme) => ({
       fontSize: "1.1rem",
       lineHeight: "2px",
       marginLeft: "1%",
-      marginTop: "5%",
+      marginTop: "11%",
+      [theme.breakpoints.up('sm')]: {
+        marginTop: "7%",
+      },
+      [theme.breakpoints.up('md')]: {
+        marginTop: "5%",
+      },
+      [theme.breakpoints.up('lg')]: {
+        marginTop: "3%",
+      },
+
       fontWeight: "500",
     },
   },

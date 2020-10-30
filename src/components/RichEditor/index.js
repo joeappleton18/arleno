@@ -1,9 +1,10 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import MUIRichTextEditor, { TMUIRichTextEditorRef } from "mui-rte";
 import { createMuiTheme, MuiThemeProvider, makeStyles } from "@material-ui/core/styles";
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import { EditorState } from 'draft-js'
+import { EditorState, convertToRaw } from 'draft-js'
+import { convertToHTML, convertFromHTML } from 'draft-convert';
 
 
 export const defaultTheme = createMuiTheme({
@@ -52,16 +53,21 @@ Object.assign(defaultTheme, {
   },
 });
 
-const RichEditor = () => {
-
+const RichEditor = ({ onSubmit }) => {
+  const [editorState, setEditorState] = useState(EditorState.createEmpty())
   const ref = useRef(TMUIRichTextEditorRef);
 
   const handleClick = () => {
     ref.current?.save()
   }
 
+  const handleChange = (editorState) => {
+    setEditorState(editorState);
+  }
+
   const handleSave = (data) => {
-    console.log(data);
+    const html = convertToHTML(editorState.getCurrentContent());
+    onSubmit({ data, html });
   };
 
 
@@ -70,7 +76,7 @@ const RichEditor = () => {
       <MuiThemeProvider theme={defaultTheme}>
         <Grid container spacing={1}>
           <Grid item xs={12}>
-            <MUIRichTextEditor onSave={handleSave} ref={ref} label="Enter your answer here... 😊" controls={["title", "bold", "italic", "underline", "strikethrough", "link", "numberList", "bulletList", "quote", "code"]} />
+            <MUIRichTextEditor onChange={handleChange} editorState={editorState} onSave={handleSave} ref={ref} label="Enter your answer here... 😊" controls={["title", "bold", "italic", "underline", "strikethrough", "link", "numberList", "bulletList", "quote", "code"]} />
           </Grid>
           <Grid item xs={12} >
             <Button onClick={handleClick} variant="contained" color="secondary">
@@ -82,6 +88,6 @@ const RichEditor = () => {
       </MuiThemeProvider>
     </>
   )
-};
 
+}
 export default RichEditor;

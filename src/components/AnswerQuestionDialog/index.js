@@ -225,6 +225,15 @@ const AnswerQuestionDialog = (props) => {
     setOpen(false);
   };
 
+  const handleSubmit = async (answer) => {
+    try {
+      fb.question.createAnswer({ ...answer, ...userStore.user }, id, userStore.user.uid);
+    } catch (e) {
+      console.log('error could not answer question', e);
+
+    }
+  }
+
   const handleClickAnswer = () => {
     if (!showAnswerBox) {
       buttonRef.current.scrollIntoView();
@@ -281,7 +290,7 @@ const AnswerQuestionDialog = (props) => {
               <Typography> Follow </Typography>
             </Grid>
             {showAnswerBox && <Grid item xs={12}>
-              <Editor />
+              <Editor onSubmit={handleSubmit} />
             </Grid>}
           </Grid>
           <Grid container spacing={2} ref={buttonRef}>
