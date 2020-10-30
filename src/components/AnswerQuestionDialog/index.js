@@ -18,9 +18,6 @@ import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import Editor from "../RichEditor/";
 import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Answer from "./Answer";
 const useStyles = makeStyles((theme) => ({
   text: { background: theme.palette.primary.main, cursor: "pointer" },
@@ -218,7 +215,14 @@ const AnswerQuestionDialog = (props) => {
     }
     setShowAnswerBox(!showAnswerBox);
 
+  }
 
+  const handleEditAnswer = (id) => {
+    console.log(id);
+  }
+
+  const handleDeleteAnswer = (id) => {
+    console.log(id);
   }
 
   return (
@@ -278,6 +282,8 @@ const AnswerQuestionDialog = (props) => {
               {answers.map(answer => <>
 
                 <Answer
+
+                  onUpdate={(type) => type === "edit" ? handleEditAnswer(answer.id) : handleDeleteAnswer(answer.id)}
                   photo={
                     <ProfilePicture
                       name={{ first: answer.firstName, last: answer.lastName }}
@@ -290,14 +296,7 @@ const AnswerQuestionDialog = (props) => {
 
 
                 >
-                  <IconButton
-                    aria-label="more"
-                    aria-controls="long-menu"
-                    aria-haspopup="true"
-                    onClick={() => console.log(done)}
-                  >
-                    <MoreVertIcon />
-                  </IconButton>
+
                   <Editor readOnly={true} data={answer.data} />
 
                 </Answer>

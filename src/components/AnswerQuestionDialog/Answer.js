@@ -1,9 +1,14 @@
+import { useState } from 'react'
 import { useStores } from "../../stores/";
 import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import AvatarGroup from "../AvatarGroup/";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import { makeStyles } from "@material-ui/core/styles"
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import IconButton from '@material-ui/core/IconButton';
 
 const useStyles = makeStyles((theme) => ({
     likeIcon: {
@@ -12,13 +17,39 @@ const useStyles = makeStyles((theme) => ({
     },
     photoSection: {
         display: "flex",
+
+    },
+    profilePhotoSection: {
+        display: "flex",
+
     }
 }))
 
 const Answer = (props) => {
-    const { photo, children } = props;
+    const { photo, children, onUpdate } = props;
     const classes = useStyles();
     const userStore = useStores().user;
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+
+
+    const options = [
+        'Edit',
+        'Delete'
+    ];
+
+    const ITEM_HEIGHT = 48;
+
+    const handleUpdateClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    }
+    const handleUpdateClose = (event) => {
+        setAnchorEl(null);
+    }
+    const handleEditDelete = (item) => {
+        onUpdate(item.toLowerCase());
+    }
+
 
     const tmpUserArray = [
         {
@@ -45,9 +76,37 @@ const Answer = (props) => {
 
     return (
         <Grid container spacing={0}>
-            <Grid item xs={12}>
+            <Grid item xs={12} className={classes.photoSection}>
                 {photo}
+                <IconButton
+                    aria-label="more"
+                    aria-controls="long-menu"
+                    aria-haspopup="true"
+                    onClick={handleUpdateClick}
+                >
+                    <MoreVertIcon />
+                </IconButton>
+                <Menu
+                    id="long-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={open}
+                    onClose={handleUpdateClose}
+                    PaperProps={{
+                        style: {
+                            maxHeight: ITEM_HEIGHT * 4.5,
+                            width: '20ch',
+                        },
+                    }}
+                >
+                    {options.map((option) => (
+                        <MenuItem key={option} onClick={() => handleEditDelete(option)}>
+                            {option}
+                        </MenuItem>
+                    ))}
+                </Menu>
             </Grid>
+
             <Grid item xs={12}>
                 {children}
             </Grid>
