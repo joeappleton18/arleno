@@ -29,6 +29,13 @@ class questionService {
   read(id = null) {
     return id ? this.ref.doc(id).get() : this.ref.get();
   }
+
+  readAnswers(id) {
+    return this.ref.doc(id)
+      .collection("answers")
+      .get();
+  }
+
 }
 
 export default questionService;

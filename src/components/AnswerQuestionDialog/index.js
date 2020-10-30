@@ -148,7 +148,7 @@ const Answer = (props) => {
   ];
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={0}>
       <Grid item xs={12}>
         {photo}
       </Grid>
@@ -163,7 +163,10 @@ const Answer = (props) => {
           onlineBadge={false}
           size={30}
         />
+
+        <Divider style={{ marginTop: "2%" }} />
       </Grid>
+
     </Grid>
   );
 };
@@ -176,6 +179,7 @@ const AnswerQuestionDialog = (props) => {
   const [photoURL, setPhotoURL] = useState("");
   const [showAnswerBox, setShowAnswerBox] = useState(false);
   const [userName, setUserName] = useState();
+  const [answers, setAnswers] = useState([]);
   const [date, setDate] = useState(Date.now());
   const buttonRef = useRef(null);
   const fb = useFirebase();
@@ -190,6 +194,7 @@ const AnswerQuestionDialog = (props) => {
 
 
     const setQuestion = async (fb, id, user, question) => {
+
       const questionRef = await fb.question.read(id);
 
       if (!questionRef.exists) {
@@ -208,11 +213,17 @@ const AnswerQuestionDialog = (props) => {
           console.log('error could not create question', e)
         }
 
-      } else {
+      } else { // in this instance the question exists 
         const qx = await questionRef.data();
         setPhotoURL(qx.photoURL);
         setUserName(qx.userName);
         setDate(qx.created.toDate());
+        const answersRef = await fb.question.readAnswers(id);
+
+        if (answersRef.size) {
+          answersRef.forEach(a => setAnswers([...answers, ...[a.data()]]))
+        }
+
       }
     }
     setQuestion(fb, id, userStore.user, question, children);
@@ -296,20 +307,23 @@ const AnswerQuestionDialog = (props) => {
           <Grid container spacing={2} ref={buttonRef}>
             <Grid item xs={12} className={classes.answerArea}>
               <Divider style={{ marginBottom: "2%" }} />
-              <Answer
-                photo={
-                  <ProfilePicture
-                    name={{ first: "Joe", last: "Appleton" }}
-                    size={50}
-                    center={false}
-                  />
-                }
-              >
-                Cras mattis consectetur purus sit amet fermentum. Cras justo
-                odio, dapibus ac facilisis in, egestas eget quam. Morbi leo
-                risus, porta ac consectetur ac, vestibulum at eros?
-              </Answer>
-              <Divider style={{ marginTop: "2%" }} />
+
+              {answers.map(answer => <>
+                <Answer
+                  photo={
+                    <ProfilePicture
+                      name={{ first: "Joe", last: "Appleton" }}
+                      size={50}
+                      center={false}
+                    />
+                  }
+                >
+                  <Editor readOnly={true} data={answer.data} />
+                </Answer>
+                <Divider style={{ marginTop: "2%", marginBottom: "1%" }} />
+
+              </>)}
+
             </Grid>
           </Grid>
         </DialogContent>

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import MUIRichTextEditor, { TMUIRichTextEditorRef } from "mui-rte";
 import { createMuiTheme, MuiThemeProvider, makeStyles } from "@material-ui/core/styles";
 import Button from '@material-ui/core/Button';
@@ -15,46 +15,88 @@ export const defaultTheme = createMuiTheme({
   },
 });
 
+const writeTheme = {
+  ...defaultTheme, ...{
+    overrides: {
+      MUIRichTextEditor: {
+        root: {
+          backgroundColor: "#ebebeb",
+        },
 
+        editor: {
+          backgroundColor: "#ebebeb",
+          padding: "20px",
+          height: "200px",
+          maxHeight: "200px",
+          overflow: "auto",
+        },
+        toolbar: {
+          borderBottom: "1px solid gray",
+          backgroundColor: "#ebebeb",
+        },
+        placeHolder: {
+          backgroundColor: "#ebebeb",
+          paddingLeft: 20,
+          width: "inherit",
+          position: "absolute",
+          top: "60px",
+        },
+        anchorLink: {
+          color: "#333333",
+          textDecoration: "underline",
+        },
+        replySection: {
 
-Object.assign(defaultTheme, {
-  overrides: {
-    MUIRichTextEditor: {
-      root: {
-        backgroundColor: "#ebebeb",
-      },
-
-      editor: {
-        backgroundColor: "#ebebeb",
-        padding: "20px",
-        height: "200px",
-        maxHeight: "200px",
-        overflow: "auto",
-      },
-      toolbar: {
-        borderBottom: "1px solid gray",
-        backgroundColor: "#ebebeb",
-      },
-      placeHolder: {
-        backgroundColor: "#ebebeb",
-        paddingLeft: 20,
-        width: "inherit",
-        position: "absolute",
-        top: "60px",
-      },
-      anchorLink: {
-        color: "#333333",
-        textDecoration: "underline",
-      },
-      replySection: {
-
+        },
       },
     },
-  },
-});
+  }
+}
 
-const RichEditor = ({ onSubmit }) => {
-  const [editorState, setEditorState] = useState(EditorState.createEmpty())
+const readTheme = {
+  ...defaultTheme, ...{
+    overrides: {
+      MUIRichTextEditor: {
+        root: {
+          marginTop: "24px",
+          marginLeft: "-20px",
+          backgroundColor: "grey",
+          borderTop: 0,
+          borderBottom: '-10px'
+        },
+
+        editor: {
+          marginTop: '-24px',
+          backgroundColor: "#D8D8D8;",
+          padding: "20px",
+          maxHeight: "500px",
+          overflow: "auto",
+        },
+      },
+    },
+  }
+}
+
+
+const ReadEditor = ({ data }) => {
+
+  return (
+    <>
+      <MuiThemeProvider theme={readTheme}>
+
+        <MUIRichTextEditor
+          defaultValue={data}
+          controls={[]}
+          readOnly={true}
+        />
+
+      </MuiThemeProvider>
+    </>)
+}
+
+
+const WriteEditor = ({ onSubmit }) => {
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const ref = useRef(TMUIRichTextEditorRef);
 
   const handleClick = () => {
@@ -73,7 +115,7 @@ const RichEditor = ({ onSubmit }) => {
 
   return (
     <>
-      <MuiThemeProvider theme={defaultTheme}>
+      <MuiThemeProvider theme={writeTheme}>
         <Grid container spacing={1}>
           <Grid item xs={12}>
             <MUIRichTextEditor onChange={handleChange} editorState={editorState} onSave={handleSave} ref={ref} label="Enter your answer here... 😊" controls={["title", "bold", "italic", "underline", "strikethrough", "link", "numberList", "bulletList", "quote", "code"]} />
@@ -86,8 +128,20 @@ const RichEditor = ({ onSubmit }) => {
         </Grid>
 
       </MuiThemeProvider>
-    </>
-  )
+    </>)
+}
+
+
+const RichEditor = ({ onSubmit, readOnly, data }) => {
+
+  if (!readOnly) { return <WriteEditor onSubmit={onSubmit} /> }
+  if (readOnly) { return <ReadEditor data={data} /> }
 
 }
+
+RichEditor.defaultProps = {
+  readOnly: false,
+  data: {}
+}
+
 export default RichEditor;
