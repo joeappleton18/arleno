@@ -5,7 +5,10 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { EditorState, convertToRaw } from 'draft-js'
 import { convertToHTML, convertFromHTML } from 'draft-convert';
-
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 export const defaultTheme = createMuiTheme({
   palette: {
@@ -69,7 +72,7 @@ const readTheme = {
           marginTop: '-24px',
           backgroundColor: "#D8D8D8;",
           padding: "20px",
-          maxHeight: "500px",
+          /* maxHeight: "500px",*/
           overflow: "auto",
         },
       },
@@ -108,7 +111,8 @@ const WriteEditor = ({ onSubmit }) => {
   }
 
   const handleSave = (data) => {
-    const html = convertToHTML(editorState.getCurrentContent());
+    const html = "";
+    //const html = convertToHTML(editorState.getCurrentContent());
     onSubmit({ data, html });
   };
 

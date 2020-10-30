@@ -5,7 +5,6 @@ import MuiDialog from "@material-ui/core/Dialog";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
-import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import ProfilePicture from "../ProfilePicture";
@@ -18,13 +17,27 @@ import AvatarGroup from "../AvatarGroup/";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import Editor from "../RichEditor/";
-
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Answer from "./Answer";
 const useStyles = makeStyles((theme) => ({
   text: { background: theme.palette.primary.main, cursor: "pointer" },
   question: { marginTop: theme.spacing(2) },
   button: { background: theme.palette.primary.light, color: "white" },
   photoSection: {
     display: "flex",
+  },
+  caption: {
+    fontSize: "1rem",
+    color: "grey",
+    display: "flex",
+    '& li': {
+      textDecoration: "underline",
+      listStyle: "none",
+      marginLeft: "2%"
+    }
   },
   buttonRoot: {
     display: "flex",
@@ -120,56 +133,7 @@ const Dialog = withStyles((theme) => ({
   },
 }))(MuiDialog);
 
-const Answer = (props) => {
-  const { photo, children } = props;
-  const classes = useStyles();
-  const userStore = useStores().user;
-  const tmpUserArray = [
-    {
-      photoURL: "wsh3t9dsa1wo5ummmm7h",
-      lastName: "Appleton",
-      firstName: "Joe",
-    },
-    {
-      photoURL: "wsh3t9dsa1wo5ummmm7h",
-      lastName: "Appleton",
-      firstName: "Joe",
-    },
-    {
-      photoURL: "wsh3t9dsa1wo5ummmm7h",
-      lastName: "Appleton",
-      firstName: "Joe",
-    },
-    {
-      photoURL: "wsh3t9dsa1wo5ummmm7h",
-      lastName: "Appleton",
-      firstName: "Joe",
-    },
-  ];
 
-  return (
-    <Grid container spacing={0}>
-      <Grid item xs={12}>
-        {photo}
-      </Grid>
-      <Grid item xs={12}>
-        {children}
-      </Grid>
-      <Grid item xs={12} className={classes.photoSection}>
-        <ThumbUpAltOutlinedIcon className={classes.likeIcon} />
-        <AvatarGroup
-          style={{ marginLeft: "0.2%", marginTop: "0.2%" }}
-          photos={tmpUserArray}
-          onlineBadge={false}
-          size={30}
-        />
-
-        <Divider style={{ marginTop: "2%" }} />
-      </Grid>
-
-    </Grid>
-  );
-};
 
 const AnswerQuestionDialog = (props) => {
 
@@ -184,6 +148,7 @@ const AnswerQuestionDialog = (props) => {
   const buttonRef = useRef(null);
   const fb = useFirebase();
   const userStore = useStores().user;
+  const uiStore = useStores().uiStore;
 
 
   useEffect(() => {
@@ -238,8 +203,10 @@ const AnswerQuestionDialog = (props) => {
 
   const handleSubmit = async (answer) => {
     try {
-      fb.question.createAnswer({ ...answer, ...userStore.user }, id, userStore.user.uid);
+      await fb.question.createAnswer({ ...answer, ...userStore.user }, id, userStore.user.uid);
+      uiStore.deployAlert("😎 You've answered the question 😎", "success");
     } catch (e) {
+      uiStore.deployAlert("Ohhh there was an issue tell Joe", "success");
       console.log('error could not answer question', e);
 
     }
@@ -309,17 +276,32 @@ const AnswerQuestionDialog = (props) => {
               <Divider style={{ marginBottom: "2%" }} />
 
               {answers.map(answer => <>
+
                 <Answer
                   photo={
                     <ProfilePicture
-                      name={{ first: "Joe", last: "Appleton" }}
+                      name={{ first: answer.firstName, last: answer.lastName }}
+                      photoURL={answer.photoURL}
+                      date={answer.created.toDate()}
                       size={50}
                       center={false}
                     />
                   }
+
+
                 >
+                  <IconButton
+                    aria-label="more"
+                    aria-controls="long-menu"
+                    aria-haspopup="true"
+                    onClick={() => console.log(done)}
+                  >
+                    <MoreVertIcon />
+                  </IconButton>
                   <Editor readOnly={true} data={answer.data} />
+
                 </Answer>
+
                 <Divider style={{ marginTop: "2%", marginBottom: "1%" }} />
 
               </>)}

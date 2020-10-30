@@ -122,7 +122,7 @@ function ProfileForm(props) {
   const handleSubmit = (data) => {
     const user = { ...data, ...{ joinStage: 2 } };
     updateUser(user);
-    uiStore.deployAlert("I have updated your profile", "success");
+    uiStore.deployAlert("I have updated your profile", "info");
     onSubmit();
   };
 
