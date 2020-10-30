@@ -1,4 +1,5 @@
-import MUIRichTextEditor from "mui-rte";
+import { useRef } from 'react';
+import MUIRichTextEditor, { TMUIRichTextEditorRef } from "mui-rte";
 import { createMuiTheme, MuiThemeProvider, makeStyles } from "@material-ui/core/styles";
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -52,15 +53,27 @@ Object.assign(defaultTheme, {
 });
 
 const RichEditor = () => {
+
+  const ref = useRef(TMUIRichTextEditorRef);
+
+  const handleClick = () => {
+    ref.current?.save()
+  }
+
+  const handleSave = (data) => {
+    console.log(data);
+  };
+
+
   return (
     <>
       <MuiThemeProvider theme={defaultTheme}>
         <Grid container spacing={1}>
           <Grid item xs={12}>
-            <MUIRichTextEditor label="Enter your answer here... 😊" controls={["title", "bold", "italic", "underline", "strikethrough", "link", "numberList", "bulletList", "quote", "code"]} />
+            <MUIRichTextEditor onSave={handleSave} ref={ref} label="Enter your answer here... 😊" controls={["title", "bold", "italic", "underline", "strikethrough", "link", "numberList", "bulletList", "quote", "code"]} />
           </Grid>
           <Grid item xs={12} >
-            <Button variant="contained" color="secondary">
+            <Button onClick={handleClick} variant="contained" color="secondary">
               Submit Answer
           </Button>
           </Grid>
