@@ -145,10 +145,20 @@ const AnswerQuestionDialog = (props) => {
   const [answers, setAnswers] = useState([]);
   const [date, setDate] = useState(Date.now());
   const buttonRef = useRef(null);
+  const [currentAnswer, setCurrentAnswer] = useState(null);
   const fb = useFirebase();
   const userStore = useStores().user;
   const uiStore = useStores().uiStore;
 
+
+  useEffect(() => {
+
+    const answer = answers.find(a => userStore.user.uid === a.id);
+    if (!answer) {
+      return;
+    }
+    setCurrentAnswer(answer.data);
+  }, [answers])
 
   useEffect(() => {
 
@@ -182,9 +192,9 @@ const AnswerQuestionDialog = (props) => {
         setPhotoURL(qx.photoURL);
         setUserName(qx.userName);
         setDate(qx.created.toDate());
-        
 
-        
+
+
         const answersRef = await fb.question.readAnswers(id);
 
         if (answersRef.size) {
@@ -208,6 +218,7 @@ const AnswerQuestionDialog = (props) => {
       await fb.question.createAnswer({ ...answer, ...userStore.user }, id, userStore.user.uid);
       const message = isUpdate ? "😎 You've updated your answer 😎" : "😎 You've answered the question 😎";
       uiStore.deployAlert(message, "success");
+      setShowAnswerBox(false);
     } catch (e) {
       debugger;
       uiStore.deployAlert("Ohhh there was an issue tell Joe", "success");
@@ -216,7 +227,7 @@ const AnswerQuestionDialog = (props) => {
     }
   }
 
-  
+
   const handleClickAnswer = () => {
     if (!showAnswerBox) {
       buttonRef.current.scrollIntoView();
@@ -236,7 +247,6 @@ const AnswerQuestionDialog = (props) => {
 
     const handleDelete = async () => {
       try {
-        debugger;
         await fb.question.deleteAnswer(id, answer.id);
         uiStore.deployAlert("💩 You've deleted your answer 💩", "success");
       } catch (e) {
@@ -246,10 +256,9 @@ const AnswerQuestionDialog = (props) => {
     }
 
 
-
-
     return (<>
       <Answer
+        showEdit={userStore.user.uid === answer.id}
         onUpdate={(type) => type === "edit" ? setEditable(true) : handleDelete(answer.id)}
         photo={
           <ProfilePicture
@@ -312,14 +321,14 @@ const AnswerQuestionDialog = (props) => {
               <IconButton aria-label="close" className={classes.button}>
                 <AnswerIcon onClick={handleClickAnswer} />
               </IconButton>
-              <Typography> Answer </Typography>
+              <Typography> {currentAnswer ? "Edit Answer" : "Answer"} </Typography>
               <IconButton aria-label="close" className={classes.button}>
                 <FollowIcon />
               </IconButton>
               <Typography> Follow </Typography>
             </Grid>
             {showAnswerBox && <Grid item xs={12}>
-              <Editor onSubmit={handleSubmit} onCancel={handleCancel} />
+              <Editor onSubmit={handleSubmit} data={currentAnswer} onCancel={handleCancel} />
             </Grid>}
           </Grid>
           <Grid container spacing={2} ref={buttonRef}>

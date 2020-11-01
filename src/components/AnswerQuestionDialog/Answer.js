@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const Answer = (props) => {
-    const { photo, children, onUpdate } = props;
+    const { photo, children, onUpdate, showEdit } = props;
     const classes = useStyles();
     const userStore = useStores().user;
     const [anchorEl, setAnchorEl] = useState(null);
@@ -77,35 +77,42 @@ const Answer = (props) => {
 
     return (
         <Grid container spacing={0}>
+
             <Grid item xs={12} className={classes.photoSection}>
                 {photo}
-                <IconButton
-                    aria-label="more"
-                    aria-controls="long-menu"
-                    aria-haspopup="true"
-                    onClick={handleUpdateClick}
-                >
-                    <MoreVertIcon />
-                </IconButton>
-                <Menu
-                    id="long-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={open}
-                    onClose={handleUpdateClose}
-                    PaperProps={{
-                        style: {
-                            maxHeight: ITEM_HEIGHT * 4.5,
-                            width: '20ch',
-                        },
-                    }}
-                >
-                    {options.map((option) => (
-                        <MenuItem key={option} onClick={() => handleEditDelete(option)}>
-                            {option}
-                        </MenuItem>
-                    ))}
-                </Menu>
+                {showEdit &&
+                    <>
+                        <IconButton
+                            aria-label="more"
+                            aria-controls="long-menu"
+                            aria-haspopup="true"
+                            onClick={handleUpdateClick}
+                        >
+                            <MoreVertIcon />
+                        </IconButton>
+                        <Menu
+                            id="long-menu"
+                            anchorEl={anchorEl}
+                            keepMounted
+                            open={open}
+                            onClose={handleUpdateClose}
+                            PaperProps={{
+                                style: {
+                                    maxHeight: ITEM_HEIGHT * 4.5,
+                                    width: '20ch',
+                                },
+                            }}
+                        >
+                            {options.map((option) => (
+                                <MenuItem key={option} onClick={() => handleEditDelete(option)}>
+                                    {option}
+                                </MenuItem>
+                            ))}
+                        </Menu>
+
+                    </>
+                }
+
             </Grid>
 
             <Grid item xs={12}>
@@ -126,5 +133,9 @@ const Answer = (props) => {
         </Grid>
     );
 };
+
+Answer.defaultProps = {
+    showEdit: false
+}
 
 export default Answer;
