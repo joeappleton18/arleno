@@ -250,7 +250,7 @@ const AnswerQuestionDialog = (props) => {
         await fb.question.deleteAnswer(id, answer.id);
         uiStore.deployAlert("💩 You've deleted your answer 💩", "success");
       } catch (e) {
-        uiStore.deployAlert("Ohhh there was an issue deleting your answer, tell Joe", "error");
+        uiStore.deployAlert("Oh, there was an issue deleting your answer, tell Joe", "error");
         console.log('error, could not delete answer', e);
       }
     }
@@ -322,10 +322,10 @@ const AnswerQuestionDialog = (props) => {
                 <AnswerIcon onClick={handleClickAnswer} />
               </IconButton>
               <Typography> {currentAnswer ? "Edit Answer" : "Answer"} </Typography>
-              <IconButton aria-label="close" className={classes.button}>
+              {/*<IconButton aria-label="close" className={classes.button}>
                 <FollowIcon />
               </IconButton>
-              <Typography> Follow </Typography>
+              <Typography> Follow </Typography> */}
             </Grid>
             {showAnswerBox && <Grid item xs={12}>
               <Editor onSubmit={handleSubmit} data={currentAnswer} onCancel={handleCancel} />
