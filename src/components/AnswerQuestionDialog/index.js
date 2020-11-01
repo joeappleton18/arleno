@@ -251,7 +251,8 @@ const AnswerQuestionDialog = (props) => {
       }
     }
 
-    const handleUnvote = async () => {
+    const handleUnvote = async (e) => {
+      e.preventDefault();
       let newUpvotes = (answer.upvotes.filter(x => x.uid !== userStore.user.uid));
       try {
         await fb.question.updateAnswer({ upvotes: newUpvotes }, id, answer.id);
@@ -288,6 +289,7 @@ const AnswerQuestionDialog = (props) => {
       <Answer
         answer={answer}
         onUpvote={handleUpvote}
+        onUnvote={handleUnvote}
         showEdit={userStore.user.uid === answer.id}
         onUpdate={(type) => type === "edit" ? setEditable(true) : handleDelete(answer.id)}
         photo={

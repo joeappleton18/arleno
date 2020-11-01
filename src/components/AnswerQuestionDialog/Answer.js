@@ -49,11 +49,11 @@ const AnswerSection = ({ upvotes, onUpvote, onUnvote }) => {
 
     return (<Grid container direction="row" justify="flexStart">
         <Grid item xs={9} md={5} style={{ display: 'flex' }}>
-            {userVoted && (<span onClick={() => onUnvote()} >
+            {userVoted && (<span onClick={(e) => onUnvote(e)} >
                 <UpArrowFilled className={classes.likeIcon} />
             </span>)}
 
-            {!userVoted && (<span onClick={() => onUpvote()} onMouseEnter={() => setArrowActive(true)} onMouseLeave={() => setArrowActive(false)}>
+            {!userVoted && (<span onClick={(e) => onUpvote(e)} onMouseEnter={() => setArrowActive(true)} onMouseLeave={() => setArrowActive(false)}>
                 {
                     arrowActive && <UpArrowFilled className={classes.likeIcon} />
                 }
@@ -89,7 +89,7 @@ AnswerSection.defaultProps = {
 
 
 const Answer = (props) => {
-    const { answer, photo, children, onUpdate, showEdit, onUpvote } = props;
+    const { answer, photo, children, onUpdate, showEdit, onUpvote, onUnvote } = props;
     const classes = useStyles();
     const userStore = useStores().user;
     const [anchorEl, setAnchorEl] = useState(null);
@@ -158,7 +158,7 @@ const Answer = (props) => {
             <Grid item xs={12}>
                 {children}
             </Grid>
-            <AnswerSection upvotes={answer.upvotes} onUnvote={() => onUnVote()} onUpvote={() => onUpvote()} />
+            <AnswerSection upvotes={answer.upvotes} onUnvote={(e) => onUnvote(e)} onUpvote={() => onUpvote()} />
 
         </Grid >
     );
