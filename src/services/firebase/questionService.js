@@ -20,6 +20,14 @@ class questionService {
       .set(answer);
   }
 
+  deleteAnswer(questionId, id) {
+    debugger;
+    return this.ref.doc(questionId)
+      .collection("answers")
+      .doc(id)
+      .delete()
+  }
+
   update(question, id) {
     user.updated = this.timeStamp;
     return this.ref.doc(id).update(question);
@@ -28,6 +36,10 @@ class questionService {
 
   read(id = null) {
     return id ? this.ref.doc(id).get() : this.ref.get();
+  }
+
+  realtimeRead(id = null, callback) {
+    return this.ref.doc(id).onSnapShot(callback);
   }
 
   readAnswers(id) {

@@ -98,11 +98,13 @@ const ReadEditor = ({ data }) => {
 }
 
 
-const WriteEditor = ({ onSubmit }) => {
+const WriteEditor = (props) => {
+  debugger;
+  const { onSubmit, onCancel, data } = props;
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const ref = useRef(TMUIRichTextEditorRef);
 
-  const handleClick = () => {
+  const handleSubmitClick = () => {
     ref.current?.save()
   }
 
@@ -112,9 +114,14 @@ const WriteEditor = ({ onSubmit }) => {
 
   const handleSave = (data) => {
     const html = "";
-    //const html = convertToHTML(editorState.getCurrentContent());
     onSubmit({ data, html });
   };
+
+  const handleCancelClick = () => {
+    onCancel();
+  }
+
+
 
 
   return (
@@ -122,11 +129,14 @@ const WriteEditor = ({ onSubmit }) => {
       <MuiThemeProvider theme={writeTheme}>
         <Grid container spacing={1}>
           <Grid item xs={12}>
-            <MUIRichTextEditor onChange={handleChange} editorState={editorState} onSave={handleSave} ref={ref} label="Enter your answer here... 😊" controls={["title", "bold", "italic", "underline", "strikethrough", "link", "numberList", "bulletList", "quote", "code"]} />
+            <MUIRichTextEditor onChange={handleChange} editorState={editorState} onSave={handleSave} defaultValue={data} ref={ref} label="Enter your answer here... 😊" controls={["title", "bold", "italic", "underline", "strikethrough", "link", "numberList", "bulletList", "quote", "code"]} />
           </Grid>
           <Grid item xs={12} >
-            <Button onClick={handleClick} variant="contained" color="secondary">
+            <Button onClick={handleSubmitClick} elevation={1} variant="contained" color="secondary">
               Submit Answer
+          </Button>
+            <Button onClick={handleCancelClick} variant="outlined" elevation={0} style={{ marginLeft: '10px' }} variant="contained" color="primary">
+              Cancel
           </Button>
           </Grid>
         </Grid>
@@ -136,16 +146,18 @@ const WriteEditor = ({ onSubmit }) => {
 }
 
 
-const RichEditor = ({ onSubmit, readOnly, data }) => {
+const RichEditor = (props) => {
 
-  if (!readOnly) { return <WriteEditor onSubmit={onSubmit} /> }
+  const { onSubmit, readOnly, data, onCancel } = props;
+
+  if (!readOnly) { return <WriteEditor onSubmit={onSubmit} data={data} onCancel={onCancel} /> }
   if (readOnly) { return <ReadEditor data={data} /> }
 
 }
 
 RichEditor.defaultProps = {
   readOnly: false,
-  data: {}
+  data: null
 }
 
 export default RichEditor;

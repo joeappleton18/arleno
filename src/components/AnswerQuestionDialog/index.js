@@ -132,6 +132,8 @@ const Dialog = withStyles((theme) => ({
 
 
 
+
+
 const AnswerQuestionDialog = (props) => {
 
   const { children, id, question } = props;
@@ -180,10 +182,13 @@ const AnswerQuestionDialog = (props) => {
         setPhotoURL(qx.photoURL);
         setUserName(qx.userName);
         setDate(qx.created.toDate());
+        
+
+        
         const answersRef = await fb.question.readAnswers(id);
 
         if (answersRef.size) {
-          answersRef.forEach(a => setAnswers([...answers, ...[a.data()]]))
+          answersRef.forEach(a => setAnswers([...answers, ...[{ ...a.data(), ...{ id: a.id } }]]))
         }
 
       }
@@ -198,17 +203,20 @@ const AnswerQuestionDialog = (props) => {
     setOpen(false);
   };
 
-  const handleSubmit = async (answer) => {
+  const handleSubmit = async (answer, isUpdate = false) => {
     try {
       await fb.question.createAnswer({ ...answer, ...userStore.user }, id, userStore.user.uid);
-      uiStore.deployAlert("😎 You've answered the question 😎", "success");
+      const message = isUpdate ? "😎 You've updated your answer 😎" : "😎 You've answered the question 😎";
+      uiStore.deployAlert(message, "success");
     } catch (e) {
+      debugger;
       uiStore.deployAlert("Ohhh there was an issue tell Joe", "success");
       console.log('error could not answer question', e);
 
     }
   }
 
+  
   const handleClickAnswer = () => {
     if (!showAnswerBox) {
       buttonRef.current.scrollIntoView();
@@ -216,14 +224,53 @@ const AnswerQuestionDialog = (props) => {
     setShowAnswerBox(!showAnswerBox);
 
   }
+  const handleCancel = () => {
+    setShowAnswerBox(false);
+  }
+  const AnswerBlock = ({ answer }) => {
+    const [editable, setEditable] = useState(false);
 
-  const handleEditAnswer = (id) => {
-    console.log(id);
+    const handleCancel = () => {
+      setEditable(false)
+    }
+
+    const handleDelete = async () => {
+      try {
+        debugger;
+        await fb.question.deleteAnswer(id, answer.id);
+        uiStore.deployAlert("💩 You've deleted your answer 💩", "success");
+      } catch (e) {
+        uiStore.deployAlert("Ohhh there was an issue deleting your answer, tell Joe", "error");
+        console.log('error, could not delete answer', e);
+      }
+    }
+
+
+
+
+    return (<>
+      <Answer
+        onUpdate={(type) => type === "edit" ? setEditable(true) : handleDelete(answer.id)}
+        photo={
+          <ProfilePicture
+            name={{ first: answer.firstName, last: answer.lastName }}
+            photoURL={answer.photoURL}
+            date={answer.created.toDate()}
+            size={50}
+            center={false}
+          />
+        }
+
+
+      >
+        <Editor readOnly={!editable} onSubmit={(answer) => handleSubmit(answer, true)} onCancel={handleCancel} data={answer.data} />
+      </Answer>
+      <Divider style={{ marginTop: "2%", marginBottom: "1%" }} />
+
+    </>)
   }
 
-  const handleDeleteAnswer = (id) => {
-    console.log(id);
-  }
+
 
   return (
     <div>
@@ -272,38 +319,14 @@ const AnswerQuestionDialog = (props) => {
               <Typography> Follow </Typography>
             </Grid>
             {showAnswerBox && <Grid item xs={12}>
-              <Editor onSubmit={handleSubmit} />
+              <Editor onSubmit={handleSubmit} onCancel={handleCancel} />
             </Grid>}
           </Grid>
           <Grid container spacing={2} ref={buttonRef}>
             <Grid item xs={12} className={classes.answerArea}>
               <Divider style={{ marginBottom: "2%" }} />
 
-              {answers.map(answer => <>
-
-                <Answer
-
-                  onUpdate={(type) => type === "edit" ? handleEditAnswer(answer.id) : handleDeleteAnswer(answer.id)}
-                  photo={
-                    <ProfilePicture
-                      name={{ first: answer.firstName, last: answer.lastName }}
-                      photoURL={answer.photoURL}
-                      date={answer.created.toDate()}
-                      size={50}
-                      center={false}
-                    />
-                  }
-
-
-                >
-
-                  <Editor readOnly={true} data={answer.data} />
-
-                </Answer>
-
-                <Divider style={{ marginTop: "2%", marginBottom: "1%" }} />
-
-              </>)}
+              {answers.map(answer => <AnswerBlock answer={answer} />)}
 
             </Grid>
           </Grid>

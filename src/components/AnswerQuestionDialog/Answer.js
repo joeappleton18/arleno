@@ -47,6 +47,7 @@ const Answer = (props) => {
         setAnchorEl(null);
     }
     const handleEditDelete = (item) => {
+        setAnchorEl(null);
         onUpdate(item.toLowerCase());
     }
 
