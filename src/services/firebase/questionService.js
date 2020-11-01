@@ -14,6 +14,7 @@ class questionService {
 
   createAnswer(answer, questionId, id) {
     answer.created = this.timeStamp;
+    answer.active = 1;
     return this.ref.doc(questionId)
       .collection("answers")
       .doc(id)
@@ -21,11 +22,10 @@ class questionService {
   }
 
   deleteAnswer(questionId, id) {
-    debugger;
     return this.ref.doc(questionId)
       .collection("answers")
       .doc(id)
-      .delete()
+      .update({ active: 0 })
   }
 
   update(question, id) {
@@ -39,7 +39,7 @@ class questionService {
   }
 
   realtimeRead(id = null, callback) {
-    return this.ref.doc(id).onSnapShot(callback);
+    return this.ref.doc(id).collection("answers").where("active", "==", 1).onSnapshot(callback);
   }
 
   readAnswers(id) {

@@ -152,7 +152,7 @@ const AnswerQuestionDialog = (props) => {
 
 
   useEffect(() => {
-
+    setCurrentAnswer(null);
     const answer = answers.find(a => userStore.user.uid === a.id);
     if (!answer) {
       return;
@@ -192,14 +192,10 @@ const AnswerQuestionDialog = (props) => {
         setPhotoURL(qx.photoURL);
         setUserName(qx.userName);
         setDate(qx.created.toDate());
-
-
-
-        const answersRef = await fb.question.readAnswers(id);
-
-        if (answersRef.size) {
-          answersRef.forEach(a => setAnswers([...answers, ...[{ ...a.data(), ...{ id: a.id } }]]))
-        }
+        fb.question.realtimeRead(id, (answersRef) => {
+          setAnswers([]);
+          answersRef.forEach(a => setAnswers([...answers, ...[{ ...a.data(), ...{ id: a.id } }]]));
+        })
 
       }
     }
@@ -264,7 +260,7 @@ const AnswerQuestionDialog = (props) => {
           <ProfilePicture
             name={{ first: answer.firstName, last: answer.lastName }}
             photoURL={answer.photoURL}
-            date={answer.created.toDate()}
+            date={answer.created && answer.created.toDate()}
             size={50}
             center={false}
           />
@@ -321,7 +317,7 @@ const AnswerQuestionDialog = (props) => {
               <IconButton aria-label="close" className={classes.button}>
                 <AnswerIcon onClick={handleClickAnswer} />
               </IconButton>
-              <Typography> {currentAnswer ? "Edit Answer" : "Answer"} </Typography>
+              <Typography style={{ cursor: "pointer" }} onClick={handleClickAnswer}> {currentAnswer ? "Edit Answer" : "Answer"} </Typography>
               {/*<IconButton aria-label="close" className={classes.button}>
                 <FollowIcon />
               </IconButton>
@@ -335,7 +331,7 @@ const AnswerQuestionDialog = (props) => {
             <Grid item xs={12} className={classes.answerArea}>
               <Divider style={{ marginBottom: "2%" }} />
 
-              {answers.map(answer => <AnswerBlock answer={answer} />)}
+              {answers.map(answer => <AnswerBlock key={answer.id} answer={answer} />)}
 
             </Grid>
           </Grid>
