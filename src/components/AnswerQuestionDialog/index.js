@@ -251,9 +251,43 @@ const AnswerQuestionDialog = (props) => {
       }
     }
 
+    const handleUnvote = async () => {
+      let newUpvotes = (answer.upvotes.filter(x => x.uid !== userStore.user.uid));
+      try {
+        await fb.question.updateAnswer({ upvotes: newUpvotes }, id, answer.id);
+      } catch (e) {
+        uiStore.deployAlert("Oh, there was an issue with un voting, tell Joe", "error");
+        console.log('error, could not delete answer', e);
+      }
+    }
+    const handleUpvote = async () => {
+      try {
+        //updateAnswer(answer, questionId, id)
+        let userVoted = (answer.upvotes.filter(x => x.uid === userStore.user.uid)).length > 0;
+        if (!userVoted) {
+          await fb.question.updateAnswer({
+            upvotes: [
+              ...answer.upvotes,
+              ...[{
+                uid: userStore.user.uid,
+                photoURL: userStore.user.photoURL,
+                firstName: userStore.user.firstName,
+                lastName: userStore.user.lastName
+              }]]
+          }, id, answer.id);
+        }
+
+      } catch (e) {
+        uiStore.deployAlert("Oh, there was an issue with up voting, tell Joe", "error");
+        console.log('error, could not delete answer', e);
+      }
+    }
+
 
     return (<>
       <Answer
+        answer={answer}
+        onUpvote={handleUpvote}
         showEdit={userStore.user.uid === answer.id}
         onUpdate={(type) => type === "edit" ? setEditable(true) : handleDelete(answer.id)}
         photo={

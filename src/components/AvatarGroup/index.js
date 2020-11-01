@@ -20,6 +20,12 @@ export const getUrl = (image, size) => {
     : constructUrl(image, "upload", size);
 };
 
+
+const useStyles = makeStyles(() => ({
+  avatar: { width: (props) => props.size + "px", height: (props) => props.size + "px", fontSize: "10px" }
+}))
+
+
 const StyledBadge = withStyles((theme) => ({
   badge: {
     backgroundColor: "#44b700",
@@ -73,11 +79,13 @@ export const OnlineAvatar = ({ src, alt, online, size }) =>
 const AvatarGroup = (props) => {
   const { photos, onlineBadge, size, ...other } = props;
   const userStore = useStores().user;
-
+  const classes = useStyles(props);
   console.log(userStore.onlineUsers);
 
   return (
-    <MaterialAvatarGroup max={15} {...other}>
+    <MaterialAvatarGroup max={15} classes={{
+      avatar: classes.avatar
+    }} {...other}>
       {photos.map((u, i) => (
         <OnlineAvatar
           key={i}
@@ -95,6 +103,7 @@ AvatarGroup.defaultProps = {
   photos: [],
   onlineBadge: true,
   size: 50,
+  max: 15
 };
 
 export default AvatarGroup;
