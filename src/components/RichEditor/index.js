@@ -109,7 +109,8 @@ const WriteEditor = (props) => {
   }
 
   const handleChange = (editorState) => {
-    setEditorState(editorState);
+    console.log(editorState.getCurrentContent().count());
+    setEditorState(editorState.getCurrentContent());
   }
 
   const handleSave = (data) => {

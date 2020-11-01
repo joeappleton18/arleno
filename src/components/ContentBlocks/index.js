@@ -44,43 +44,49 @@ const Schedule = () => (
         </TableRow>
         <TableRow>
           <TableCell align="right">5</TableCell>
-          <TableCell align="right">Thinking about How to Update our Data</TableCell>
+          <TableCell align="right">
+            Assessment Workshop
+          </TableCell>
         </TableRow>
         <TableRow>
           <TableCell align="right">6</TableCell>
+          <TableCell align="right">Thinking about How to Update our Data</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell align="right">7</TableCell>
           <TableCell align="right">
             User Authentication
           </TableCell>
         </TableRow>
         <TableRow>
-          <TableCell align="right">7</TableCell>
+          <TableCell align="right">8</TableCell>
           <TableCell align="right">
             Deploying to a Serverless Infrastructure
           </TableCell>
         </TableRow>
         <TableRow>
-          <TableCell align="right">8</TableCell>
+          <TableCell align="right">9</TableCell>
           <TableCell align="right">Advanced Mongo Features and Completing our Project</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell align="right">9</TableCell>
+          <TableCell align="right">10</TableCell>
           <TableCell align="right">
             {" "}
             Using Further Services to Enhance Your Data
           </TableCell>
         </TableRow>
         <TableRow>
-          <TableCell align="right">10</TableCell>
+          <TableCell align="right">11</TableCell>
           <TableCell align="right">
-           Thinking About the Future of Databases
+            Thinking About the Future of Databases
           </TableCell>
         </TableRow>
         <TableRow>
-          <TableCell align="right">11</TableCell>
+          <TableCell align="right">12</TableCell>
           <TableCell align="right">Assessment Support</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell align="right">12</TableCell>
+          <TableCell align="right">13</TableCell>
           <TableCell align="right">Assessment Support</TableCell>
         </TableRow>
       </TableBody>
