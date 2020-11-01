@@ -12,9 +12,19 @@ class questionService {
     return this.ref.doc(id).set(question);
   }
 
+
+  updateAnswer(answer, questionId, id) {
+    answer.updated = this.timeStamp;
+    return this.ref.doc(questionId)
+      .collection("answers")
+      .doc(id)
+      .update(answer);
+  }
+
   createAnswer(answer, questionId, id) {
     answer.created = this.timeStamp;
     answer.active = 1;
+    answer.upvotes = [];
     return this.ref.doc(questionId)
       .collection("answers")
       .doc(id)

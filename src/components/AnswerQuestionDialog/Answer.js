@@ -8,12 +8,18 @@ import { makeStyles } from "@material-ui/core/styles"
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import UpArrow from '@material-ui/icons/ForwardOutlined';
+import Typography from "@material-ui/core/Typography";
+import UpArrowFilled from '@material-ui/icons/ForwardOutlined';
+
 import IconButton from '@material-ui/core/IconButton';
 
 const useStyles = makeStyles((theme) => ({
     likeIcon: {
         color: theme.palette.primary.main,
         cursor: "pointer",
+        transform: 'rotate(270deg)',
+        marginBottom: theme.spacing(3)
     },
     photoSection: {
         display: "flex",
@@ -22,8 +28,37 @@ const useStyles = makeStyles((theme) => ({
     profilePhotoSection: {
         display: "flex",
 
-    }
+    },
+
 }))
+
+
+const AnswerSection = ({ upvotes }) => {
+
+    const classes = useStyles();
+
+    return (<Grid container direction="row" justify="flexStart">
+        <Grid item xs={9} md={5} style={{ display: 'flex' }}>
+            <UpArrow className={classes.likeIcon} />
+            <AvatarGroup
+                style={{ marginLeft: "0.2%", marginBottom: '1%', marginTop: "0.2%" }}
+                photos={upvotes}
+                onlineBadge={false}
+                size={30}
+            />
+            <Typography style={{ color: "grey", lineHeight: 1, marginTop: "2px" }} variant={'h1'}> 0 </Typography>
+        </Grid>
+
+
+        <Divider style={{ marginTop: "2%" }} />
+    </Grid >)
+}
+
+AnswerSection.defaultProps = {
+    upvotes: []
+}
+
+
 
 const Answer = (props) => {
     const { photo, children, onUpdate, showEdit } = props;
@@ -31,7 +66,29 @@ const Answer = (props) => {
     const userStore = useStores().user;
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
-
+    const tmpUserArray = [
+        {
+            uid: "123",
+            photoURL: "wsh3t9dsa1wo5ummmm7h",
+            lastName: "Appleton",
+            firstName: "Joe",
+        },
+        {
+            photoURL: "wsh3t9dsa1wo5ummmm7h",
+            lastName: "Appleton",
+            firstName: "Joe",
+        },
+        {
+            photoURL: "wsh3t9dsa1wo5ummmm7h",
+            lastName: "Appleton",
+            firstName: "Joe",
+        },
+        {
+            photoURL: "wsh3t9dsa1wo5ummmm7h",
+            lastName: "Appleton",
+            firstName: "Joe",
+        },
+    ];
 
     const options = [
         'Edit',
@@ -52,28 +109,6 @@ const Answer = (props) => {
     }
 
 
-    const tmpUserArray = [
-        {
-            photoURL: "wsh3t9dsa1wo5ummmm7h",
-            lastName: "Appleton",
-            firstName: "Joe",
-        },
-        {
-            photoURL: "wsh3t9dsa1wo5ummmm7h",
-            lastName: "Appleton",
-            firstName: "Joe",
-        },
-        {
-            photoURL: "wsh3t9dsa1wo5ummmm7h",
-            lastName: "Appleton",
-            firstName: "Joe",
-        },
-        {
-            photoURL: "wsh3t9dsa1wo5ummmm7h",
-            lastName: "Appleton",
-            firstName: "Joe",
-        },
-    ];
 
     return (
         <Grid container spacing={0}>
@@ -118,19 +153,9 @@ const Answer = (props) => {
             <Grid item xs={12}>
                 {children}
             </Grid>
-            <Grid item xs={12} className={classes.photoSection}>
-                <ThumbUpAltOutlinedIcon className={classes.likeIcon} />
-                <AvatarGroup
-                    style={{ marginLeft: "0.2%", marginTop: "0.2%" }}
-                    photos={tmpUserArray}
-                    onlineBadge={false}
-                    size={30}
-                />
+            <AnswerSection />
 
-                <Divider style={{ marginTop: "2%" }} />
-            </Grid>
-
-        </Grid>
+        </Grid >
     );
 };
 
