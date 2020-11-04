@@ -83,7 +83,7 @@ const Dialog = withStyles((theme) => ({
 function ProfileForm(props) {
   const { open, onSubmit, firstUpdate } = props;
   let uploadWidget;
-  const fbService = useFirebase();
+  const fb = useFirebase();
   const userStore = useStores().user;
   const uiStore = useStores().uiStore;
 
@@ -95,18 +95,18 @@ function ProfileForm(props) {
 
   const updateUser = async (newUser) => {
     try {
-      await fbService.user.update(newUser, userStore.user.uid);
+      await fb.user.update(newUser, userStore.user.uid);
 
       userStore.setUser({
         ...userStore.user,
         ...newUser,
       });
 
-      await fbService.presenceService.setStatus("online", userStore.user.uid, {
+      await fb.presence.setStatus("online", userStore.user.uid, {
         ...userStore.user,
         ...newUser,
       });
-      await fbService.presenceService.setRtStatus(
+      await fb.presence.setRtStatus(
         "online",
         userStore.user.uid,
         {
@@ -122,7 +122,7 @@ function ProfileForm(props) {
   const handleSubmit = (data) => {
     const user = { ...data, ...{ joinStage: 2 } };
     updateUser(user);
-    uiStore.deployAlert("I have updated your profile", "success");
+    uiStore.deployAlert("I have updated your profile", "info");
     onSubmit();
   };
 

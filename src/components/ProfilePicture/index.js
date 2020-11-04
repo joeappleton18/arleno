@@ -1,6 +1,10 @@
+
 import { useStores } from "../../stores";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { Image, Transformation } from "cloudinary-react";
 import Avatar from "@material-ui/core/Avatar";
+import { getUrl, OnlineAvatar } from "../AvatarGroup";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -17,16 +21,29 @@ const useStyles = makeStyles((theme) => ({
       fontSize: "1.1rem",
       lineHeight: "2px",
       marginLeft: "1%",
-      marginTop: "2%",
+      marginTop: "11%",
+      [theme.breakpoints.up('sm')]: {
+        marginTop: "7%",
+      },
+      [theme.breakpoints.up('md')]: {
+        marginTop: "5%",
+      },
+      [theme.breakpoints.up('lg')]: {
+        marginTop: "3%",
+      },
+
       fontWeight: "500",
     },
   },
 }));
 
 const ProfilePicture = (props) => {
-  const { size, photoURL, center, name } = props;
+  const { size, photoURL, center, name, date } = props;
   const classes = useStyles();
   const userStore = useStores().user;
+  dayjs.extend(relativeTime);
+
+
   const transform = (
     <Transformation
       width={size}
@@ -51,8 +68,8 @@ const ProfilePicture = (props) => {
     return (
       <Image
         style={photoStyles}
-        publicId={userStore.user.photoURL}
-        {...checkUrl(userStore.user.photoURL)}
+        publicId={photoURL}
+        {...checkUrl(photoURL)}
       >
         <Transformation
           width={size}
@@ -71,12 +88,15 @@ const ProfilePicture = (props) => {
       {name && (
         <Grid container justify="flex-start">
           <Grid item xs={12} className={classes.pictureBox}>
-            {renderImage()}
+            <OnlineAvatar
+              size={50}
+              src={getUrl(photoURL || 0, 50)}
+              online={false}
+            />
             <Grid item xs={6}>
               <Typography> Joe Appleton</Typography>
               <Typography variant="caption" className={classes.caption}>
-                {" "}
-                2 days ago
+                {dayjs().to(dayjs(date))}
               </Typography>
             </Grid>
           </Grid>

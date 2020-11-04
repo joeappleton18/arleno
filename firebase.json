@@ -13,5 +13,9 @@
     "source": ".",
     "predeploy": [],
     "runtime": "nodejs10"
+  },
+
+  "firestore": {
+      "rules" : "firestore.rules"
   }
 }

@@ -273,14 +273,14 @@ const Core = ({ children }) => {
           <div className={classes.sectionDesktop}>
             {userStore.user && userStore.user.email && (
               <>
-                <IconButton
+                {/*<IconButton
                   aria-label="show 17 new notifications"
                   color="inherit"
                 >
                   <Badge badgeContent={17} color="secondary">
                     <NotificationsIcon />
                   </Badge>
-                </IconButton>
+                </IconButton>*/}
                 {/* <ProfilePhoto size={40} />{" "} */}
                 <Typography className={classes.profileName}>
                   {" "}

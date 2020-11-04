@@ -1,29 +1,40 @@
+import { useRef, useEffect } from 'react';
+import { useState } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
 import MuiDialog from "@material-ui/core/Dialog";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
-import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import ProfilePicture from "../ProfilePicture";
 import FollowIcon from "@material-ui/icons/RssFeed";
 import AnswerIcon from "@material-ui/icons/Create";
 import { useStores } from "../../stores/";
+import { useFirebase } from "../../services/firebase";
 import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
-import ThumbUpAltFilledIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import AvatarGroup from "../AvatarGroup/";
-
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
-
+import Editor from "../RichEditor/";
+import IconButton from '@material-ui/core/IconButton';
+import Answer from "./Answer";
 const useStyles = makeStyles((theme) => ({
   text: { background: theme.palette.primary.main, cursor: "pointer" },
   question: { marginTop: theme.spacing(2) },
   button: { background: theme.palette.primary.light, color: "white" },
   photoSection: {
     display: "flex",
+  },
+  caption: {
+    fontSize: "1rem",
+    color: "grey",
+    display: "flex",
+    '& li': {
+      textDecoration: "underline",
+      listStyle: "none",
+      marginLeft: "2%"
+    }
   },
   buttonRoot: {
     display: "flex",
@@ -119,58 +130,77 @@ const Dialog = withStyles((theme) => ({
   },
 }))(MuiDialog);
 
-const Answer = (props) => {
-  const { photo, children } = props;
+
+
+
+
+const AnswerQuestionDialog = (props) => {
+
+  const { children, id, question } = props;
   const classes = useStyles();
+  const [open, setOpen] = useState(true);
+  const [photoURL, setPhotoURL] = useState("");
+  const [showAnswerBox, setShowAnswerBox] = useState(false);
+  const [userName, setUserName] = useState();
+  const [answers, setAnswers] = useState([]);
+  const [date, setDate] = useState(Date.now());
+  const buttonRef = useRef(null);
+  const [currentAnswer, setCurrentAnswer] = useState(null);
+  const fb = useFirebase();
   const userStore = useStores().user;
-  const tmpUserArray = [
-    {
-      photoURL: "wsh3t9dsa1wo5ummmm7h",
-      lastName: "Appleton",
-      firstName: "Joe",
-    },
-    {
-      photoURL: "wsh3t9dsa1wo5ummmm7h",
-      lastName: "Appleton",
-      firstName: "Joe",
-    },
-    {
-      photoURL: "wsh3t9dsa1wo5ummmm7h",
-      lastName: "Appleton",
-      firstName: "Joe",
-    },
-    {
-      photoURL: "wsh3t9dsa1wo5ummmm7h",
-      lastName: "Appleton",
-      firstName: "Joe",
-    },
-  ];
+  const uiStore = useStores().uiStore;
 
-  return (
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
-        {photo}
-      </Grid>
-      <Grid item xs={12}>
-        {children}
-      </Grid>
-      <Grid item xs={12} className={classes.photoSection}>
-        <ThumbUpAltOutlinedIcon className={classes.likeIcon} />
-        <AvatarGroup
-          style={{ marginLeft: "0.2%", marginTop: "0.2%" }}
-          photos={tmpUserArray}
-          onlineBadge={false}
-          size={30}
-        />
-      </Grid>
-    </Grid>
-  );
-};
 
-function CustomizedDialogs(props) {
-  const classes = useStyles();
-  const { children } = props;
-  const [open, setOpen] = React.useState(false);
+  useEffect(() => {
+    setCurrentAnswer(null);
+    const answer = answers.find(a => userStore.user.uid === a.id);
+    if (!answer) {
+      return;
+    }
+    setCurrentAnswer(answer.data);
+  }, [answers])
+
+  useEffect(() => {
+
+    if (!userStore.user) {
+      return;
+    }
+
+
+    const setQuestion = async (fb, id, user, question) => {
+
+      const questionRef = await fb.question.read(id);
+
+      if (!questionRef.exists) {
+        const qx = {
+          userName: user.firstName + user.lastName,
+          question: question,
+          photoURL: user.photoURL,
+          answers: 0
+        }
+
+        try {
+          await fb.question.create(qx, id);
+          setPhotoURL(qx.photoURL);
+          setUserName(qx.userName);
+        } catch (e) {
+          console.log('error could not create question', e)
+        }
+
+      } else { // in this instance the question exists 
+        const qx = await questionRef.data();
+        setPhotoURL(qx.photoURL);
+        setUserName(qx.userName);
+        setDate(qx.created.toDate());
+        fb.question.realtimeRead(id, (answersRef) => {
+          setAnswers([]);
+          answersRef.forEach(a => setAnswers([...answers, ...[{ ...a.data(), ...{ id: a.id } }]]));
+        })
+
+      }
+    }
+    setQuestion(fb, id, userStore.user, question, children);
+  }, [id, fb, userStore.user, question, children])
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -178,6 +208,110 @@ function CustomizedDialogs(props) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleSubmit = async (answer, isUpdate = false) => {
+    try {
+      await fb.question.createAnswer({ ...answer, ...userStore.user }, id, userStore.user.uid);
+      const message = isUpdate ? "😎 You've updated your answer 😎" : "😎 You've answered the question 😎";
+      uiStore.deployAlert(message, "success");
+      setShowAnswerBox(false);
+    } catch (e) {
+      debugger;
+      uiStore.deployAlert("Ohhh there was an issue tell Joe", "success");
+      console.log('error could not answer question', e);
+
+    }
+  }
+
+
+  const handleClickAnswer = () => {
+    if (!showAnswerBox) {
+      buttonRef.current.scrollIntoView();
+    }
+    setShowAnswerBox(!showAnswerBox);
+
+  }
+  const handleCancel = () => {
+    setShowAnswerBox(false);
+  }
+  const AnswerBlock = ({ answer }) => {
+    const [editable, setEditable] = useState(false);
+
+    const handleCancel = () => {
+      setEditable(false)
+    }
+
+    const handleDelete = async () => {
+      try {
+        await fb.question.deleteAnswer(id, answer.id);
+        uiStore.deployAlert("💩 You've deleted your answer 💩", "success");
+      } catch (e) {
+        uiStore.deployAlert("Oh, there was an issue deleting your answer, tell Joe", "error");
+        console.log('error, could not delete answer', e);
+      }
+    }
+
+    const handleUnvote = async (e) => {
+      e.preventDefault();
+      let newUpvotes = (answer.upvotes.filter(x => x.uid !== userStore.user.uid));
+      try {
+        await fb.question.updateAnswer({ upvotes: newUpvotes }, id, answer.id);
+      } catch (e) {
+        uiStore.deployAlert("Oh, there was an issue with un voting, tell Joe", "error");
+        console.log('error, could not delete answer', e);
+      }
+    }
+    const handleUpvote = async () => {
+      try {
+        //updateAnswer(answer, questionId, id)
+        let userVoted = (answer.upvotes.filter(x => x.uid === userStore.user.uid)).length > 0;
+        if (!userVoted) {
+          await fb.question.updateAnswer({
+            upvotes: [
+              ...answer.upvotes,
+              ...[{
+                uid: userStore.user.uid,
+                photoURL: userStore.user.photoURL,
+                firstName: userStore.user.firstName,
+                lastName: userStore.user.lastName
+              }]]
+          }, id, answer.id);
+        }
+
+      } catch (e) {
+        uiStore.deployAlert("Oh, there was an issue with up voting, tell Joe", "error");
+        console.log('error, could not delete answer', e);
+      }
+    }
+
+
+    return (<>
+      <Answer
+        answer={answer}
+        onUpvote={handleUpvote}
+        onUnvote={handleUnvote}
+        showEdit={userStore.user.uid === answer.id}
+        onUpdate={(type) => type === "edit" ? setEditable(true) : handleDelete(answer.id)}
+        photo={
+          <ProfilePicture
+            name={{ first: answer.firstName, last: answer.lastName }}
+            photoURL={answer.photoURL}
+            date={answer.created && answer.created.toDate()}
+            size={50}
+            center={false}
+          />
+        }
+
+
+      >
+        <Editor readOnly={!editable} onSubmit={(answer) => handleSubmit(answer, true)} onCancel={handleCancel} data={answer.data} />
+      </Answer>
+      <Divider style={{ marginTop: "2%", marginBottom: "1%" }} />
+
+    </>)
+  }
+
+
 
   return (
     <div>
@@ -202,46 +336,39 @@ function CustomizedDialogs(props) {
           </Grid>
         </DialogTitle>
         <DialogContent dividers>
+
           <ProfilePicture
-            name={{ first: "Joe", last: "Appleton" }}
+            name={userName}
             size={50}
+            photoURL={photoURL}
             center={false}
+            date={date}
           />
           <Typography variant="h6" className={classes.question} gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-            ac consectetur ac, vestibulum at eros?
+            {question}
           </Typography>
 
           <Grid container spacing={2}>
             <Grid item xs={12} sm={4} className={classes.buttonRoot}>
               <IconButton aria-label="close" className={classes.button}>
-                <AnswerIcon />
+                <AnswerIcon onClick={handleClickAnswer} />
               </IconButton>
-              <Typography> Answer </Typography>
-              <IconButton aria-label="close" className={classes.button}>
+              <Typography style={{ cursor: "pointer" }} onClick={handleClickAnswer}> {currentAnswer ? "Edit Answer" : "Answer"} </Typography>
+              {/*<IconButton aria-label="close" className={classes.button}>
                 <FollowIcon />
               </IconButton>
-              <Typography> Follow </Typography>
+              <Typography> Follow </Typography> */}
             </Grid>
+            {showAnswerBox && <Grid item xs={12}>
+              <Editor onSubmit={handleSubmit} data={currentAnswer} onCancel={handleCancel} />
+            </Grid>}
           </Grid>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} ref={buttonRef}>
             <Grid item xs={12} className={classes.answerArea}>
               <Divider style={{ marginBottom: "2%" }} />
-              <Answer
-                photo={
-                  <ProfilePicture
-                    name={{ first: "Joe", last: "Appleton" }}
-                    size={50}
-                    center={false}
-                  />
-                }
-              >
-                Cras mattis consectetur purus sit amet fermentum. Cras justo
-                odio, dapibus ac facilisis in, egestas eget quam. Morbi leo
-                risus, porta ac consectetur ac, vestibulum at eros?
-              </Answer>
-              <Divider style={{ marginTop: "2%" }} />
+
+              {answers.map(answer => <AnswerBlock key={answer.id} answer={answer} />)}
+
             </Grid>
           </Grid>
         </DialogContent>
@@ -250,4 +377,4 @@ function CustomizedDialogs(props) {
   );
 }
 
-export default CustomizedDialogs;
+export default AnswerQuestionDialog;

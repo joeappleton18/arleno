@@ -51,7 +51,7 @@ const WeekItem = ({ item }) => {
         {item.headings
           .filter((h) => h.depth === 2)
           .map((h, i) => (
-            <List index={i} component="div" disablePadding>
+            <List key={i} component="div" disablePadding>
               <Link
                 href={
                   (item.pageName.split(".")[0] == "index"

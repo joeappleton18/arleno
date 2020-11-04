@@ -1,0 +1,31 @@
+rules_version = '2';
+service cloud.firestore {
+    match /databases/{database}/documents {
+
+
+        // a user can update their own profile and read any profile
+
+        match /users/{userId} {
+            allow update, delete, create: if request.auth.uid == userId;
+            allow get:  if request.auth.uid !=  null; 
+        }
+
+        match /status/{userId} {
+            allow update, delete, create, list: if request.auth !=  null;
+        }  
+
+        match /questions/{questionId} {
+            allow read : if request.auth !=  null;
+            allow create, delete, update: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.type == "A";
+
+            match /followers/{followerId} {
+                allow update, delete, create, list: if request.auth !=  null;
+            }
+            match /answers/{answerId} {
+                allow update, delete, create, list: if request.auth !=  null;
+            }
+        }   
+    }
+
+
+}

@@ -1,5 +1,7 @@
 import MuiAlert from "@material-ui/lab/Alert";
 import AnswerQuestionDialog from "../components/AnswerQuestionDialog";
+import {questionIDs} from '../config/questions';
+
 
 # Week 2 (Exploring Node, Express and Templates)
 
@@ -12,10 +14,9 @@ import AnswerQuestionDialog from "../components/AnswerQuestionDialog";
   to be able to interact with your database.
 </MuiAlert>
 
-<AnswerQuestionDialog>
+<AnswerQuestionDialog question={"Outline Descartes’ conceivability argument for substance dualism."} id={questionIDs.find(q => q.count === 1).id}>
 
-
-This week we are going to somewhat depart, at least temporarily, from looking specifically at databases and consider how we can serve web HTML pages from a Node application. I appreciate this may seem a little odd. After all, this is a database unit.
+  This week we are going to somewhat depart, at least temporarily, from looking specifically at databases and consider how we can serve web HTML pages from a Node application. I appreciate this may seem a little odd. After all, this is a database unit.
 
 </AnswerQuestionDialog>
 

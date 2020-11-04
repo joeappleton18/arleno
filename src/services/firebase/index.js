@@ -5,9 +5,13 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/database";
 import "firebase/analytics";
+
+
+
 import authService from "./authService";
 import userService from "./userService";
 import presenceService from "./presenceService";
+import questionService from './questionService';
 
 const analytics = dynamic(() => import("firebase/analytics"));
 
@@ -31,7 +35,7 @@ class firebaseService {
       this.auth = new authService(auth);
 
 
-      this.presenceService = new presenceService(
+      this.presence = new presenceService(
         db,
         rtdb,
         firebase.firestore.FieldValue.serverTimestamp(),
@@ -40,6 +44,12 @@ class firebaseService {
       );
 
       this.user = new userService(
+        db,
+        firebase.firestore.FieldValue.serverTimestamp(),
+        this
+      );
+
+      this.question = new questionService(
         db,
         firebase.firestore.FieldValue.serverTimestamp(),
         this
