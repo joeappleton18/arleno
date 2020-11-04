@@ -99,9 +99,12 @@ const ReadEditor = ({ data }) => {
 
 
 const WriteEditor = (props) => {
-  debugger;
   const { onSubmit, onCancel, data } = props;
+
+
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [disabled, setDisabled] = useState(true);
+
   const ref = useRef(TMUIRichTextEditorRef);
 
   const handleSubmitClick = () => {
@@ -110,6 +113,8 @@ const WriteEditor = (props) => {
 
   const handleChange = (editorState) => {
     console.log(editorState.getCurrentContent().count());
+    const length = editorState.getCurrentContent().getPlainText().length;
+    setDisabled(!length);
     setEditorState(editorState.getCurrentContent());
   }
 
@@ -133,7 +138,7 @@ const WriteEditor = (props) => {
             <MUIRichTextEditor onChange={handleChange} editorState={editorState} onSave={handleSave} defaultValue={data} ref={ref} label="Enter your answer here... 😊" controls={["title", "bold", "italic", "underline", "strikethrough", "link", "numberList", "bulletList", "quote", "code"]} />
           </Grid>
           <Grid item xs={12} >
-            <Button onClick={handleSubmitClick} elevation={1} variant="contained" color="secondary">
+            <Button disabled={disabled} onClick={handleSubmitClick} elevation={1} variant="contained" color="secondary">
               Submit Answer
           </Button>
             <Button onClick={handleCancelClick} variant="outlined" elevation={0} style={{ marginLeft: '10px' }} variant="contained" color="primary">
