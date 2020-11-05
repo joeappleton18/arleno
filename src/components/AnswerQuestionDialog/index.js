@@ -168,7 +168,7 @@ const AnswerQuestionDialog = (props) => {
 
 
     const setQuestion = async (fb, id, user, question) => {
-
+      if (!fb.question) return
       const questionRef = await fb.question.read(id);
 
       if (!questionRef.exists) {
@@ -177,6 +177,8 @@ const AnswerQuestionDialog = (props) => {
           question: question,
           photoURL: user.photoURL,
           answers: 0,
+
+
         }
 
         try {
@@ -213,7 +215,7 @@ const AnswerQuestionDialog = (props) => {
 
   const handleSubmit = async (answer, isUpdate = false) => {
     try {
-      await fb.question.createAnswer({ ...answer, ...userStore.user }, id, userStore.user.uid);
+      await fb.question.createAnswer({ ...answer, ...userStore.user, ...{ upvotes_count: 0 } }, id, userStore.user.uid);
       const message = isUpdate ? "😎 You've updated your answer 😎" : "😎 You've answered the question 😎";
       uiStore.deployAlert(message, "success");
       setShowAnswerBox(false);

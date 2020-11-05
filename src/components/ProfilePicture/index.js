@@ -94,7 +94,7 @@ const ProfilePicture = (props) => {
               online={false}
             />
             <Grid item xs={6}>
-              <Typography> Joe Appleton</Typography>
+              <Typography> {name.first} {name.last}</Typography>
               <Typography variant="caption" className={classes.caption}>
                 {dayjs().to(dayjs(date))}
               </Typography>

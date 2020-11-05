@@ -24,7 +24,7 @@
     - [X] As a user, I should be able to edit/delete/update my questions 
     - [X] As a user, I should not be able to create a blank answer
 - [X]  A a user, I should be able to up-vote answer to a question, only once 
-- [ ]  As a user, I should see the most liked question first
+- [ ]  As a user, I should see the most up-voted question first
 
 
 #### Nice to Have
@@ -36,3 +36,6 @@
   - [ ] As a user, I should be able to follow and un-follow a question
   - [ ]  As a user, I should be able to view and delete updates
   
+### BUGS
+
+
