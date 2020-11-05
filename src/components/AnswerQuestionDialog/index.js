@@ -177,7 +177,6 @@ const AnswerQuestionDialog = (props) => {
           question: question,
           photoURL: user.photoURL,
           answers: 0,
-          upvotes: 0
         }
 
         try {

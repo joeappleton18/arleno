@@ -49,7 +49,7 @@ class questionService {
   }
 
   realtimeRead(id = null, callback) {
-    return this.ref.doc(id).collection("answers").where("active", "==", 1).onSnapshot(callback);
+    return this.ref.doc(id).collection("answers").where("active", "==", 1).orderBy("upvotes_count", "desc").onSnapshot(callback);
   }
 
   readAnswers(id) {

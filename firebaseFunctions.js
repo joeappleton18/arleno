@@ -1,6 +1,6 @@
 const path = require("path");
 
-const { https, auth, database } = require("firebase-functions");
+const { https, auth, database, firestore } = require("firebase-functions");
 const { default: next } = require("next");
 const admin = require("firebase-admin");
 
@@ -31,11 +31,36 @@ exports.userCreated = auth.user().onCreate((user) => {
     .set({ uid, email, photoURL, joinStage: 1 });
 });
 
+
+
+
 exports.userDeleted = auth.user().onDelete(async (user) => {
   const { uid } = user;
   await db.collection("status").doc(uid).delete();
   return db.collection("users").doc(uid).delete();
 });
+
+
+exports.answerUpdated = firestore
+  .document("questions/{questionID}/answers/{answerID}")
+  .onWrite((change, context) => {
+
+    const answer = change.after.exists ? change.after.data() : null;
+    if (!answer) {
+      console.log('record deleted no need to act');
+      return;
+    }
+    let updatedRecord = {};
+    if (!answer.upvotes) {
+      updatedRecord.upvotes = [];
+    }
+
+    updatedRecord.upvotes_count = answer.upvotes.length;
+
+    return change.after.ref.set(updatedRecord, { merge: true });
+
+  })
+
 
 exports.onUserStatusChanged = database
   .ref("/status/{uid}")
@@ -50,3 +75,5 @@ exports.onUserStatusChanged = database
     eventStatus.last_changed = new Date(eventStatus.last_changed);
     return db.collection("status").doc(context.params.uid).set(eventStatus);
   });
+
+
