@@ -14,7 +14,6 @@
 
 #### Essential Feature 
 
-
 - [X] As a user, I should be able to register using my social platform of choice
 - [X] As a user, I should be able to update my profile
 - [X] As a user, I should be able to see, in real-time other users online
@@ -23,7 +22,7 @@
 - [X]  As an admin, I should be able add a new question 
 - [X]  As a user, I should be able to  answer a question, **only once**
     - [X] As a user, I should be able to edit/delete/update my questions 
-    - [ ] As a user, I should not be able to create a blank answer
+    - [X] As a user, I should not be able to create a blank answer
 - [X]  A a user, I should be able to up-vote answer to a question, only once 
 - [ ]  As a user, I should see the most liked question first
 

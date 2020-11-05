@@ -47,6 +47,7 @@ const AnswerSection = ({ upvotes, onUpvote, onUnvote }) => {
         setUserVoted(userVoted);
     }, [upvotes])
 
+    
     return (<Grid container direction="row" justify="flexStart">
         <Grid item xs={9} md={5} style={{ display: 'flex' }}>
             {userVoted && (<span onClick={(e) => onUnvote(e)} >

@@ -72,6 +72,7 @@ const AuthListener = () => {
     }
 
     authService.auth.onAuthStateChanged(async (user) => {
+      debugger;
       if (!user || !user.uid) {
         return;
       }

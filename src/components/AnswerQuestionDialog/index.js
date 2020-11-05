@@ -138,7 +138,7 @@ const AnswerQuestionDialog = (props) => {
 
   const { children, id, question } = props;
   const classes = useStyles();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [photoURL, setPhotoURL] = useState("");
   const [showAnswerBox, setShowAnswerBox] = useState(false);
   const [userName, setUserName] = useState();
@@ -176,7 +176,8 @@ const AnswerQuestionDialog = (props) => {
           userName: user.firstName + user.lastName,
           question: question,
           photoURL: user.photoURL,
-          answers: 0
+          answers: 0,
+          upvotes: 0
         }
 
         try {
@@ -194,7 +195,9 @@ const AnswerQuestionDialog = (props) => {
         setDate(qx.created.toDate());
         fb.question.realtimeRead(id, (answersRef) => {
           setAnswers([]);
-          answersRef.forEach(a => setAnswers([...answers, ...[{ ...a.data(), ...{ id: a.id } }]]));
+          const tmpArray = []
+          answersRef.forEach(a => tmpArray.push({ ...a.data(), ...{ id: a.id } }));
+          setAnswers(tmpArray);
         })
 
       }
@@ -313,6 +316,8 @@ const AnswerQuestionDialog = (props) => {
 
 
 
+
+
   return (
     <div>
       <div className={classes.text} onClick={handleClickOpen}>
@@ -335,7 +340,10 @@ const AnswerQuestionDialog = (props) => {
             </Grid>
           </Grid>
         </DialogTitle>
-        <DialogContent dividers>
+
+        {!userStore.user.uid && <Typography align="center" style={{ marginTop: "10%" }} variant="h2"> Sorry, but to maintain the privacy of you and your peers you will need to join in order to view this content. </Typography>}
+
+        {userStore.user.uid && (<DialogContent dividers>
 
           <ProfilePicture
             name={userName}
@@ -371,9 +379,9 @@ const AnswerQuestionDialog = (props) => {
 
             </Grid>
           </Grid>
-        </DialogContent>
+        </DialogContent>)}
       </Dialog>
-    </div>
+    </div >
   );
 }
 
