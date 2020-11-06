@@ -24,18 +24,21 @@
     - [X] As a user, I should be able to edit/delete/update my questions 
     - [X] As a user, I should not be able to create a blank answer
 - [X]  A a user, I should be able to up-vote answer to a question, only once 
-- [ ]  As a user, I should see the most up-voted question first
-
+- [X]  As a user, I should see the most up-voted question first
+- [ ]  As a user, I should see a floating answer count box   
+- [ ]  As a user, I should see a summary of all answers 
+- [ ]  As a user, I should see a leader-board
 
 #### Nice to Have
-
-- []  As a user, I want to be able to discuss the answer 
-- []  As a user, I want to be able to embed images into my answers
-- []  As a user, I should be able to add gifs and emojis 
-- - [ ]  As a user, I should be updated when someone answers a question that I am following
-  - [ ] As a user, I should be able to follow and un-follow a question
-  - [ ]  As a user, I should be able to view and delete updates
-  
-### BUGS
+- [ ]  As a user, I want to be able to hover over avatars
+- [ ]  As a user, I want to be able to discuss the answer 
+- [ ]  As a user, I want to be able to embed images into my answers
+- [ ]  As a user, I should be able to add gifs and emojis 
+- [ ] As a user, I should be updated when someone answers a question that I am following
+- [ ] As a user, I should be able to follow and un-follow a question
 
 
+
+### Amazing to Have
+
+User can ask questions by selecting a range  https://github.com/timdown/rangy

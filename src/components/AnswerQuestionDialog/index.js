@@ -203,6 +203,7 @@ const AnswerQuestionDialog = (props) => {
 
       }
     }
+    debugger;
     setQuestion(fb, id, userStore.user, question, children);
   }, [id, fb, userStore.user, question, children])
 
