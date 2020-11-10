@@ -23,38 +23,42 @@ class firebaseService {
     /**
      * ensure we are running in the browser
      */
-    if (typeof window != "undefined" && !firebase.apps.length) {
+    if (typeof window == "undefined") {
+      return;
+    }
+
+    if (!firebase.apps.length) {
       firebase.initializeApp(
         env === "production"
           ? firebaseDevelopmentConfig
           : firebaseProductionConfig
       );
-      const db = firebase.firestore();
-      const rtdb = firebase.database();
-      const auth = firebase.auth;
-      this.auth = new authService(auth);
-
-
-      this.presence = new presenceService(
-        db,
-        rtdb,
-        firebase.firestore.FieldValue.serverTimestamp(),
-        firebase.database.ServerValue.TIMESTAMP,
-        this
-      );
-
-      this.user = new userService(
-        db,
-        firebase.firestore.FieldValue.serverTimestamp(),
-        this
-      );
-
-      this.question = new questionService(
-        db,
-        firebase.firestore.FieldValue.serverTimestamp(),
-        this
-      );
     }
+    const db = firebase.firestore();
+    const rtdb = firebase.database();
+    const auth = firebase.auth;
+    this.auth = new authService(auth);
+
+
+    this.presence = new presenceService(
+      db,
+      rtdb,
+      firebase.firestore.FieldValue.serverTimestamp(),
+      firebase.database.ServerValue.TIMESTAMP,
+      this
+    );
+
+    this.user = new userService(
+      db,
+      firebase.firestore.FieldValue.serverTimestamp(),
+      this
+    );
+
+    this.question = new questionService(
+      db,
+      firebase.firestore.FieldValue.serverTimestamp(),
+      this
+    );
   }
 }
 
