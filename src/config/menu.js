@@ -5,8 +5,8 @@ const menu = [
   { page: "week-3.mdx" },
   { page: "week-4.mdx" },
   { page: "week-5.mdx" },
-  { page: "week-6.mdx" }
-
+  { page: "week-6.mdx" },
+  { page: "week-7.mdx" }
 ];
 
 module.exports = menu;

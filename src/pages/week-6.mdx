@@ -1,7 +1,8 @@
 import entireWebStack from '../public/images/html-request.png';
 import sqlVsNoSQL from '../public/images/sql-vs-no-sql-updates.png';
 import MuiAlert from "@material-ui/lab/Alert";
-
+import AnswerQuestionDialog from "../components/AnswerQuestionDialog";
+import {questionIDs} from '../config/questions';
 
 # Week 6 (Thinking About Updating Data)
 
@@ -73,7 +74,13 @@ The developers of MongoDB (biased I know), argue that we have " been conditioned
 
 Truica, C.O., Boicea, A. and Trifan, I., 2013, August. CRUD operations in MongoDB. In 2013 International Conference on Advanced Computer Science and Electronics Information (ICACSEI 2013). Atlantis Press.
 
+
 Keep, M. and Cabral, A. (2018). MongoDB 4 Update: Multi-Document ACID Transactions | MongoDB Blog. [online] MongoDB. Available at: [https://www.mongodb.com/blog/post/mongodb-multi-document-acid-transactions-general-availability](https://www.mongodb.com/blog/post/mongodb-multi-document-acid-transactions-general-availability) [Accessed 9 Nov. 2020].
+
+<AnswerQuestionDialog question={"In this document the Mongo Team are stating that 80%-90% of applications don't need multi document transactions. To what extent to you agree or disagree and why?"} id={questionIDs.find(q => q.count === 3).id}>
+Multi-Document ACID Transactions | MongoDB Blog. [online] MongoDB. Available at: [https://www.mongodb.com/blog/post/mongodb-multi-document-acid-transactions-general-availability](https://www.mongodb.com/blog/post/mongodb-multi-document-acid-transactions-general-availability) [Accessed 9 Nov. 2020].
+</AnswerQuestionDialog>
+
 
 
 ## Practical 

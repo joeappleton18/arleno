@@ -29,7 +29,7 @@
 - [ ]  As a user, I should see a summary of all answers 
 - [ ]  As a user, I should see a leader-board
 - [ ]  As a admin, I should be able to update and delete answers
-
+- [ ]
 #### Nice to Have
 - [ ]  As a user, I want to be able to hover over avatars
 - [ ]  As a user, I should be able to add gifs and emojis 
@@ -37,7 +37,7 @@
 - [ ]  As a user, I want to be able to embed images into my answers
 - [ ]  As a user, I should be updated when someone answers a question that I am following
 - [ ]  As a user, I should be able to follow and un-follow a question
-
+- [ ]  As a user, I should be notified when a user posts something new
 
 
 ### Amazing to Have

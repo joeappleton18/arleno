@@ -105,9 +105,21 @@ const RemarkComponents = {
     const Code = (props) => <CodeBlock {...props} />;
     return memo(Code);
   })(),
+
+  inlineCode: ((props) => (<span
+    style={{
+      background: '#272822',
+      color: "white",
+      borderRadius: "0.3em",
+      padding: "4px 5px 6px"
+
+    }}
+    variant="body1"
+    {...props}
+  />)),
   blockquote: (() => {
     const BlockQuote = (props) => (
-      <Typography
+      <div><Typography
         style={{
           borderLeft: "4px solid grey",
           padding: 8,
@@ -117,7 +129,7 @@ const RemarkComponents = {
         }}
         variant="body1"
         {...props}
-      />
+      /></div>
     );
     return memo(BlockQuote);
   })(),

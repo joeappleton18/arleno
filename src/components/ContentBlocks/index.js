@@ -54,38 +54,44 @@ const Schedule = () => (
         <TableRow>
           <TableCell align="right">7</TableCell>
           <TableCell align="right">
-            User Authentication \& Relationships
+            Data Modeling and Relationships
           </TableCell>
         </TableRow>
         <TableRow>
           <TableCell align="right">8</TableCell>
           <TableCell align="right">
-            Deploying to a Serverless Infrastructure
+            User Authentication
           </TableCell>
         </TableRow>
         <TableRow>
           <TableCell align="right">9</TableCell>
-          <TableCell align="right">Advanced Mongo Features and Completing our Project</TableCell>
+          <TableCell align="right">
+            Deploying to a Serverless Infrastructure
+          </TableCell>
         </TableRow>
         <TableRow>
           <TableCell align="right">10</TableCell>
+          <TableCell align="right">Advanced Mongo Features and Completing our Project</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell align="right">11</TableCell>
           <TableCell align="right">
             {" "}
             Advanced Mongo Features
           </TableCell>
         </TableRow>
         <TableRow>
-          <TableCell align="right">11</TableCell>
+          <TableCell align="right">12</TableCell>
           <TableCell align="right">
             Thinking About the Future of Databases
           </TableCell>
         </TableRow>
         <TableRow>
-          <TableCell align="right">12</TableCell>
+          <TableCell align="right">13</TableCell>
           <TableCell align="right">Assessment Support</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell align="right">13</TableCell>
+          <TableCell align="right">14</TableCell>
           <TableCell align="right">Assessment Support</TableCell>
         </TableRow>
       </TableBody>
