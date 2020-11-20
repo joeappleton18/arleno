@@ -54,7 +54,7 @@ const Schedule = () => (
         <TableRow>
           <TableCell align="right">7</TableCell>
           <TableCell align="right">
-            Data Modeling and Relationships
+            Data Modelling and Relationships
           </TableCell>
         </TableRow>
         <TableRow>

@@ -1,3 +1,10 @@
+import MuiAlert from "@material-ui/lab/Alert";
+import AnswerQuestionDialog from "../components/AnswerQuestionDialog";
+import {questionIDs} from '../config/questions';
+
+
+# Week 7 (Data Modeling and Relationships)
+
 <MuiAlert severity="warning">
   <AlertTitle>
     <strong> Session Dependencies  </strong>
@@ -11,7 +18,6 @@
   `git clone https://github.com/joeappleton18/db-starter-project.git --single-branch  --branch week-6-solutions`
 </MuiAlert>
 
-#  Data Modeling and Relationships
 
 This week promises to address, that perhaps nagging,  question: 
 
@@ -25,13 +31,13 @@ This week I want to focus the reading and discussion on a series of [blog articl
 
 The articles address the common question of, "How do I model a One-to-N relationship?”"
 
-William states that there many different ways to construct One-to-N relationships in NoSql databases. He goes on to suggest that we must think a little differently about the nature of the relationship:
+William states that there are many different ways to construct One-to-N relationships in NoSql databases. He goes on to suggest that, in the non-relational world we must think a little differently about the nature of the relationship:
 
 >> When designing a MongoDB schema, you need to start with a question that you’d never consider when using SQL: what is the cardinality of the relationship? Put less formally: you need to characterize your “One-to-N” relationship with a bit more nuance: is it “one-to-few”, “one-to-many”, or “one-to-squillions”? Depending on which one it is, you’d use a different format to model the relationship.
 
 Let's briefly consider each of these relationships, where possible, in the context of our wine tasting application
 
-### One-to-Few
+## One-to-Few
 
 If we have a small number of relations we can just embed these relations directly in the parent document. For instance, a user may have many addresses. 
 
@@ -46,9 +52,9 @@ If we have a small number of relations we can just embed these relations directl
 ```
 >> We don't currently have a user table; so I've adapted the example given in the article.
 
-The data modeling design above is simple, and does not require an extra collection. However, it's more complex to query these embedded fields across different documents. For example, queries asking things like, how many users live in the US? - become a little trickier. I tend to use this approach if the embedded data is only going to be used by its parent. In other words, we are not going to compare query this data across multiple documents.
+The data modeling design above is simple, and does not require an extra collection. However, it's more complex to query these embedded fields across different documents. For example, queries asking things like, how many users live in the US? - become a little trickier. I tend to use this approach if the embedded data is only going to be used by its parent. In other words, we are not going to need to compare query this data across multiple documents.
 
-### One-to-Many
+## One-to-Many
 
 One wine tasting can have Many Regions. We can achieve this relationship by constructing an array of region object ids.  
 
@@ -91,13 +97,30 @@ This approach is only required if you think that your relationship will cause yo
 ```
 >> A user logger
 
-Above, we associate each log message to specific user. We could easily obtain the user for each log message by using `populate` provided for us by mongoose:
+Above, we associate each log message to a specific user. We could easily obtain the user for each log message by using `populate` provided for us by mongoose:
 
 ```js
 const logRef = Log.findById('123');
 const log = logRef.populate('user_id')
 ```
 >> An example of using mongoose to populate the user associated to our log
+
+
+## Theoretical task
+
+
+<AnswerQuestionDialog question={"Within your groups, choose a single project idea. Next, briefly discuss, then nominate a team member top state, what the project is and where we may need to use each type of the three relationships"} id={questionIDs.find(q => q.count === 4).id}>
+It's clear that the answer of what type of relationship we used is: **it depends**?. Let's consider this question for the group discussion today, along with the article on [relations](https://www.mongodb.com/blog/post/6-rules-of-thumb-for-mongodb-schema-design-part-1).
+</AnswerQuestionDialog>
+
+
+
+### References
+
+Zola, W. (2014). 6 Rules of Thumb for MongoDB Schema Design: Part 1 | MongoDB Blog. [online] MongoDB. Available at: https://www.mongodb.com/blog/post/6-rules-of-thumb-for-mongodb-schema-design-part-1 [Accessed 14 Nov. 2020].
+
+
+
 
 
 ## Practical 
@@ -311,7 +334,7 @@ Update your wine tasting application so users can create a tasting. For now just
 
 - `wine title` - free form string 
 - `points` - a number **hint, you'll need to convert this to an int using `parseInt` before you can save it. 
-- `selectTaster` - a dropdown list of tasters
+- `countries` - a dropdown list of countries
 
 ## One-to-Many User Input 
 
@@ -385,6 +408,7 @@ Recall, last week, we looked at how to populate form for editing. Populating our
                 />
                 <label class="form-check-label" for="inlineCheckbox2"><%= region.name %></label>
               </div>
+              <% }) %>
 
 
 ```
