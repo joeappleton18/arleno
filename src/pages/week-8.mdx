@@ -1,4 +1,5 @@
 import MuiAlert from "@material-ui/lab/Alert";
+import passwordImage from '../public/images/password-hashing.png';
 import AnswerQuestionDialog from "../components/AnswerQuestionDialog";
 import {questionIDs} from '../config/questions';
 
@@ -22,14 +23,16 @@ So far, we have been creating new tastings/tasters without attributing them to a
 
 #### How can I allow users to register and securely login to my wines database?
 
-- How can I manage a users so they remain logged in between sessions?
+- How can I manage users so they remain logged in between sessions?
 - How can I allow users to enter a password, while keeping this password hidden from my application?
 
 In addressing the above questions, we are going to consider simple user authentication. We will not cover ideas such as multiple user roles (e.g. super-admin, admin, users).  **You should note,** I don't expect you to use multiple role for your assessment. However, you may well acknowledge that in the future multiple roles will be required. Moreover, I do not expect you to use a sophisticated and highly secure authentication process. 
 
 ## Storing Passwords in a Database  
 
-<<insert diagram>>
+<center><img src={passwordImage} width={300} /> </center>
+
+>> The correct, but still somewhat risky, way to store a password
 
 We should **never** store plain text passwords in a database. If this were the case, should a data breach occur, our user's passwords will be freely accessible to the public!  
 
@@ -37,13 +40,62 @@ Most users unfortunately use same password across multiple sites and application
 
 The solution to the above catastrophe is to hash our password. You can think of a hash function as a black box that takes in plain text and outputs a fixed sized unique string. It is this hashed string that we store in the database, **not** the plain text password. Crucially, when we re-run the hash function, with the same password, the same unique string is generated every time. This means to determine if a user password correct, we compare the hash password with the password stored in our database.
 
-It is important to note that not all hash functions are created equal. With some (e.g., MD5), only being marginally better than storing plain text passwords. The problem with hashing functions like MD5 is they have been widely, and naively used, for many years. As such, large tables (rainbow tables or dictionaries) are available that associate MD5 hashes to their plain text equivalent. [As, an experiment, see if you can crack the following hash](8ff32489f92f33416694be8fdc2d4c22). We can avoid this type of attack by salting our passwords. This involves adding a string to our password before hashing, we could also perform multiple iterations of our function. However, since MD5 is so fast, our passwords are still susceptible to brute force attacks. In avoiding the vulnerabilities of MD5, we are going to using  **bcrypt** to hash our passwords.
+It is important to note that not all hash functions are created equal. With some (e.g., MD5), only being marginally better than storing plain text passwords. The problem with hashing functions like MD5 is they have been widely, and naively used, for many years. As such, large tables (rainbow tables or dictionaries) are available that associate MD5 hashes to their plain text equivalent. [As, an experiment, see if you can crack the following hash 8ff32489f92f33416694be8fdc2d4c22](https://crackstation.net/). We can avoid this type of attack by salting our passwords. This involves adding a string to our password before hashing, we could also perform multiple iterations of our function. However, since MD5 is so fast, our passwords are still susceptible to brute force attacks. In avoiding the vulnerabilities of MD5, we are going to using  **bcrypt** to hash our passwords.
 
 bcrypt has the following security features:
 
 - incorporates, by default, a salt to protect against rainbow table
 - it's slow - this is good - as it is resistent to brute force attacks
 - it's adaptive, allowing the developer to increase or decrease the speed of the function
+
+
+## Theoretical Task
+
+Let's play around with some different hashing algorithms and consider the computational expense of each. First, let's install the node libraries form two algorithms (bcrypt and md5):
+
+```shell
+npm install md5 bcrypt
+```
+>> terminal - installing bcrypt and md5 hashing libraries 
+
+Next, let's crete a file called `testbed.js` and we can construct a crude test:
+
+```javascript
+
+const md5 = require('md5');
+const bcrypt = require('bcrypt');
+
+
+const testBed = async () => {
+
+    const testString = "advanced databases";
+
+    /* Begin our test */
+    const start = new Date().getTime();
+    //const hash = md5(testString);
+    //const hash = await bcrypt.hashSync(testString, 10);
+    const end = new Date().getTime();
+    console.log("the total time taken is: " + ((end - start) / 1000) + 'seconds')
+
+    /* End our test */
+
+}
+
+testBed();
+
+
+```
+>> testbed.js - to run we can just use `node testbed.js` 
+
+
+
+
+<AnswerQuestionDialog question={"Individually, construct a hashing function test bed. How long does md5 and bcrypt (with 10, 15, and 20 hashing rounds) take to run?"} id={questionIDs.find(q => q.count === 5).id}>
+We won't break away in groups this week. However, what I would like to do is compare our hashing functions running on a few different pieces of hardware - your computers.
+</AnswerQuestionDialog>
+
+
+
 
 ### References 
 
@@ -92,6 +144,8 @@ userSchema.pre('save', async function (next) {
         throw Error('could not hash password');
     }
 })
+
+module.exports = mongoose.model("User", userSchema);
 ```
 >> models/User.js - our user model utilising a pre hook to hash the password
 
