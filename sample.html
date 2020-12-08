@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <script>
+    const handleGetClick = async () => {
+        const userRef = await fetch('https://randomuser.me/api/');
+        const user = await userRef.json();
+        document.querySelector('#user').innerHTML = JSON.stringify(user);
+    };
+  </script>
+  <body>
+    <div id="user"></div> 
+    <button onclick="handleGetClick()">Get me a user</button>
+  </body>
+</html>

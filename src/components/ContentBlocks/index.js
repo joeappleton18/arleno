@@ -71,19 +71,19 @@ const Schedule = () => (
         </TableRow>
         <TableRow>
           <TableCell align="right">10</TableCell>
-          <TableCell align="right">Advanced Mongo Features</TableCell>
+          <TableCell align="right">Further Mongo Relations and Dynamic JavaScript</TableCell>
         </TableRow>
         <TableRow>
           <TableCell align="right">11</TableCell>
           <TableCell align="right">
             {" "}
-            Advanced Mongo Features
+            Unit Debrief
           </TableCell>
         </TableRow>
         <TableRow>
           <TableCell align="right">12</TableCell>
           <TableCell align="right">
-            Thinking About the Future of Databases and Assessment Support 
+            Thinking About the Future of Databases and Assessment Support
           </TableCell>
         </TableRow>
         <TableRow>

@@ -99,7 +99,7 @@ Let's dive in and created a MongoDB Atlas account. This is a straight forward pr
 - Run the seeder, `node seeder.js`
 - From your Atlas dash, click `clusters/collections`, and you should see that your wine database had been created and seeded!
 
-## Setting a Heroku Dyno
+## Setting up a Heroku Dyno
 
 Now we have a database set up, we are ready to deploy our application to Heroku. This is actually a very painless process: 
 
@@ -147,11 +147,11 @@ To make our application deployable, we only need to make a few tweaks:
 - To set an environment variable for our heroku project, we simply need to run `heroku config:set VAR_NAME=VAR_VALUE`. As discussed, you only need to set an environment variable for `MONGODB_URI`. This should be set to the URL connection that you used earlier in your seeder. Set it as follows, `heroku config:set MONGODB_URI=YOUR DB STRING`
 - We are now ready to deploy. First ensure you have committed the latest version of your work. Next, run `git push heroku master`. If all has gone well you should be able to access your application using the URL printed on your terminal output.
 
-## Task 2
+## Task 2 - Deploying your Web Application
 
 Follow the steps above to deploy your wine tasting application to Heroku.
 
-## Task 3
+## Task 3 - Set up a Project for Your Assessment
 
 Configure a new deployable project for your assessment. 
 
