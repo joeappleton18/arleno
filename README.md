@@ -13,7 +13,13 @@
 
 
 #### Essential Feature 
-
+- [ ]  As an admin, I should be able to deploy a static version of the site, so things run on hosting as opposed to functions
+- [ ] As a user, I should see a floating answer count box   ⬅ 
+- [ ]  As a user, I should see a summary of all answers 
+- [ ]  As a user, I should see a leader-board (this needs a little bit of thought)
+- [ ]  As a admin, I should be able to update and delete answers
+- [ ]  As a users, I should be able to agree or disagree with answers
+- [ ]  As a user, I want to be able to hover over avatars an reveal their names
 - [X] As a user, I should be able to register using my social platform of choice
 - [X] As a user, I should be able to update my profile
 - [X] As a user, I should be able to see, in real-time other users online
@@ -25,13 +31,8 @@
     - [X] As a user, I should not be able to create a blank answer
 - [X]  A a user, I should be able to up-vote answer to a question, only once 
 - [X]  As a user, I should see the most up-voted question first
-- [ ]  As a user, I should see a floating answer count box   
-- [ ]  As a user, I should see a summary of all answers 
-- [ ]  As a user, I should see a leader-board
-- [ ]  As a admin, I should be able to update and delete answers
-- [ ]
 #### Nice to Have
-- [ ]  As a user, I want to be able to hover over avatars
+- [ ]  As a user, I should be able to respond to answers
 - [ ]  As a user, I should be able to add gifs and emojis 
 - [ ]  As a user, I want to be able to discuss the answer 
 - [ ]  As a user, I want to be able to embed images into my answers
