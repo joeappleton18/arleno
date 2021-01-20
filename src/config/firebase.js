@@ -1,12 +1,12 @@
 const config = {
-  apiKey: "AIzaSyAmvFsjYHkYJookgBiMFGaE9nzHlTxQRIM",
-  authDomain: "social-annotations-development.firebaseapp.com",
-  databaseURL: "https://social-annotations-development.firebaseio.com",
-  projectId: "social-annotations-development",
-  storageBucket: "social-annotations-development.appspot.com",
-  messagingSenderId: "709020170632",
-  appId: "1:709020170632:web:859ae6cfd0964a53b8223d",
-  measurementId: "G-KQE3EY2NG8",
+  apiKey: "AIzaSyBObgBWsDZW8md_ltIBV1rZPal09A3_wFY",
+  authDomain: "computing-notes.firebaseapp.com",
+  databaseURL: "https://computing-notes-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "computing-notes",
+  storageBucket: "computing-notes.appspot.com",
+  messagingSenderId: "204342145260",
+  appId: "1:204342145260:web:f6fbda03d583a8fb5ef5c9",
+  measurementId: "G-SEP74RDBQL"
 };
 
 export default config;

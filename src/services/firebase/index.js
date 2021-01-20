@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import * as firebase from "firebase/app";
+import firebase from "firebase/app";
 import dynamic from "next/dynamic";
 import "firebase/auth";
 import "firebase/firestore";

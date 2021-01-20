@@ -10,10 +10,14 @@
 
 ## TODO  👷👷👷👷👷
 
+#### Essential Build and Management Research Features 
 
-
-#### Essential Feature 
 - [ ]  As an admin, I should be able to deploy a static version of the site, so things run on hosting as opposed to functions
+- [ ] As a admin, I should be able to deploy to a new version of the project
+
+
+#### Essential User Features
+
 - [ ] As a user, I should see a floating answer count box   ⬅ 
 - [ ]  As a user, I should see a summary of all answers 
 - [ ]  As a user, I should see a leader-board (this needs a little bit of thought)
