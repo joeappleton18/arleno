@@ -36,6 +36,7 @@
 - [X]  A a user, I should be able to up-vote answer to a question, only once 
 - [X]  As a user, I should see the most up-voted question first
 #### Nice to Have
+- [ ]  As a user, I should be able to toggle dark mode
 - [ ]  As a user, I should be able to respond to answers
 - [ ]  As a user, I should be able to add gifs and emojis 
 - [ ]  As a user, I want to be able to discuss the answer 
@@ -49,3 +50,11 @@
 ### Amazing to Have
 
 User can ask questions by selecting a range  https://github.com/timdown/rangy
+
+
+### PDF Integration Notes 
+
+[https://www.pdftron.com/documentation/web/get-started/react/](https://www.pdftron.com/documentation/web/get-started/react/) - Looks interesting, but not free or open source
+
+
+[https://github.com/wojtekmaj/react-pdf](PDF annotation library, seems fairly up-to-date)

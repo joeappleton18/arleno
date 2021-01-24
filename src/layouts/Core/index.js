@@ -238,6 +238,10 @@ const Core = ({ children }) => {
     </Snackbar>
   );
 
+  if (uiStore.hideMenu) {
+    return <Container> {children}</Container>
+  }
+
   return (
     <div className={classes.grow}>
       {" "}
@@ -264,6 +268,7 @@ const Core = ({ children }) => {
           {!drawerOpen && (
             <Typography className={classes.title} variant="h6" noWrap>
               {notesConfig.course}
+
             </Typography>
           )}
 
@@ -342,7 +347,7 @@ const Core = ({ children }) => {
         maxWidth={drawerOpen ? "md" : "lg"}
         id="content"
       >
-        <MDXProvider components={RemarkComponents}>{children}</MDXProvider>
+        <MDXProvider components={RemarkComponents}>  {children}</MDXProvider>
         <SnackBar />
       </Container>
     </div>
