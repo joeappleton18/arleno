@@ -55,6 +55,9 @@ User can ask questions by selecting a range  https://github.com/timdown/rangy
 ### PDF Integration Notes 
 
 [https://www.pdftron.com/documentation/web/get-started/react/](https://www.pdftron.com/documentation/web/get-started/react/) - Looks interesting, but not free or open source
+### Range selections
+
+https://github.com/aaronshaf/react-text-selection
 
 
 [https://github.com/wojtekmaj/react-pdf](PDF annotation library, seems fairly up-to-date)

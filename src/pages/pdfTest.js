@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import rangy from 'rangy'
+import 'rangy/lib/rangy-classapplier'
+import 'rangy/lib/rangy-highlighter'
 import { Document, Page, pdfjs } from 'react-pdf';
 import { makeStyles } from '@material-ui/core/styles';
 import { CallReceivedTwoTone } from '@material-ui/icons';
+
+
 
 const useStyles = makeStyles({
     pdfRoot: {
@@ -28,12 +33,22 @@ const options = {
 
 export default function Sample() {
     const [file, setFile] = useState('bitcoin.pdf');
+    const [highlighter, setHighlighter] = useState();
     const [numPages, setNumPages] = useState(null);
     const classes = useStyles();
 
 
     useEffect(() => {
         pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+        rangy.init();
+        const highlighterRef = rangy.createHighlighter();
+        highlighterRef.addClassApplier(rangy.createClassApplier("highlight", {
+            ignoreWhiteSpace: true,
+            tagNames: ["span", "a"]
+        }))
+        setHighlighter(highlighterRef);
+
+
     }, [])
 
     function onFileChange(event) {
@@ -50,6 +65,11 @@ export default function Sample() {
 
     function onSourceError(error) {
         console.log(error);
+
+    }
+
+    function handleMouseUp(e) {
+        highlighter.highlightSelection("highlight", { containerElementId: "document" });
     }
 
 
@@ -57,10 +77,11 @@ export default function Sample() {
     return (
         <div className="Example">
 
-            <div className="Example__container">
+            <div className="Example__container" id="document">
 
                 <div className={classes.pdfRoot}>
                     <Document
+                        onMouseUp={handleMouseUp}
                         onItemClick={(f) => {
                             debugger;
                         }}

@@ -15,6 +15,10 @@ import {
   MuiThemeProvider,
 } from "@material-ui/core/styles";
 
+/** Global css */
+import '../assets/main.css';
+
+
 export const defaultTheme = createMuiTheme({
   palette: {
     primary: {
