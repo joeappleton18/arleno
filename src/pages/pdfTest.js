@@ -7,7 +7,8 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import Popover from '@material-ui/core/Popover';
 import { makeStyles } from '@material-ui/core/styles';
 import { CallReceivedTwoTone } from '@material-ui/icons';
-
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import highlightSVG from '../assets/customIcons/highlight.svg';
 
 
 const useStyles = makeStyles({
@@ -17,6 +18,14 @@ const useStyles = makeStyles({
         justifyContent: 'center',
         width: '90vw',
         fontSize: '40px !important'
+    },
+
+    popOver: {
+        background: 'rgb(41, 41, 41)',
+        borderRadius: '3px',
+        width: '167px',
+        height: '40px',
+        display: 'flex',
     },
 
     page: {
@@ -40,6 +49,8 @@ export default function Sample() {
     const [anchorEl, setAnchorEl] = useState(null);
     const [anchorPosition, setAnchorPosition] = useState(null);
     const classes = useStyles();
+
+
 
 
     useEffect(() => {
@@ -99,9 +110,11 @@ export default function Sample() {
         <div className="Example">
 
             <Popover
+                elevation={1}
                 anchorReference="anchorPosition"
                 anchorPosition={anchorPosition}
                 id={id}
+
                 open={open}
                 onClose={handleClose}
                 anchorOrigin={{
@@ -113,7 +126,10 @@ export default function Sample() {
                     horizontal: 'center',
                 }}
             >
-                <Typography className={classes.typography}>The content of the Popover.</Typography>
+                <div className={classes.popOver}>
+                    <img src={highlightSVG} />
+                </div>
+
             </Popover>
 
 
