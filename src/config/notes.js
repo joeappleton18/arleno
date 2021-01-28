@@ -1,5 +1,5 @@
 const notes = {
-  course: "Research Methods Project",
+  course: "RM",
   sidebar:
     [
       "index",

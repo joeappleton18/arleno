@@ -61,3 +61,7 @@ https://github.com/aaronshaf/react-text-selection
 
 
 [https://github.com/wojtekmaj/react-pdf](PDF annotation library, seems fairly up-to-date)
+
+## Pop Over
+
+https://www.npmjs.com/package/react-tiny-popover

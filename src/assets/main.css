@@ -1,9 +1,11 @@
 .highlight {
     background-color: yellow;
+    opacity: 0.8;
 }
 
 .note {
     background-color: limegreen;
+    opacity: 0.5;
 }
 
 #summary {

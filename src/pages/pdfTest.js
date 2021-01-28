@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import rangy from 'rangy'
-import 'rangy/lib/rangy-classapplier'
-import 'rangy/lib/rangy-highlighter'
+import rangy from 'rangy';
+import 'rangy/lib/rangy-classapplier';
+import 'rangy/lib/rangy-highlighter';
+import Typography from '@material-ui/core/Typography';
 import { Document, Page, pdfjs } from 'react-pdf';
+import Popover from '@material-ui/core/Popover';
 import { makeStyles } from '@material-ui/core/styles';
 import { CallReceivedTwoTone } from '@material-ui/icons';
 
@@ -35,6 +37,8 @@ export default function Sample() {
     const [file, setFile] = useState('bitcoin.pdf');
     const [highlighter, setHighlighter] = useState();
     const [numPages, setNumPages] = useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [anchorPosition, setAnchorPosition] = useState(null);
     const classes = useStyles();
 
 
@@ -46,6 +50,7 @@ export default function Sample() {
             ignoreWhiteSpace: true,
             tagNames: ["span", "a"]
         }))
+
         setHighlighter(highlighterRef);
 
 
@@ -68,16 +73,52 @@ export default function Sample() {
 
     }
 
-    function handleMouseUp(e) {
-        highlighter.highlightSelection("highlight", { containerElementId: "document" });
+    function handleMouseUp(event) {
+
+        if (!window.getSelection().toString()) {
+            return;
+        }
+
+        const x = event.clientX;     // Get the horizontal coordinate
+        const y = event.clientY;     // Get the vertical coordinate
+        setAnchorPosition({ top: y - 40, left: x });
+        debugger;
+
+        //highlighter.highlightSelection("highlight", { containerElementId: "document" });
     }
 
+    function handleClose() {
+        setAnchorPosition(null);
 
+    }
+
+    const open = Boolean(anchorPosition);
+    const id = open ? 'simple-popover' : undefined;
 
     return (
         <div className="Example">
 
+            <Popover
+                anchorReference="anchorPosition"
+                anchorPosition={anchorPosition}
+                id={id}
+                open={open}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+                transformOrigin={{
+                    vertical: 'center',
+                    horizontal: 'center',
+                }}
+            >
+                <Typography className={classes.typography}>The content of the Popover.</Typography>
+            </Popover>
+
+
             <div className="Example__container" id="document">
+
 
                 <div className={classes.pdfRoot}>
                     <Document
