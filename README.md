@@ -65,3 +65,5 @@ https://github.com/aaronshaf/react-text-selection
 ## Pop Over
 
 https://www.npmjs.com/package/react-tiny-popover
+
+## Interesting post on Annotations

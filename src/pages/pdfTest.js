@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import rangy from 'rangy';
 import 'rangy/lib/rangy-classapplier';
 import 'rangy/lib/rangy-highlighter';
+import 'rangy/lib/rangy-serializer';
 import Typography from '@material-ui/core/Typography';
 import { Document, Page, pdfjs } from 'react-pdf';
 import Popover from '@material-ui/core/Popover';
@@ -9,9 +10,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { CallReceivedTwoTone } from '@material-ui/icons';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import highlightSVG from '../assets/customIcons/highlight.svg';
+import IconButton from '@material-ui/core/IconButton';
+import { docco } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 
-
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     pdfRoot: {
         marginTop: '2rem',
         display: 'flex',
@@ -23,9 +25,21 @@ const useStyles = makeStyles({
     popOver: {
         background: 'rgb(41, 41, 41)',
         borderRadius: '3px',
-        width: '167px',
         height: '40px',
         display: 'flex',
+        alignItems: 'center',
+        overflow: 'hidden'
+    },
+
+    highlightSVG: {
+
+        width: '25px',
+        height: '25px',
+
+    },
+
+    margin: {
+        margin: theme.spacing(1),
     },
 
     page: {
@@ -34,7 +48,7 @@ const useStyles = makeStyles({
         maxWidth: 'calc(~"100% - 2em")',
         boxShadow: '0 0 8px rgba(0, 0, 0, .5);'
     }
-});
+}));
 
 
 const options = {
@@ -50,6 +64,7 @@ export default function Sample() {
     const [anchorPosition, setAnchorPosition] = useState(null);
     const classes = useStyles();
 
+    const annotations = [{ range: "0/21/1/0/0/0/1/1/3/0/0/0/1:31,0/1/21/1/0/0/0/1/1/3/0/0/0/1:27{a7f7209b}" }];
 
 
 
@@ -84,6 +99,15 @@ export default function Sample() {
 
     }
 
+    function handleHighlight() {
+        setAnchorPosition(null);
+        // highlighter.highlightSelection("highlight", { containerElementId: "document" });
+        var selObj = rangy.getSelection();
+        var sel = rangy.serializeSelection(selObj, true);
+        document.querySelector('#range').value = sel;
+
+    }
+
     function handleMouseUp(event) {
 
         if (!window.getSelection().toString()) {
@@ -93,9 +117,6 @@ export default function Sample() {
         const x = event.clientX;     // Get the horizontal coordinate
         const y = event.clientY;     // Get the vertical coordinate
         setAnchorPosition({ top: y - 40, left: x });
-        debugger;
-
-        //highlighter.highlightSelection("highlight", { containerElementId: "document" });
     }
 
     function handleClose() {
@@ -103,12 +124,19 @@ export default function Sample() {
 
     }
 
+    function handleDeserialLIse() {
+
+        //rangy.deserializeSelection(document.querySelector('#range').value);
+        //highlighter.deserialize(document.querySelector('#range').value);
+    }
+
     const open = Boolean(anchorPosition);
     const id = open ? 'simple-popover' : undefined;
 
     return (
         <div className="Example">
-
+            <button onClick={handleDeserialLIse}> unserialise me</button>
+            <input id="range"></input>
             <Popover
                 elevation={1}
                 anchorReference="anchorPosition"
@@ -124,10 +152,13 @@ export default function Sample() {
                 transformOrigin={{
                     vertical: 'center',
                     horizontal: 'center',
+                    alignItems: 'center'
                 }}
             >
                 <div className={classes.popOver}>
-                    <img src={highlightSVG} />
+                    <IconButton aria-label="delete" onClick={handleHighlight} className={classes.margin}>
+                        <img src={highlightSVG} className={classes.highlightSVG} />
+                    </IconButton>
                 </div>
 
             </Popover>
@@ -138,6 +169,7 @@ export default function Sample() {
 
                 <div className={classes.pdfRoot}>
                     <Document
+                        id="document"
                         onMouseUp={handleMouseUp}
                         onItemClick={(f) => {
                             debugger;

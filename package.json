@@ -14,6 +14,7 @@
     "shell": "npm run build && firebase functions:shell",
     "predeploy": "npm --prefix \"$PROJECT_DIR\" install && npm --prefix \"$PROJECT_DIR\" run build",
     "deploy": "firebase deploy --only functions,hosting",
+    "deploy:rules": "firebase deploy --only firestore:rules",
     "logs": "firebase functions:log",
     "test:watch": "jest --watch"
   },
@@ -52,6 +53,7 @@
     "react-firebaseui": "^4.1.0",
     "react-hook-form": "^6.8.6",
     "react-pdf": "^5.1.0",
+    "react-pdf-highlighter": "https://github.com/chaser92/react-pdf-highlighter.git",
     "react-social-icons": "^4.1.0",
     "react-syntax-highlighter": "^13.5.3",
     "react-text-selection-popover": "^1.3.2",
