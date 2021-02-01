@@ -3,7 +3,9 @@ import rangy from 'rangy';
 import 'rangy/lib/rangy-classapplier';
 import 'rangy/lib/rangy-highlighter';
 import 'rangy/lib/rangy-serializer';
+import 'rangy/lib/rangy-textrange';
 import Typography from '@material-ui/core/Typography';
+
 import { Document, Page, pdfjs } from 'react-pdf';
 import Popover from '@material-ui/core/Popover';
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,6 +14,8 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import highlightSVG from '../assets/customIcons/highlight.svg';
 import IconButton from '@material-ui/core/IconButton';
 import { docco } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
+import { useFirebase } from '../services/firebase/';
+import { useStores } from "../stores/";
 
 const useStyles = makeStyles((theme) => ({
     pdfRoot: {
@@ -63,10 +67,21 @@ export default function Sample() {
     const [anchorEl, setAnchorEl] = useState(null);
     const [anchorPosition, setAnchorPosition] = useState(null);
     const classes = useStyles();
+    const fb = useFirebase();
+    const user = useStores().user;
 
-    const annotations = [{ range: "0/21/1/0/0/0/1/1/3/0/0/0/1:31,0/1/21/1/0/0/0/1/1/3/0/0/0/1:27{a7f7209b}" }];
+
+    const documentID = '8di5dfQGLorWwdpOc3DV';
 
 
+
+    const getAnnotations = async () => {
+        const annotations = [];
+        const annotationsRef = await fb.document.readAnnotations(documentID);
+        annotationsRef.forEach(annotationRef => annotations.push(annotationRef.data()));
+        annotations.forEach(annotation => deSerialise(annotation));
+
+    }
 
     useEffect(() => {
         pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -88,6 +103,7 @@ export default function Sample() {
 
     function onDocumentLoadSuccess({ numPages: nextNumPages }) {
         setNumPages(nextNumPages);
+        getAnnotations();
     }
 
     function onLoadError(error) {
@@ -99,12 +115,49 @@ export default function Sample() {
 
     }
 
-    function handleHighlight() {
+
+
+    async function handleHighlight() {
         setAnchorPosition(null);
-        // highlighter.highlightSelection("highlight", { containerElementId: "document" });
-        var selObj = rangy.getSelection();
-        var sel = rangy.serializeSelection(selObj, true);
-        document.querySelector('#range').value = sel;
+        highlighter.highlightSelection("highlight", { containerElementId: "document" });
+        // var selObj = rangy.getSelection();
+        // var sel = rangy.serializeSelection(selObj, true);
+        // document.querySelector('#range').value = sel;
+        /// 
+        const holder = document.querySelector('#document');
+        const sel = rangy.getSelection();
+        let selectedText = sel.toString();
+        const parentRange = rangy.createRange();
+        parentRange.selectNodeContents(holder);
+        const findRange = rangy.createRange();
+        const findOptions = {
+            withinRange: parentRange
+        };
+
+
+        let findCount = 0;
+        const selToSerialzie = {
+            Text: selectedText,
+            FindIndex: -1
+        };
+
+        searchTerm = new RegExp(selectedText.replaceAll(" ", "(.|\s)*"));
+        debugger;
+
+        while (findRange.findText(selectedText, findOptions)) {
+            const intersects = findRange.intersection(sel._ranges[0]);
+
+            if (intersects && intersects !== null) {
+                selToSerialzie.FindIndex = findCount;
+                debugger;
+                break;
+            }
+            findRange.collapse(false);
+            findCount++;
+        }
+
+        const annotation = { ...{ range: selToSerialzie }, ...{ type: 'highlight', uid: user.user.uid } }
+        await fb.document.createAnnotation(annotation, documentID);
 
     }
 
@@ -124,10 +177,41 @@ export default function Sample() {
 
     }
 
-    function handleDeserialLIse() {
+    function deSerialise(annotation) {
+        /*const selection = {
+            FindIndex: 0,
+            Text: "   another   with"
+        }*/
 
-        //rangy.deserializeSelection(document.querySelector('#range').value);
-        //highlighter.deserialize(document.querySelector('#range').value);
+        const selection = annotation.range;
+
+
+        const doc = document.querySelector('#document');
+        const baseSelection = rangy.getSelection(doc);
+        const selItem = selection;//JSON.parse(selection);
+        baseSelection.removeAllRanges();
+        const parentRange = rangy.createRange();
+        parentRange.selectNodeContents(doc);
+
+        const findRange = rangy.createRange();
+        const findOptions = {
+            withinRange: parentRange,
+            characterOptions: true
+        };
+        let findCount = 0;
+
+        while (findRange.findText(selItem.Text, findOptions)) {
+            if (findCount === selItem.FindIndex) {
+                //todo -- do something with the range;
+                baseSelection.setSingleRange(findRange);
+                highlighter.highlightSelection("highlight", { containerElementId: "document" });
+                baseSelection.removeAllRanges();
+                return findRange;
+            }
+            findRange.collapse(false);
+            findCount++;
+        }
+        return null;
     }
 
     const open = Boolean(anchorPosition);
@@ -135,8 +219,6 @@ export default function Sample() {
 
     return (
         <div className="Example">
-            <button onClick={handleDeserialLIse}> unserialise me</button>
-            <input id="range"></input>
             <Popover
                 elevation={1}
                 anchorReference="anchorPosition"

@@ -67,3 +67,27 @@ https://github.com/aaronshaf/react-text-selection
 https://www.npmjs.com/package/react-tiny-popover
 
 ## Interesting post on Annotations
+
+
+
+## Possible solution 
+
+![an idea about selecting text](https://github.com/timdown/rangy/issues/438)
+
+
+# Perhaps a better highlighting lib
+https://bvaughn.github.io/react-highlight-words/
+
+
+this looks good 
+
+http://coolwanglu.github.io/pdf2htmlEX/ - seems to work well and is used by the below:
+
+
+Here is a node wrapper - https://www.npmjs.com/package/pdftohtmljs
+
+convert to html !!! (https://cloudconvert.com/pdf-to-html) a cloud option
+
+## Like Products
+
+https://glose.com/what-is-glose

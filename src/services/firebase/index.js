@@ -8,10 +8,12 @@ import "firebase/analytics";
 
 
 
+
 import authService from "./authService";
 import userService from "./userService";
 import presenceService from "./presenceService";
 import questionService from './questionService';
+import documentService from './documentService'
 
 const analytics = dynamic(() => import("firebase/analytics"));
 
@@ -59,6 +61,12 @@ class firebaseService {
       firebase.firestore.FieldValue.serverTimestamp(),
       this
     );
+
+    this.document = new documentService(
+      db,
+      firebase.firestore.FieldValue.serverTimestamp(),
+      this
+    )
   }
 }
 

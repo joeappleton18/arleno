@@ -9,6 +9,7 @@ import { FirebaseProvider, useFirebase } from "./../services/firebase";
 import { StoresProvider, useStores } from "./../stores";
 import CoreLayout from "../layouts/Core";
 import notesConfig from "../config/notes";
+
 import {
   createMuiTheme,
   Theme,
@@ -17,6 +18,7 @@ import {
 
 /** Global css */
 import '../assets/main.css';
+import 'react-pdf-highlighter/build/style/All.css'
 
 
 export const defaultTheme = createMuiTheme({

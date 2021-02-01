@@ -29,8 +29,8 @@ service cloud.firestore {
         // a user can create their own annotations
 
         match /documents/{documentId}/annotations/{anotationID} {
-            allow update, delete, create: if request.auth.uid == request.data.uid;
-            allow get:  if request.auth.uid !=  null; 
+            allow update, delete, create: if request.auth.uid == request.resource.data.uid;
+            allow read:  if request.auth.uid !=  null; 
         }
 
     }
