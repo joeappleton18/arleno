@@ -91,3 +91,14 @@ convert to html !!! (https://cloudconvert.com/pdf-to-html) a cloud option
 ## Like Products
 
 https://glose.com/what-is-glose
+
+
+### Fuzzy annotation
+
+https://web.hypothes.is/blog/fuzzy-anchoring/
+
+https://www.youtube.com/watch?v=FJyqfRcyYIQ&ab_channel=CodeGenius3
+
+Turn the dom to text 
+Fuzz match 
+Traverse the dom and find the starting text node 

@@ -18,7 +18,7 @@ import {
 
 /** Global css */
 import '../assets/main.css';
-import 'react-pdf-highlighter/build/style/All.css'
+//import 'react-pdf-highlighter/build/style/All.css'
 
 
 export const defaultTheme = createMuiTheme({

@@ -3,6 +3,11 @@
     opacity: 0.3;
 }
 
+hypothesis-highlight {
+    background-color: #0084ff;
+    opacity: 0.3;  
+}
+
 .note {
     background-color: limegreen;
     opacity: 0.5;

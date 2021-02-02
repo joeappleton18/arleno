@@ -5,6 +5,15 @@ import 'rangy/lib/rangy-highlighter';
 import 'rangy/lib/rangy-serializer';
 import 'rangy/lib/rangy-textrange';
 import Typography from '@material-ui/core/Typography';
+import {
+    getBoundingClientRect,
+    getHighlightsContainingNode,
+    highlightRange,
+    removeHighlights,
+    removeAllHighlights,
+    setHighlightsFocused,
+    setHighlightsVisible,
+} from '../utils/highlighter';
 
 import { Document, Page, pdfjs } from 'react-pdf';
 import Popover from '@material-ui/core/Popover';
@@ -161,6 +170,12 @@ export default function Sample() {
 
     }
 
+    function handleDeserialise() {
+        const selection = "10/1/2/0/0/0/1/3/0/0/0/1:0,12/1/2/0/0/0/1/3/0/0/0/1:0{6d8be6cf}";
+        const range = rangy.deserializeSelection(selection);
+        debugger;
+    }
+
     function handleMouseUp(event) {
 
         if (!window.getSelection().toString()) {
@@ -170,6 +185,10 @@ export default function Sample() {
         const x = event.clientX;     // Get the horizontal coordinate
         const y = event.clientY;     // Get the vertical coordinate
         setAnchorPosition({ top: y - 40, left: x });
+        const range = window.getSelection().getRangeAt(0);
+        highlightRange(range);
+        const selection = rangy.serializeSelection();
+        handleDeserialise();
     }
 
     function handleClose() {
