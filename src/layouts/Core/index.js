@@ -344,7 +344,7 @@ const Core = ({ children }) => {
           [classes.contentShift]: drawerOpen,
           [classes.container]: true,
         })}
-        maxWidth={drawerOpen ? "md" : "lg"}
+        maxWidth={drawerOpen ? "md" : "md"}
         id="content"
       >
         <MDXProvider components={RemarkComponents}>  {children}</MDXProvider>

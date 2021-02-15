@@ -7,6 +7,37 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
+
+
+const SessionSchedule = ({sc}) => (
+  
+  <TableContainer component={Paper}>
+  <Table aria-label="simple table">
+    <TableHead>
+      <TableRow>
+        <TableCell align="left">Time (mins)</TableCell>
+        <TableCell align="left">Activity</TableCell>
+      </TableRow>
+    </TableHead>
+    <TableBody>
+   {
+     sc.map(s => (
+      <TableRow>
+         <TableCell align="left">
+         {s.time} 
+        </TableCell>
+        <TableCell align="left">
+         {s.activity}
+        </TableCell>
+      </TableRow>
+     ))
+   }
+    </TableBody> 
+  </Table>
+</TableContainer>
+
+);
+
 const Schedule = () => (
   <TableContainer component={Paper}>
     <Table aria-label="simple table">
@@ -166,4 +197,4 @@ const Schedule = () => (
   </TableContainer>
 );
 
-export { Schedule };
+export { Schedule, SessionSchedule };

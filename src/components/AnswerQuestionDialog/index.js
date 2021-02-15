@@ -168,9 +168,11 @@ const AnswerQuestionDialog = (props) => {
 
 
     const setQuestion = async (fb, id, user, question) => {
-      if (!fb.question) return
-      const questionRef = await fb.question.read(id);
 
+      // we place this line in to check that the question service exists 
+      if (!fb.question) return
+
+      const questionRef = await fb.question.read(id);
       if (!questionRef.exists) {
         const qx = {
           userName: user.firstName + user.lastName,
@@ -190,6 +192,7 @@ const AnswerQuestionDialog = (props) => {
         }
 
       } else { // in this instance the question exists 
+        debugger;
         const qx = await questionRef.data();
         setPhotoURL(qx.photoURL);
         setUserName(qx.userName);
@@ -203,7 +206,7 @@ const AnswerQuestionDialog = (props) => {
 
       }
     }
-    debugger;
+
     setQuestion(fb, id, userStore.user, question, children);
   }, [id, fb, userStore.user, question, children])
 

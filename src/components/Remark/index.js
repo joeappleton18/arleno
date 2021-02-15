@@ -57,7 +57,7 @@ const RemarkComponents = {
 
   p: (() => {
     const P = (props) => (
-      <Typography style={{ marginTop: "0.8%" }} variant="body1" {...props} />
+      <Typography style={{ marginTop: "2%" }} variant="body1" {...props} />
     );
     return memo(P);
   })(),
@@ -125,9 +125,10 @@ const RemarkComponents = {
           padding: 8,
           color: "grey",
           lineHeight: 1,
+          background: '#B3E5FC',
           margin: "1% 0% 1% 0%",
         }}
-        variant="body1"
+        variant="body2"
         {...props}
       /></div>
     );

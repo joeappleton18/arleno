@@ -1,183 +1,203 @@
 import MuiAlert from "@material-ui/lab/Alert";
 import AnswerQuestionDialog from "../components/AnswerQuestionDialog";
-import {questionIDs} from '../config/questions';
+import { questionIDs } from "../config/questions";
+import Box from "@material-ui/core/Box";
+import { SessionSchedule } from "../components/ContentBlocks";
 
+# Week 2 (What Makes a Good Project)
 
-# Week 2 (Exploring Node, Express and Templates)
+<center>
+  <img src="https://firebasestorage.googleapis.com/v0/b/computing-notes/o/images%2Ffirst-university.png?alt=media&token=1833a3cb-40da-4e27-aadc-1b9826104c49" />
+</center>
+<em>
+  {" "}
+  Figure 1: The university of Bologna. The world’s oldest university. Founded in
+  1066.{" "}
+</em>
+<p>
+  <a href="https://firebasestorage.googleapis.com/v0/b/computing-notes/o/presentations%2Fweek-2.pptx?alt=media&token=92e5f9a1-d2f1-4d06-a50b-1004918ac772">
+    {" "}
+    Presentation{" "}
+  </a>
+</p>
+<br />
 
-<MuiAlert severity="info">
+## Practical session schedule
+
+<SessionSchedule
+  sc={[
+    { time: "0 - 10", activity: "Students: Arrive" },
+    {
+      time: "10 - 20",
+      activity:
+        "Tutor: Recaps what makes a good project and goes over grading sheet and introduce task 1, also gets students to sign up to the notes system",
+    },
+    {
+      time: "20 - 60",
+      activity: "Students: Complete task 1",
+    },
+    {
+      time: "60 - 70",
+      activity: "Tutor: Debrief Task",
+    },
+    {
+      time: "70 - 80",
+      activity: "Tutor: Talks about the project selection framework ",
+    },
+    {
+      time: "70 - 80",
+      activity: "Tutor: Talks about the project selection framework",
+    },
+    {
+      time: "80 - 110",
+      activity: "Students: Complete task 2",
+    },
+    { time: "110 - 120", activity: "Tutor: Debrief" },
+  ]}
+/>
+
+## Introduction
+
+Hello, and welcome to week 2. This week we are going to address an extremely important question:
+
+#### What makes a good final year project?
+
+The answer to this question could have a meaningful impact on, not only this unit but also your final year of studies. While, primarily, we are focusing on a smooth transition into the final year project, much of your assessed work in the final year will be project based. So, in the slightly misquoted words of Ron Burgundy, being able to deliver an good academic project, is “kind of a big deal”. In fact, let’s reframe this question to:
+
+#### How can I deliver a good academic project?
+
+## But wait! Why even do a research project in the first place?
+
+Some of you may be thinking this, and it is actually a good question. To answer it, I briefly want to consider the history of higher education.
+
+Higher education, in its’ current form, can be traced back to 1066 and the university of Bologna. Initially higher education was focused on training a minority of individuals to work in specific careers (e.g., legal and theological).
+
+Universities remained the domain of vocational training until the 1800s. Around this time, the German philosopher Wilhelm von Humboldt had a vision that universities should go beyond technically training individuals for specific careers. Instead, they should be researched focused centres of knowledge creation. As such, universities should actively train students in the art of research and knowledge creation. British universities, to this modern day, to varying degrees, follow this model.
+
+While most of you won’t follow a research focused career, Humberbolt argues that:
+
+> > “People obviously cannot be good craftworkers, merchants, soldiers or businessmen unless, regardless of their occupation, they are good, upstanding and – according to their condition well-informed human beings and citizens.” (Humberbolt, cited in Flittner and Giel 1969)
+
+**It is this idea of being a ‘well-informed’ human being that compels us to keep some degree of research orientated focus in a largely vocational degree.**
+
+## How to form a good relationship with your supervisor
+
+<img src="https://firebasestorage.googleapis.com/v0/b/computing-notes/o/images%2Fgood-supervisor.png?alt=media&token=92e36673-2287-462b-8359-66b89334a9bd" />
+
+<em>
+  {" "}
+  Figure 2: Lyne and Seaman's (2018) model of good dissertation supervision{" "}
+</em>
+
+For your final year project, you will be assigned a supervisor. The idea is you work with the supervisor to produce your project. As you can imagine, being able to work well with this supervisor can be helpful!
+
+Above, is a diagram that was formulated by Lyne and Seaman's (2018). The diagram was formulated after interviewing eight undergraduate project supervisors about the type of student-supervisor interactions that lead to a good project experience. As you can see, the focus needs to be on fostering independence, and supporting students to grow in this way.
+
+> > What is key is that you take ownership of your project, and the supervisor acts more like a guide.
+
+They key take away points, from my own experience and the research discussed above it's possible to summarise some key points:
+
+- Always turn up to meetings
+- Supervision is guidance, not teaching.
+- A supervisor should foster independence and a growth mindset, a student should strive for this
+
+## Choosing a project
+
+It all starts here and trust me when I say “choosing a project is the most important part of the process” – that’s why we are starting now!
+
+With the gravity of the situation established, here are the key points to consider when choosing a project:
+
+> > - Does the project topic interest you?
+
+- Can you align the problem that you are solving to good quality academic sources?
+- Does the solution to the problem relate to your degree?
+- Will the solution to the problem assist with your future career aspirations?
+- Is there a way to attempt to evaluate the degree that your solution solves the problem you specified?
+
+I encourage you to use the above questions as a framework for choosing your project. Currently, you may not be able to answers them all; however, by the end of this module you’ll be able to confidently address them.
+
+In closing this section, I want to reiterate that choosing a project can be tricky. However, try to avoid flitting from one idea to another. Once you have pulled the trigger, try and stick with your idea.
+
+## The overall picture (Presenting your work)
+
+<img src="https://firebasestorage.googleapis.com/v0/b/computing-notes/o/images%2Fprocess.png?alt=media&token=e9129393-af8d-4920-9c9f-a3d380f96ff2" />
+
+<em> Figure 3: The scientific process. </em>
+
+Imagine reading a book, or for that matter. With much anticipation you thumb to page one and you are confronted with this:
+
+> > This project is a suggested solution to the problem above stated. Technology and Tourism have worked so well together over the years that make it hard for more local attractions to have a space on the city’s general attraction brochure. It can be the fact that most of them really don’t shelter a huge amount of people nor can be commercialized, but each city has their beauty and small hidden gems that really deserve to be seen by the more curious tourist
+
+Above, is an excerpt from a real project. However, on reading it does not tell me a story of what has been accomplished. Moreover (I like this word!), it is very poorly written. We will work of paragraph, and argument construction in block 3. However, the bigger issue with this project, and others like it, is little has been accomplished in terms of creating a technical artifact and testing the said artifact.
+
+What is key, is the report is reporting on what you have actually done. As supervisors, we are marking you **on what you have done**. As such, the report, must show us a clear story that presents the steps you took to follow the scientific method.
+
+In closing, the story is key when it comes to presenting your project. It's a story of what you have done!
+
+## Task 1
+
+<MuiAlert severity="success">
+  
+  
   <AlertTitle>
-    <strong> A Key Point </strong>
+    <strong> Task 1 - Accessing Projects</strong>
   </AlertTitle>
-  This module is not about taking an in-depth exploration into developing web applications.
-  Rather, I want to show you the basics to allow you to expose an interface for users
-  to be able to interact with your database.
+
+
+For this task I want you to wear the shoes of a supervisor and try to mark some past projects. In your groups, briefly skim read and discuss the three projects. Next, vote on what you think the marks for each project should be.
+
+First, <a href="https://firebasestorage.googleapis.com/v0/b/computing-notes/o/files%2FCDA600_AE2.docx?alt=media&token=b39f6f39-5657-4983-83bb-163edc63b2ce">Look at the marking schema</a>. Then read, and vote on each project.
+
+**1. <a href="https://firebasestorage.googleapis.com/v0/b/computing-notes/o/files%2Fproject-1.docx?alt=media&token=28842225-eed3-43ae-ad56-4a619b7d3f5f">Project 1</a>**
+
+<iframe
+  src="https://pollev-embeds.com/ranking_polls/o3hFDdyueY14yKFLmhnuF/respond"
+  width="800px"
+  height="600px"
+></iframe>
+
+**2. <a href="https://firebasestorage.googleapis.com/v0/b/computing-notes/o/files%2Fproject%202.pdf?alt=media&token=6836026b-ec05-49db-98f0-4c2f8223f8fa">Project 2</a>**
+
+<iframe
+  src="https://pollev-embeds.com/ranking_polls/4c4wfdoqmCUdGDIV3s3dC/respond"
+  width="800px"
+  height="600px"
+></iframe>
+
+**3. <a href="https://firebasestorage.googleapis.com/v0/b/computing-notes/o/files%2Fproject-3.docx?alt=media&token=4c7df09b-1fb3-4e6c-8e67-e7b589dd58fd">Project 3</a>**
+
+<iframe
+  src="https://pollev-embeds.com/ranking_polls/X3j2qlQW2bj5br0yShNmi/respond"
+  width="800px"
+  height="600px"
+></iframe>
+
 </MuiAlert>
 
-<AnswerQuestionDialog question={"Outline Descartes’ conceivability argument for substance dualism."} id={questionIDs.find(q => q.count === 1).id}>
 
-  This week we are going to somewhat depart, at least temporarily, from looking specifically at databases and consider how we can serve web HTML pages from a Node application. I appreciate this may seem a little odd. After all, this is a database unit.
+## Task 2
 
+<MuiAlert severity="success">
+  <AlertTitle>
+    <strong> Task 2 - Coming up with a project  idea</strong>
+  </AlertTitle>
+
+
+<AnswerQuestionDialog
+  question={
+    "In your groups, use the framework above (the 6 questions), to come up with a sample project idea for one of your team members."
+  }
+  id={questionIDs.find((q) => q.count === 1).id}
+>
+  In your groups, use the framework above (the 6 questions), to come up with a
+  sample project idea for one of your team members.
 </AnswerQuestionDialog>
 
+</MuiAlert>
 
-My rationale for taking the approach is a common technique in taking a NoSql approach to application development is to allow the intended user interactions with our application to guide the data model. In other words, we structure our data such that it is convenient for our future uses. As such, this week we are going to laying out a sample application and consider how our users will interact with it.
 
-## Simplifying HTTP requests
+## References and reading
 
-Recall, last week, we used Node's inbuilt HTTP module to create a basic web server and respond to HTTP requests. This week, we are going to be exploring how we can simplify the process of managing HTTP requests through the use of the node package express.
+I recommend, to appreciate the supervisor-student relationship, you read the below paper:
 
-According to the the [express documentation](http://expressjs.com/), "express is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications". In other words, it provides a lightweight framework to assist in the development of web applications.
-
-## An example using express
-
-```js
-const express = require("express");
-const app = express();
-const port = 3000;
-
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
-```
-
-The above example uses the express package to create a new web-server that listens on port 3000 (l.9). We can then set up listeners to respond to any given HTTP request. Above, we listen for a get request to the base URL of our server (l.5).
-
-## Task 1 Using Express
-
-- Create a new folder called `week_2`
-- Open VSCode pointing to the location of your `week_2` folder
-- Within `week_2`, create a file called `index.js`
-- Run the command `npm init -y`
-- We can now install exspress, `npm install express --save`
-- To make our lives a little easier, we are also going to install nodemon. Run `npm install nodemon --save-dev`. Nodedemon is a useful tool that recompiles our applications in realtime. This means we don't need to keep running `node 'our application name'` to reflect our latest changes.
-- To use nodedemon add the following the scripts section of your `package.json` file:
-
-```JSON
- "scripts": {
-    "dev": "nodemon index.js"
-  }
-```
-
-- Next, type in the sample application into `index,js`
-- To run the application execute the following terminal command `npm run dev`.
-
-## Serving HTML files
-
-Express makes serving static files easy. For instance, let's assume that we are making simple website. When we receive an HTTP get request to the root path of our website we would want to return an `index.html` file (see sample 2 below)
-
-### Sample 2
-
-```
-const express = require("express");
-const path = require("path");
-
-const app = express();
-const port = 3000;
-
-app.get("/", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "index.html"));
-});
-
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
-
-```
-
-Above, we return an `index.html` file when a request is received to the root of our website (l.12).
-
-## Task 2 Resolving Static Assets
-
-- Within your week 2 folder create 2 or 3 html pages. Place an `h1` in each page that identifies the page, e.g. `<h1>Contact </h1>`. Work out how serve these pages. For instance, when we visit `http://locahost:3000/contact` contact.html should be rendered.
-- Can you work out what the `path.resolve(__dirname, "index.html")` outputs? See if you can log to the console its output.
-
-## Serving Static assets
-
-Currently we cannot serve static assets such as CSS and images in our HTML pages. In oder to configure this functionality we need to use some middleware. Middleware can be considered functionality that runs between an HTTP request being received and a response being sent. Below, we instruct express to serve assets from a folder in our root directory called `public` (l.4).
-
-```js
-const express = require("express");
-const path = require("path");
-const app = express();
-app.use(express.static(path.join(__dirname, "public")));
-```
-
-Above, express looks up the files relative to the static directory, so the name of the static directory is not part of the URL. For instance, if we place the image foo.jpeg in the `public` folder we would reference it in `index.html` like this, `<img src="foo.jpeg" />`.
-
-## Task 3 Static Assets
-
-Can you find and insert a picture of Rick Ashley into one of your HTML pages.
-
-## EJS Templates
-
-While serving plain HTML files provides us with a means to present a website, we do not have much in the way of flexibility and sophistication. For instance, how do we inject data into our html pages. Furthermore, how can we sections of our html pages (e.g. the header and the footer). This is where templating languages can help us. We are going to explore one such language, [https://ejs.co/#about], in this class.
-
-EJS is simple to use. First, we need to install it - `npm install ejs`. We can now tell express to render our html pages using ejs. Below is a full example.
-
-```js
-const express = require("express");
-const path = require("path");
-const app = express();
-const port = 20000;
-app.set("view engine", "ejs");
-app.use(express.static(path.join(__dirname, "public")));
-
-app.get("/", (req, res) => {
-  res.render("index");
-});
-
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
-```
-
-The express will assume that we have an `index.ejs` file in a `views` folder which lives in the root directory of your project.
-
-EJS, is a superset of HTML. This means, to get the above example to work, we can simply rename our index.html file to index.ejs and move it to a views folder.
-
-Using EJS, we now have some dynamic capabilities within our HTML views. The first thing you might want to do is extract your header into a shared folder such as `views/common/header.ejs` we could then share it amongst our pages as follows:
-
-```html
-<!-- views/index.ejs -->
-...
-<body>
-  <%- include('common/header'); %>
-  <h1>Home Page</h1>
-  <img src="images/test.jpeg" alt="wtf" />
-</body>
-...
-```
-
-```html
-<!-- views/common/header.ejs -->
-<ul>
-  <li><a href="home">Home</a></li>
-  <li><a href="about"></a>About</li>
-  <li><a href="contact">Contact</a></li>
-</ul>
-```
-
-## Task 4 Developing The Pages For An Application
-
-We've reached the main task for this week. Over the next several weeks we are going to be making a wine tasting application. You will be familiar with the wine [tasting data set from last week](https://www.kaggle.com/zynicide/wine-reviews). It contains 130k tastings; however, interestingly there are only around 25 wine tasters.
-
-Your main task for this week is to further explore the dataset and mock up a 4 page website using ejs templates that could be used to present the wine data in a meaningful way. **Note**, at this point we are not processing any data. Rather, we are mocking up what the data could look like. [You can use my example site as a starting point](https://ssu-my.sharepoint.com/:u:/g/personal/joe_appleton_solent_ac_uk/EZL8OjP32PlArSd4JWv2bNQBYZh9uaV1wbGABTGn3rjrQQ?e=afqOKI). Notice how I am using Twitter Bootstrap to quickly generate a site. This is something you are more than welcome to do for your assessment. [You can read more about Bootstrap on the official site](https://getbootstrap.com/).
-
-To begin with you can start to break your application down as below:
-
-```js
-<%- include('header'); -%>
-<h1>
-  Title
-</h1>
-<p>
-  My page
-</p>
-<%- include('footer'); -%>
-
-```
+[Roberts, Lynne D., and Kristen Seaman. 2018. “Good Undergraduate Dissertation Supervision: Perspectives of Supervisors and Dissertation Coordinators.” International Journal for Academic Development 23(1): 28–40.](https://www.tandfonline.com/doi/pdf/10.1080/1360144X.2017.1412971?casa_token=ZPfeLZb1YXAAAAAA:Aj2YJglrZhL2zE55HbM_skeD3dpzBNuGSi7uOv-t5OM5wDugmxGIfnJAfUZZ5rqPJv85byuM)

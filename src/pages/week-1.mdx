@@ -1,257 +1,198 @@
 import Table from "@material-ui/core/Table";
+import MuiAlert from "@material-ui/lab/Alert";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import MuiAlert from "@material-ui/lab/Alert";
+import { SessionSchedule } from "../components/ContentBlocks";
 
-# Week 1 (Introduction to NodeJS and MongoDB)
+# Week 1 (Introduction to Research)
 
-## Relational Database
+<center>
+  <img src="https://firebasestorage.googleapis.com/v0/b/computing-notes/o/images%2Ftrump.png?alt=media&token=388858b9-5f97-4adf-a728-c4f786eb59b4" />
+</center>
 
-In your first year, you were introduced to the concept of relational databases. In a relational database, data is stored tables. Conceptually, the data is stored much in the same way as a spreadsheet. For instance, a student table could something like this:
+<em>
+  {" "}
+  Figure 1: If projects do indeed improve in quality, I think we should get
+  these hats printed{" "}
+</em>
 
-| #   | Student Name |
-| --- | ------------ |
-| 1   | Joe Appleton |
-| 2   | John Smith   |
+<br />
 
-> > A simple database table. The values that you can place into the student's table are governed by a schema, that you design first.
+<a href="https://firebasestorage.googleapis.com/v0/b/computing-notes/o/presentations%2Fweek-1.pptx?alt=media&token=baa51931-94c4-4a9d-8417-2d268658a73a">
+  {" "}
+  Lecture Presentation{" "}
+</a>
 
-| Field | Type    | Null | Key |
-| ----- | ------- | ---- | --- |
-| 1     | int(11) | NO   | PRI |
-| 2     | text    | NO   |     |
+## Practical Session Schedule
 
-> > A simple database schema
+<center>
+  <SessionSchedule
+    sc={[
+      { time: "0 - 10", activity: "Students: Arrive" },
+      { time: "10 - 20", activity: "Tutor: Assessment 1 Introduction" },
+      {
+        time: "20 - 60",
+        activity: "Students: Self Select Group and Decide on a Rough Topic",
+      },
+      {
+        time: "60 - 70",
+        activity: "Students: Task 1: Read the first part of Kant's essay",
+      },
+      {
+        time: "75 - 85",
+        activity: "Tutor: Talks about the nature of research",
+      },
+      {
+        time: "75 - 85",
+        activity: "Tutor: Talks about the nature of research",
+      },
+      {
+        time: "85 - 105",
+        activity:
+          "Students: Discuss reality and their views by completing task 3",
+      },
+      { time: "85 - 115", activity: "Tutor: Debrief" },
+    ]}
+  />{" "}
+</center>
+<br />
 
-Relational database management systems (RDBMS), at the time of writing, are 50 years old. They present a very mature technology and are highly consistent. That is, any data written to the database is valid according to developer-defined constraints. In other words, an RDMS prioritises data integrity. We can conclude, if we are developing a system where data consistency and precision is vital then an RDBMS is the best choice. However, while an RDBMS will work for any application, managing schemas across multiple environments can be a, complex, time-consuming undertaking. Further to this, often data from several tables must be aggregated before it is suitable for a user facing view.
+## Introduction
 
-## NoSQL Databases
+It all starts here! The idea goal of this unit is not to turn you all into researchers - although, that would be a nice bonus. This week I will introduce you to this unit, and how it feeds into your final year project. Further to this, we consider what scientific research is.
 
-We have established that an RDBMS prioritises data consistency and integrity, at the cost of complexity and readability. NoSql (Non-relational databases), on the other hand, provide read and write simplicity. However, they do not comply the rigorous data consistency standards of their RDMS counterparts. While sacrificing data consistency may be unacceptable for an application monitoring financial transactions. For many applications, especially web applications, it is a not a major issue if data is slightly out of sync.
+We will be framing this week through the following questions:
 
-As with their RDMS counterparts there are many different types of NoSQL databases, with the most popular being:
+1.  What assessments do I need to complete?
+2.  What does it mean to be a graduate?
+3.  What is research?
+4.  What is reality and how might I access this reality when conducting my research?
 
-- Document Stores
-- Key-value stores
-- Graph-based
-
-To begin with, we are going to be looking at the document store, MongoDB.
-
-## MongoDB
-
-According to its developer, [MongoDB’s document model is simple for developers to learn and use, while still providing all the capabilities needed to meet the most complex requirements at any scale](https://www.mongodb.com/what-is-mongodb).
-
-Instead of tables, data is stored in documents. Documents are constructed using flexible JSON-like documents. For instance, a student record could look like this:
-
-```js
-{
-	"_id" : ObjectId("5f688fb800bcd2661917a892"),
-	"name" : {"first" : "Joe", "last": "Appleton"},
-	"age" : ISODate("1982-12-21T00:00:00Z")
-}
-```
-
-> > An example of a MongoDB object
-
-## Setting up a development environment
-
-It is most convenient to configure a local development environment. This process should be simple, as we need minimal dependencies to get going, just NodeJS and MongoDB.
-
-## Installing MongoDB
-
-It is most convenient to configure a local development environment. This process should be simple, as we need minimal dependencies to get going, just NodeJS and MongoDB.
-
-**Mac Installation**
-
-- Install, the package manager, [HomeBrew](https://brew.sh/#install). Follow the instructions on the website, this is a useful tool to have
-
-- From a terminal Window, run the following commands:
-
-  ```shell
-    brew update
-    brew tap mongodb/brew
-    brew install mongodb-community@4.4
-  ```
-
-  - You should now be able to start and stop Mongo using the following commands:
-
-  ```shell
-      brew services start mongodb-community@4.4
-      brew services stop mongodb-community@4.4
-  ```
-
-- Next, if you type into a terminal window "mongo" you should access the MongoDB shell
-
-**Windows Installation**
-
-- You will need to download and run the msi package from the [Mongo Downloads Section](https://www.mongodb.com/try/download/community) - ensure that you download community edition.
-- You then need to proceed through each step of the wizard
-  - Select complete installation
-  - Ensure that you install MONGO as a network service
-- Assuming you did not change the defaults, create the directory 'C:\Program Files\MongoDB\Server\4.4\data\'
-- You can now start the server by clicking "C:\Program Files\MongoDB\Server\4.4\bin\mongod.exe"
-- Next, clicking "C:\Program Files\MongoDB\Server\4.4\bin\mongo.exe"" should bring up the shell
-
-## Installing NodeJS
-
-- Node is simple to install, simply visit the [download](https://nodejs.org/en/download/)
-- Next, visit command line and run "node -v", you should seem something along the lines of "14.11.0"
-
-Here is hoping that went smoothly; if it did, we are now ready to proceed with our first node application.
-
-## Task 1
-
-Follow the instructions above to set up your own development environment. Further to the above installation steps, you may also want to install [Robot 3T](https://robomongo.org/).
-
-## Sample Applications
-
-<MuiAlert severity="info">
+<MuiAlert severity="success">
   <AlertTitle>
-    <strong>Tip </strong>
+    <strong> Task 1 - Forming Teams</strong>
   </AlertTitle>
-  I don't advise that you just copy and past these code blocks in, you will not learn
-  anything. Instead, you should type the examples in and consider what each line
-  of code is doing.
+  
+   For this first task, we are going to form teams for assessment 1.
+   Don't worry, the team work will be fairly informal and only counts towards 20% of the unit.
+
+
+   <a href="https://learn.solent.ac.uk/course/view.php?id=38079&section=1">Click here to self select your teams </a>
+   
 </MuiAlert>
 
-- First we need to create a folder where all of our practical work will live for this module, e.g. "database-systems/". You'll want to place this folder under version control.
-- Next, within your database-systems folder create a further folder called “week-1”
-- Finally, point a terminal window/command prompt to your week-1 folder and run "npm init -y".
 
-### Sample Application 1
+It's my pleasure to welcome you to this introductory module in research methods 😁 ! My goal for this module is simple, yet challenging, I want to make your final year project great! This will ensure that you get a high grade in, not only this unit, but your final year project. A nobel goal, considering that the project is worth a high percentage of your final year, you can make a real difference to your grade classification.
 
-- Let's make our first Node web application
-- Within your week-1 folder create the file sample_1.js
-- Type in the code below
-- Run you application by pointing your IDEs (normally visual code) terminal to your week_1 folder and input the command `node sample_1.js`
-- Now visit your browser, and see what happens! You should see "hello world". Next, take a look at your terminal, this is where your console.log() statements will be be output.
+While grades are important, I am going to let you in on as secret, as a lecture I don't actually care too much about grades - or perhaps more aptly, grades are not my focus. To overly focus on grades distracts from the underlying learning that needs to take place in order to achieve a high grade. Instead of trying to get you I high grade; instead, my focus is imparting you with vital life skills, "a very particular set of skills, skills I have acquired over a very long career". The overarching of which is to make you think like a graduate.
 
-```js
-const http = require("http");
-const server = http.createServer();
+<br />
+<br />
 
-server.on("request", (req, res) => {
-  const { method, url, headers } = req;
+"**Graduates are thought to feel a need to seek and evaluate evidence before coming to a conclusion, not to accept ‘spin’ as readily as non-graduates, to question the status quo to show intellectual curiosity about the social world**"
 
-  console.log(method);
-  console.log(url);
-  console.log(headers);
+> > Biggs 2011, p.111
 
-  res.end("hello world");
-});
+<br />
 
-server.listen(8080);
-```
+In summary, should we succeed and get you to think like a graduate, high grades will follow. While I appreciate your primary focus is on achieving high grades, the skills I teach you on this unit go beyond the university context and will follow you for life. University, is all about, "giving you the courage to use your own understanding"
 
-> > A simple Node Application
+<br />
 
-Do not worry if the code above seems somewhat alien to you; much of it may be new. In short, we are setting up web server that is listening on local host port 8080. When a client connects, we simply return hello world.
+## Task 1 - What it means to be a graduate
 
-To achieve this, we first must pull in Node’s http module (l.1). Next, we create a new server instance (line 2). Finally, we tell the server to listen for incoming requests on port 8080 (l.14).
+<MuiAlert severity="success">
+  <AlertTitle>
+    <strong> Task 1 - What it means to be a graduate</strong>
+  </AlertTitle>
+  
+   <a href="http://www.columbia.edu/acis/ets/CCREAD/etscc/kant.html">
+    Depending on time, we may or may not do this task in class. However, I highly recommend you skim read Immanuel Kant's essay on what it means to be enlightened.
+    </a>
 
-Then we set up an HTTP request handler (l.4). When an HTTP request is received the function, which is the second argument passed into server.on(), is fired. Two objects are passed into this handler `function (res, req)`. As you can see we can use these objects to inspect the type of request (l.7 - 8) and write a response to the client (l.11).
 
-### Sample Application 2
+This essay was written over 200 years ago; however, it captures the idea of mature enlightened thinking. It's a challenging read; however, it it captures the idea of what it means to be an informed next-level thinker.
 
-Let's try and take things a little further and use node to manipulate a mongo database.
+"Laziness and cowardice are the reasons why such a large part of mankind gladly remain [immature] all their lives, long after nature has freed them from external guidance [...]. It is so comfortable to be a [immature]. If I have a book that thinks for me, a pastor who acts as my conscience, a physician who prescribes my diet, and so on--then I have no need to exert myself. I have no need to think."
 
-- In your `week_1` folder, create the file `sample_2.js`.
-- Next, we need to install the official MongoDB Node.js driver within your `week_1` folder run the following command: `npm install mongodb --save`. Check your `package.json` file, you should see the mongo dependency in there.
-- Finally construct the program below and run `node sample_2.js`
-- Visit, in your browser, `http://localhost:8080`
-- After execution, if you open up the mongo command shell (see above) and run the following commands:
-  - `use student`
-  - `db.students.find({})`
-- You should see a list of students in your database
+You need not fear, this unit will teach you how to think in an informed way!
 
-```js
-const http = require("http");
-const server = http.createServer();
-const MongoClient = require("mongodb").MongoClient;
+</MuiAlert>
 
-const url = "mongodb://localhost:27017";
-const dbName = "student";
-const client = new MongoClient(url, { useNewUrlParser: true });
 
-server.on("request", async (req, res) => {
-  const { url, headers } = req;
-  try {
-    const students = [
-      {
-        name: { first: "joe", last: "appleton" },
-        dob: new Date("August 12, 1982"),
-      },
-      {
-        name: { first: "bill", last: "smith" },
-        dob: new Date("August 12, 1982"),
-      },
-    ];
-    await client.connect();
-    const db = client.db(dbName);
-    const collection = db.collection("students");
-    await collection.insertMany(students);
-    res.end("request ended");
-  } catch (e) {
-    console.log(e);
-    res.end("could not update");
-  }
-});
+<br />
 
-server.listen(8080);
-```
+## What even is research?
 
-Let's explore the above code.
+The answer to this question is not straightforward as it depends on the given context. For instance, you probably regularly conduct research in you day-to-day. If you've ever waded through IMDB and rotten tomatoes before investing time in watching a movie, then you've conducted research; however, while this is indeed research, this is not what we consider scientific research (the sort of research you will need to conduct for your project).
 
-Firstly you can see that we set up a a variable to hold the connection url (l.5). The number after the colon is the port that database server is listening, 27017 it the default port.
+### Scientific Research
 
-Notice how we pre-append the keyword async to our http handler function (l.9). For now, just appreciate that we need to do this so we can, at a later point in the function, use await (l.22 & l.25)
+Scientific research is the means of generating new knowledge through a systematic process. This systematic process must be underpinned by the scientific method (more about this later). The hope is that by following the scientific method you research will be:
 
-Next, in the handler function, we are connecting to MongoDB and selecting the student database (l.23 - l.24). We then select the collection students and insert our students records in bulk (l.24 - l.25).
+- Reliable
+- Repeatable
+- Valid
 
-## Task 2 Implement the Sample Applications
+Viewing research through the lense of a scientific method can be somewhat of a simplification - like life, research rarely goes to plan. However, I believe it can be a useful tool to frame a generalised route that you will take on the journey towards completing your final year project.
 
-Implement the above two samples for yourself. Type in the code, as you go along review the sections of the [node](https://nodejs.org/en/docs/) and [https://docs.mongodb.com/](https://docs.mongodb.com/) documentation that relate to the code that we are typing in.
+## Computing scientific method
 
-## Task 3 Making a Wine Tasting Database
+<center>
+  <img src="https://firebasestorage.googleapis.com/v0/b/computing-notes/o/images%2Fresearch-process.png?alt=media&token=ce597573-0444-45cf-9666-80645403848e" />
+</center>
 
-- [Download](https://www.kaggle.com/zynicide/wine-reviews) this JSON file containing ~130k wine reviews
-- Place it in your week-1 directory
-- Create a file called dataReader.js
-  - Workout how to extract the wine review data and insert it into a new mongo db database collection called "tastes" that lives in a database called "wineTasting".
+> > Figure 2, a rough representation of how scientific method will be applied to your final year project.
 
-Use the following documentation to help you:
+Above, is the process that we will be, roughly following. Don't worry if the entire process seems daunting. We spread it over two years, and work on small chunks at a time. This year, we are looking into the exploration and planning phases.
 
-[insertMany - to insert data ](https://docs.mongodb.com/manual/reference/method/db.collection.insertMany/)  
-[fsPromise to read the file](https://devdocs.io/node/fs#fs_fspromises_readfile_path_options)  
-[JSON.parse to parse the file](https://devdocs.io/javascript/global_objects/json/parse)
+## We need to make a philosophical assumption
 
-- Can you work out how to, after the records have inserted, log to the console the duration it took to insert the records and the number of records inserted
+How you believe knowledge can exist within your given area of inquiry will frame your research approach.
 
-### Solutions (should you get stuck)
+### Measuring Reality
 
-[Click here for a video solution](https://solent.cloud.panopto.eu/Panopto/Pages/Embed.aspx?id=7d0de931-fe1a-4c2f-a6c9-ac4d009b4d89&autoplay=false&offerviewer=true&showtitle=true&showbrand=false&start=0&interactivity=all)
+For instance, you may believe that your research project will generate data that can be easily numerically measured. Programs, algorithms, network implementations and applications that are implemented with the view to evaluate efficiency have a simple measurable outcome (e.g, space, memory usage, time or even cost). If we are to take this approach, we are acknowledging that there is an external reality that is objective and measurable. However, things are not always this clear.
 
-## Task 4 Create an API (Optional)
+### Can Reality be Measured?
 
-- Can you create an index.js file and construct a basic api that reads specific data
-  from the wine db
-- Let's keep things very basic. Your app should have the following functionality
-- As a web users if I visit http://localhost:"your port"/country/italy I get a list of wine reviews from Italy in jason format
-- Consider setting up further routes to that further filter the data. Try and achieve this by not using any external node packages
+For instance, many students develop some sort of software application for their final year project. This software is intended to solve some problem (e.g, health, productivity). These products are to serve a given base, and one can argue that the value of these products are a conscience construction of these users - which can't be measured. Instead, we must evaluate our projects through accessing the users' perception of our work. This is easier than it sounds, we could use techniques such as interviews, focus groups or qualitative surveys.
 
-### Documentation
+### Task 2 - What is our reality
 
-[A more readable version of the node docs](https://devdocs.io/node/fs#fs_fspromises_readfile_path_options)
+<MuiAlert severity="success">
+  <AlertTitle>
+    <strong> Task 2 - Is there such a things as an objective reality, or, does it depend?</strong>
+  </AlertTitle>
+  
+<br />
 
-[An interesting and quick read about NodeJS HTTP handling. We will use this protocol heavily throughout this module. ](https://nodejs.org/en/docs/guides/anatomy-of-an-http-transaction/)
 
-[A guide to some of the commands you can run in the MongoDB Shell](https://docs.mongodb.com/manual/reference/mongo-shell/#command-line-options)
+Form groups and discuss the following ideas:
 
-### Academic
+<p>
+  Is there a reality that exists beyond that is constructed beyond human
+  conscious?
+</p>
 
-[A interesting masters paper exploring the performance of different types of databases](https://www.diva-portal.org/smash/get/diva2:1199667/FULLTEXT02.pdf)
+<p>
+  Behavioral psychology, or behaviorism, is a theory suggesting that environment
+  shapes human behavior. Therefore, we are independent of our environment. To
+  what extent do you believe this to be true?
+</p>
 
-[A survey of NoSQL databases, categorising them by CAP theorem. If you are interested in the theoretical constraints of distributed database systems, then give this a read](http://faculty.washington.edu/wlloyd/courses/tcss562/papers/Spring2017/team7_NOSQL_DB/Survey%20on%20NoSQL%20Database.pdf)
+  </MuiAlert>
+
+
+## Reading
+
+### Kant on enlightenment and revolution
+
+The moral of this essay is dare to be original, think for yourself. It talks of obtaining freedom through knowledge. All universities, should subscribe to this notion, and instill students with such freedoms.
+
+I recommend you read the first three paragraphs, and let the message occupy your mind throughout your time at university
+
+[Foucault, M., 1986. Kant on enlightenment and revolution. Economy and Society, 15(1), pp.88-96.](http://web.mnstate.edu/gracyk/courses/web%20publishing/KantOnElightenment.htm)

@@ -58,3 +58,7 @@ User can ask questions by selecting a range  https://github.com/timdown/rangy
 
 
 [https://github.com/wojtekmaj/react-pdf](PDF annotation library, seems fairly up-to-date)
+
+
+
+[Student Papers From Stanford](https://hci.stanford.edu/courses/cs376/2012/student-papers/)
