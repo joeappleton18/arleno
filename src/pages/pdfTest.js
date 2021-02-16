@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { htmlToText } from 'html-to-text';
 import rangy from 'rangy';
 import 'rangy/lib/rangy-classapplier';
 import 'rangy/lib/rangy-highlighter';
@@ -80,6 +81,8 @@ export default function Sample() {
     const user = useStores().user;
 
 
+
+
     const documentID = '8di5dfQGLorWwdpOc3DV';
 
 
@@ -91,6 +94,7 @@ export default function Sample() {
         annotations.forEach(annotation => deSerialise(annotation));
 
     }
+
 
     useEffect(() => {
         pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -113,6 +117,9 @@ export default function Sample() {
     function onDocumentLoadSuccess({ numPages: nextNumPages }) {
         setNumPages(nextNumPages);
         getAnnotations();
+        const holder = document.querySelector('#document');
+        
+
     }
 
     function onLoadError(error) {
@@ -151,14 +158,12 @@ export default function Sample() {
         };
 
         searchTerm = new RegExp(selectedText.replaceAll(" ", "(.|\s)*"));
-        debugger;
 
         while (findRange.findText(selectedText, findOptions)) {
             const intersects = findRange.intersection(sel._ranges[0]);
 
             if (intersects && intersects !== null) {
                 selToSerialzie.FindIndex = findCount;
-                debugger;
                 break;
             }
             findRange.collapse(false);
@@ -173,7 +178,6 @@ export default function Sample() {
     function handleDeserialise() {
         const selection = "10/1/2/0/0/0/1/3/0/0/0/1:0,12/1/2/0/0/0/1/3/0/0/0/1:0{6d8be6cf}";
         const range = rangy.deserializeSelection(selection);
-        debugger;
     }
 
     function handleMouseUp(event) {
@@ -276,6 +280,7 @@ export default function Sample() {
                             debugger;
                         }}
                         file={file}
+                        onSourceSuccess={() => { debugger; }}
                         onLoadError={onLoadError}
                         onSourceError={onSourceError}
                         onLoadSuccess={onDocumentLoadSuccess}

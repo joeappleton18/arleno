@@ -21,6 +21,18 @@ function isCSSPropertySupported(property, value) {
  * @return {HTMLCanvasElement|null}
  */
 function getPdfCanvas(highlightEl) {
+  // we need to update the code to a different structure 
+
+  // <div class="react-pdf__Page">
+  //   <div class="canvasWrapper">
+  //     <canvas></canvas> <!-- The rendered PDF page -->
+  //   </div>
+  //   <div class="textLayer">
+  //      <!-- Transparent text layer with text spans used to enable text selection -->
+  //   </div>
+  // </div>
+  
+  
   // This code assumes that PDF.js renders pages with a structure like:
   //
   // <div class="page">
