@@ -17,8 +17,8 @@
 
 
 #### Essential User Features
-
-- [ ] As a user, I should see a floating answer count box   ⬅ 
+- [ ] The menu should close after a page load  ⬅ 
+- [ ] As a user, I should see a floating answer count box  
 - [ ]  As a user, I should see a summary of all answers 
 - [ ]  As a user, I should see a leader-board (this needs a little bit of thought)
 - [ ]  As a admin, I should be able to update and delete answers
