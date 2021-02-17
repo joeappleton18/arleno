@@ -51,6 +51,12 @@
 
 User can ask questions by selecting a range  https://github.com/timdown/rangy
 
+### Hypothesis Documentation 
+
+[Hypothosis Client Notes](https://h.readthedocs.io/projects/client/en/latest/)
+
+
+[Threads are where the annotation scroll is stored](https://github.com/hypothesis/client/blob/bd5b2de0444ea2107dd8d22ef6c94ec357309140/src/sidebar/components/ThreadCard.js)
 
 ### PDF Integration Notes 
 

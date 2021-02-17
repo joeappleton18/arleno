@@ -5,7 +5,8 @@
 
 hypothesis-highlight {
     background-color: #0084ff;
-    opacity: 0.3;  
+    opacity: 0.3; 
+    cursor: pointer; 
 }
 
 .note {

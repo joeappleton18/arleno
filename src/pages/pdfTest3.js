@@ -4,6 +4,7 @@ import 'rangy/lib/rangy-serializer';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { makeStyles } from '@material-ui/core/styles';
 import { matchQuote } from '../utils/match-quote';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { TextRange, TextPosition } from '../utils/text-range';
 
 import {
@@ -19,6 +20,7 @@ import {
 const sampleAnnotation =
 
 {
+    id: "123456",
     exact: "Ok, this is a little test, we are currently on the first paragraph.   Here is the second p",
     prefix: "",
     suffix: "aragraph.   Here is the third pa"
@@ -32,6 +34,16 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         width: '90vw',
         fontSize: '40px !important'
+    },
+
+    loader: {
+
+        width: '100vw',
+        height: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+
     },
 
     popOver: {
@@ -66,24 +78,40 @@ const useStyles = makeStyles((theme) => ({
 const PdfTest = () => {
     const classes = useStyles();
     const [numPages, setNumPages] = useState(null);
-    const [file, setFile] = useState('small_test_file.pdf');
+    const [documentRoot, setDocumentRoot] = useState(null);
+    const [file, setFile] = useState('sample2.pdf');
     //const savedRange = "0/6/1/0/0/1/3/0/0/0/1:7,0/12/1/0/0/1/3/0/0/0/"
+
+
+    const Loader = () => {
+
+        useEffect(() => {
+
+            return () => {
+                debugger;
+            }
+        }, [])
+
+        return (<div className={classes.loader}><CircularProgress /></div>)
+
+    }
 
 
     useEffect(() => {
         pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-        rangy.init();
     }, [])
 
 
     const handleLoadSuccess = ({ numPages }) => {
-        setNumPages(numPages);
+        const root = document.querySelector('.react-pdf__Document');
         debugger;
+        setNumPages(numPages);
     }
 
     const handleLoadError = (e) => {
         console.log(e);
     }
+
 
     const handleSourceLoadError = (e) => {
         console.log(e);
@@ -101,8 +129,15 @@ const PdfTest = () => {
         })
 
         const range = TextRange.fromOffsets(root, match.start, match.end).toRange();
-        highlightRange(range);
-        debugger;
+
+        const onClick = () => { alert("hello there") }
+
+        highlightRange(range, sampleAnnotation.id, onClick);
+
+        document.querySelectorAll('hypothesis-highlight').forEach(e => {
+            e.addEventListener('click', (e) => alert(e.target.getAttribute('annotationid')));
+        })
+
 
 
     }
@@ -127,12 +162,7 @@ const PdfTest = () => {
             suffix: text.slice(end, Math.min(text.length, end + contextLen)),
         }
 
-
-
-
-
-
-
+        debugger;
 
         window.getSelection().removeAllRanges();
     }
@@ -144,11 +174,11 @@ const PdfTest = () => {
 
     return (
         <div className={classes.pdfRoot}>
-            <button onClick={handleClick}>click me</button>
             <Document
                 options={options}
                 id="document"
                 file={file}
+                loading={<Loader />}
                 onLoadSuccess={handleLoadSuccess}
                 onSourceError={handleSourceLoadError}
                 onLoadError={handleLoadError}
@@ -156,16 +186,28 @@ const PdfTest = () => {
                 {
                     Array.from(
                         new Array(numPages),
-                        (el, index) => (
-                            <Page
-                                onMouseUp={handleMouseUp}
-                                scale={2.0}
-                                className={classes.page}
-                                key={`page_${index + 1}`}
-                                pageNumber={index + 1}
-                            />
-                        ),
+                        (el, index) => {
+
+                            return (
+                                <Page
+                                    onRenderSuccess={() => {
+                                        if ((index + 1) === numPages) {
+                                            //handleClick();
+                                        }
+                                    }}
+
+                                    loading={<Loader />}
+                                    onMouseUp={handleMouseUp}
+                                    scale={2.0}
+                                    className={classes.page}
+                                    key={`page_${index + 1}`}
+                                    pageNumber={index + 1}
+                                />
+                            )
+                        },
                     )
+
+
                 }
             </Document></div>)
 

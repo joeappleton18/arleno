@@ -9,6 +9,7 @@ import { FirebaseProvider, useFirebase } from "./../services/firebase";
 import { StoresProvider, useStores } from "./../stores";
 import CoreLayout from "../layouts/Core";
 import notesConfig from "../config/notes";
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css'
 
 import {
   createMuiTheme,
@@ -78,7 +79,6 @@ const AuthListener = () => {
     }
 
     authService.auth.onAuthStateChanged(async (user) => {
-      debugger;
       if (!user || !user.uid) {
         return;
       }

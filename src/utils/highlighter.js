@@ -31,8 +31,8 @@ function getPdfCanvas(highlightEl) {
   //      <!-- Transparent text layer with text spans used to enable text selection -->
   //   </div>
   // </div>
-  
-  
+
+
   // This code assumes that PDF.js renders pages with a structure like:
   //
   // <div class="page">
@@ -227,7 +227,7 @@ function wholeTextNodesInRange(range) {
  * @param {string} cssClass - A CSS class to use for the highlight
  * @return {HighlightElement[]} - Elements wrapping text in `normedRange` to add a highlight effect
  */
-export function highlightRange(range, cssClass = 'hypothesis-highlight') {
+export function highlightRange(range, id = "", cssClass = 'hypothesis-highlight') {
   const textNodes = wholeTextNodesInRange(range);
 
   // Check if this range refers to a placeholder for not-yet-rendered text in
@@ -271,11 +271,10 @@ export function highlightRange(range, cssClass = 'hypothesis-highlight') {
 
     /** @type {HighlightElement} */
     const highlightEl = document.createElement('hypothesis-highlight');
+    highlightEl.setAttribute("annotationid", id);
     highlightEl.className = cssClass;
-
     nodes[0].parentNode.replaceChild(highlightEl, nodes[0]);
     nodes.forEach(node => highlightEl.appendChild(node));
-
     if (!isPlaceholder) {
       // For PDF highlights, create the highlight effect by using an SVG placed
       // above the page's canvas rather than CSS `background-color` on the
@@ -317,7 +316,7 @@ function replaceWith(node, replacements) {
  */
 export function removeAllHighlights(root) {
   const highlights = Array.from(root.querySelectorAll('hypothesis-highlight'));
-  removeHighlights(/** @type {HighlightElement[]} */ (highlights));
+  removeHighlights(/** @type {HighlightElement[]} */(highlights));
 }
 
 /**
@@ -381,7 +380,7 @@ export function getHighlightsContainingNode(node) {
 
   while (el) {
     if (el.classList.contains('hypothesis-highlight')) {
-      highlights.push(/** @type {HighlightElement} */ (el));
+      highlights.push(/** @type {HighlightElement} */(el));
     }
     el = el.parentElement;
   }
@@ -412,7 +411,7 @@ export function getHighlightsContainingNode(node) {
 export function getBoundingClientRect(collection) {
   // Reduce the client rectangles of the highlights to a bounding box
   const rects = collection.map(
-    n => /** @type {Rect} */ (n.getBoundingClientRect())
+    n => /** @type {Rect} */(n.getBoundingClientRect())
   );
   return rects.reduce((acc, r) => ({
     top: Math.min(acc.top, r.top),
