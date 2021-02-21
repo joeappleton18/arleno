@@ -7,9 +7,13 @@ class questionService {
   }
 
 
-  create(question, id) {
-    question.created = this.timeStamp;
-    return this.ref.doc(id).set(question);
+  create(question, id = false) {
+
+    if (id) {
+      question.created = this.timeStamp;
+      return this.ref.doc(id).set(question);
+    }
+    this.ref.add(question);
   }
 
 

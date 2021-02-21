@@ -5,7 +5,10 @@ import 'rangy/lib/rangy-classapplier';
 import 'rangy/lib/rangy-highlighter';
 import 'rangy/lib/rangy-serializer';
 import 'rangy/lib/rangy-textrange';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import Typography from '@material-ui/core/Typography';
+import AskQuestionDialog from '../components/AskQuestionDialog';
+import { matchQuote } from '../utils/match-quote';
 import {
     getBoundingClientRect,
     getHighlightsContainingNode,
@@ -19,13 +22,14 @@ import {
 import { Document, Page, pdfjs } from 'react-pdf';
 import Popover from '@material-ui/core/Popover';
 import { makeStyles } from '@material-ui/core/styles';
-import { CallReceivedTwoTone } from '@material-ui/icons';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import highlightSVG from '../assets/customIcons/highlight.svg';
 import IconButton from '@material-ui/core/IconButton';
 import { docco } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import { useFirebase } from '../services/firebase/';
 import { useStores } from "../stores/";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { TextRange, TextPosition } from '../utils/text-range';
 
 const useStyles = makeStyles((theme) => ({
     pdfRoot: {
@@ -49,11 +53,12 @@ const useStyles = makeStyles((theme) => ({
 
         width: '25px',
         height: '25px',
+        color: 'white'
 
     },
 
     margin: {
-        margin: theme.spacing(1),
+        margin: theme.spacing(0),
     },
 
     page: {
@@ -71,55 +76,39 @@ const options = {
 };
 
 export default function Sample() {
-    const [file, setFile] = useState('bitcoin.pdf');
+    const [file, setFile] = useState('sample2.pdf');
     const [highlighter, setHighlighter] = useState();
     const [numPages, setNumPages] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [openQuestionDialog, setOpenQuestionDialog] = useState(false);
     const [anchorPosition, setAnchorPosition] = useState(null);
+    const [focusedAnnotation, setFocusedAnnotation] = useState({});
     const classes = useStyles();
+
     const fb = useFirebase();
     const user = useStores().user;
 
 
+    const Loader = () => {
+
+        return (<div className={classes.loader}><CircularProgress /></div>)
+    }
 
 
     const documentID = '8di5dfQGLorWwdpOc3DV';
 
 
 
-    const getAnnotations = async () => {
-        const annotations = [];
-        const annotationsRef = await fb.document.readAnnotations(documentID);
-        annotationsRef.forEach(annotationRef => annotations.push(annotationRef.data()));
-        annotations.forEach(annotation => deSerialise(annotation));
-
-    }
-
-
     useEffect(() => {
         pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
         rangy.init();
-        const highlighterRef = rangy.createHighlighter();
-        highlighterRef.addClassApplier(rangy.createClassApplier("highlight", {
-            ignoreWhiteSpace: true,
-            tagNames: ["span", "a"]
-        }))
-
-        setHighlighter(highlighterRef);
-
 
     }, [])
 
-    function onFileChange(event) {
-        setFile(event.target.files[0]);
-    }
 
     function onDocumentLoadSuccess({ numPages: nextNumPages }) {
         setNumPages(nextNumPages);
-        getAnnotations();
-        const holder = document.querySelector('#document');
-        
-
+        // getAnnotations();
     }
 
     function onLoadError(error) {
@@ -131,56 +120,73 @@ export default function Sample() {
 
     }
 
+    function deSerialise(annotation) {
+        const root = document.querySelector('.react-pdf__Document');
+        const text = root.textContent;
+        const match = matchQuote(text, annotation.exact, {
+            ...{ prefix: annotation.prefix, suffix: annotation.suffix },
+            hint: 0
+        })
+        const range = TextRange.fromOffsets(root, match.start, match.end).toRange();
+        highlightRange(range, annotation.id);
+    }
+
+    async function getAnnotations() {
+
+        const annotations = [];
+        const annotationsRef = await fb.document.readAnnotations(documentID);
+        annotationsRef.forEach(annotationRef => annotations.push({ ...annotationRef.data(), id: annotationRef.id }));
+        annotations.forEach(annotation => deSerialise(annotation));
+
+    }
+
+    async function handleQuestion() {
+        setOpenQuestionDialog(true);
+    }
+
+    async function handleQuestionSave(question) {
+
+        const qx = {
+            userName: user.user.firstName + user.user.lastName,
+            question: question,
+            photoURL: user.user.photoURL,
+            answers: 0,
+
+        }
+
+        debugger;
+        try {
+            const questionResult = await fb.question.create(qx);
+            const result = await fb.document.createAnnotation({ ...focusedAnnotation, type: 'question', question_id: questionResult.id }, documentID);
+            highlightRange(range, result.id);
+            setOpenQuestionDialog(false);
+
+        } catch (e) {
+            console.log('error could not create question', e)
+        }
+    }
 
 
     async function handleHighlight() {
-        setAnchorPosition(null);
-        highlighter.highlightSelection("highlight", { containerElementId: "document" });
-        // var selObj = rangy.getSelection();
-        // var sel = rangy.serializeSelection(selObj, true);
-        // document.querySelector('#range').value = sel;
-        /// 
-        const holder = document.querySelector('#document');
-        const sel = rangy.getSelection();
-        let selectedText = sel.toString();
-        const parentRange = rangy.createRange();
-        parentRange.selectNodeContents(holder);
-        const findRange = rangy.createRange();
-        const findOptions = {
-            withinRange: parentRange
-        };
 
-
-        let findCount = 0;
-        const selToSerialzie = {
-            Text: selectedText,
-            FindIndex: -1
-        };
-
-        searchTerm = new RegExp(selectedText.replaceAll(" ", "(.|\s)*"));
-
-        while (findRange.findText(selectedText, findOptions)) {
-            const intersects = findRange.intersection(sel._ranges[0]);
-
-            if (intersects && intersects !== null) {
-                selToSerialzie.FindIndex = findCount;
-                break;
-            }
-            findRange.collapse(false);
-            findCount++;
-        }
-
-        const annotation = { ...{ range: selToSerialzie }, ...{ type: 'highlight', uid: user.user.uid } }
-        await fb.document.createAnnotation(annotation, documentID);
+        const range = window.getSelection().getRangeAt(0);
+        const result = await fb.document.createAnnotation(focusedAnnotation, documentID);
+        highlightRange(range, result.id);
 
     }
 
-    function handleDeserialise() {
-        const selection = "10/1/2/0/0/0/1/3/0/0/0/1:0,12/1/2/0/0/0/1/3/0/0/0/1:0{6d8be6cf}";
-        const range = rangy.deserializeSelection(selection);
-    }
+
 
     function handleMouseUp(event) {
+
+
+        const range = window.getSelection().getRangeAt(0);
+        const root = document.querySelector('.react-pdf__Document');
+        const text = root.textContent;
+        const textRange = TextRange.fromRange(range).relativeTo(root);
+        const start = textRange.start.offset;
+        const end = textRange.end.offset;
+        const contextLen = 32;
 
         if (!window.getSelection().toString()) {
             return;
@@ -189,10 +195,18 @@ export default function Sample() {
         const x = event.clientX;     // Get the horizontal coordinate
         const y = event.clientY;     // Get the vertical coordinate
         setAnchorPosition({ top: y - 40, left: x });
-        const range = window.getSelection().getRangeAt(0);
-        highlightRange(range);
-        const selection = rangy.serializeSelection();
-        handleDeserialise();
+
+
+        const annotation = {
+            exact: text.slice(start, end),
+            prefix: text.slice(Math.max(0, start - contextLen), start),
+            suffix: text.slice(end, Math.min(text.length, end + contextLen)),
+            type: 'question',
+            uid: user.user.uid
+
+        }
+
+        setFocusedAnnotation(annotation);
     }
 
     function handleClose() {
@@ -200,53 +214,20 @@ export default function Sample() {
 
     }
 
-    function deSerialise(annotation) {
-        /*const selection = {
-            FindIndex: 0,
-            Text: "   another   with"
-        }*/
 
-        const selection = annotation.range;
-
-
-        const doc = document.querySelector('#document');
-        const baseSelection = rangy.getSelection(doc);
-        const selItem = selection;//JSON.parse(selection);
-        baseSelection.removeAllRanges();
-        const parentRange = rangy.createRange();
-        parentRange.selectNodeContents(doc);
-
-        const findRange = rangy.createRange();
-        const findOptions = {
-            withinRange: parentRange,
-            characterOptions: true
-        };
-        let findCount = 0;
-
-        while (findRange.findText(selItem.Text, findOptions)) {
-            if (findCount === selItem.FindIndex) {
-                //todo -- do something with the range;
-                baseSelection.setSingleRange(findRange);
-                highlighter.highlightSelection("highlight", { containerElementId: "document" });
-                baseSelection.removeAllRanges();
-                return findRange;
-            }
-            findRange.collapse(false);
-            findCount++;
-        }
-        return null;
-    }
 
     const open = Boolean(anchorPosition);
     const id = open ? 'simple-popover' : undefined;
 
     return (
         <div className="Example">
+            <AskQuestionDialog open={openQuestionDialog} highlight={focusedAnnotation.exact} onSave={handleQuestionSave} onClose={() => { setOpenQuestionDialog(false) }} />
             <Popover
                 elevation={1}
                 anchorReference="anchorPosition"
                 anchorPosition={anchorPosition}
                 id={id}
+                loading={<Loader />}
                 open={open}
                 onClose={handleClose}
                 anchorOrigin={{
@@ -263,6 +244,10 @@ export default function Sample() {
                     <IconButton aria-label="delete" onClick={handleHighlight} className={classes.margin}>
                         <img src={highlightSVG} className={classes.highlightSVG} />
                     </IconButton>
+
+                    <IconButton aria-label="delete" onClick={handleQuestion} className={classes.margin}>
+                        <HelpOutlineIcon className={classes.highlightSVG} />
+                    </IconButton>
                 </div>
 
             </Popover>
@@ -275,11 +260,8 @@ export default function Sample() {
                     <Document
                         id="document"
                         onMouseUp={handleMouseUp}
-                        onItemClick={(f) => {
-                            debugger;
-                        }}
+                        loading={<Loader />}
                         file={file}
-                        onSourceSuccess={() => { debugger; }}
                         onLoadError={onLoadError}
                         onSourceError={onSourceError}
                         onLoadSuccess={onDocumentLoadSuccess}
@@ -288,14 +270,19 @@ export default function Sample() {
                         {
                             Array.from(
                                 new Array(numPages),
-                                (el, index) => (
-                                    <Page
-                                        scale={2.0}
-                                        className={classes.page}
-                                        key={`page_${index + 1}`}
-                                        pageNumber={index + 1}
-                                    />
-                                ),
+                                (el, index) => {
+                                    if (index + 1 === numPages) {
+                                        setTimeout(getAnnotations, 0)
+                                    }
+                                    return (
+                                        <Page
+                                            scale={2.0}
+                                            className={classes.page}
+                                            key={`page_${index + 1}`}
+                                            pageNumber={index + 1}
+                                        />
+                                    )
+                                },
                             )
                         }
                     </Document>

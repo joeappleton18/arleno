@@ -12,8 +12,6 @@ import FollowIcon from "@material-ui/icons/RssFeed";
 import AnswerIcon from "@material-ui/icons/Create";
 import { useStores } from "../../stores/";
 import { useFirebase } from "../../services/firebase";
-import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
-import AvatarGroup from "../AvatarGroup/";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import Editor from "../RichEditor/";
@@ -203,7 +201,6 @@ const AnswerQuestionDialog = (props) => {
 
       }
     }
-    debugger;
     setQuestion(fb, id, userStore.user, question, children);
   }, [id, fb, userStore.user, question, children])
 

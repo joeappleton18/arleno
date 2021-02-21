@@ -6,6 +6,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { matchQuote } from '../utils/match-quote';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { TextRange, TextPosition } from '../utils/text-range';
+import TextPopOver from '../components/TextPopOver';
+
 
 import {
     getBoundingClientRect,
@@ -76,14 +78,17 @@ const useStyles = makeStyles((theme) => ({
 
 
 const PdfTest = () => {
+    const [anchorPosition, setAnchorPosition] = useState(null);
     const classes = useStyles();
     const [numPages, setNumPages] = useState(null);
     const [documentRoot, setDocumentRoot] = useState(null);
     const [file, setFile] = useState('sample2.pdf');
+    const [highlighterOpen, setHighlighterOpen] = useState(false);
     //const savedRange = "0/6/1/0/0/1/3/0/0/0/1:7,0/12/1/0/0/1/3/0/0/0/"
 
 
     const Loader = () => {
+
 
         useEffect(() => {
 
@@ -117,9 +122,14 @@ const PdfTest = () => {
         console.log(e);
     }
 
+    const handleClose = () => {
+        setAnchorPosition(null);
+    }
+
 
 
     const handleClick = () => {
+
 
         const root = document.querySelector('.react-pdf__Document');
         const text = root.textContent;
@@ -147,8 +157,18 @@ const PdfTest = () => {
         if (!window.getSelection().toString()) {
             return;
         }
+        const x = e.clientX;     // Get the horizontal coordinate
+        const y = e.clientY;     // Get the vertical coordinate
+        setHighlighterOpen(true);
+        setAnchorPosition({ top: y - 40, left: x });
+
+
+
+
+
+        /*
+        
         const range = window.getSelection().getRangeAt(0);
-        console.log(JSON.stringify(range));
         const root = document.querySelector('.react-pdf__Document');
         const text = root.textContent;
         const textRange = TextRange.fromRange(range).relativeTo(root);
@@ -160,11 +180,9 @@ const PdfTest = () => {
             exact: text.slice(start, end),
             prefix: text.slice(Math.max(0, start - contextLen), start),
             suffix: text.slice(end, Math.min(text.length, end + contextLen)),
-        }
+        }*/
 
-        debugger;
-
-        window.getSelection().removeAllRanges();
+        //window.getSelection().removeAllRanges();
     }
 
     const options = {
@@ -172,8 +190,12 @@ const PdfTest = () => {
         cMapPacked: true,
     };
 
+    const open = Boolean(anchorPosition);
+    const id = open ? 'simple-popover' : undefined;
+
     return (
         <div className={classes.pdfRoot}>
+            <TextPopOver anchorPosition={anchorPosition} id={"simple-popover"} open={   hlighterOpen} onClose={handleClose} />
             <Document
                 options={options}
                 id="document"
@@ -183,6 +205,8 @@ const PdfTest = () => {
                 onSourceError={handleSourceLoadError}
                 onLoadError={handleLoadError}
             >
+
+
                 {
                     Array.from(
                         new Array(numPages),
@@ -195,6 +219,7 @@ const PdfTest = () => {
                                             //handleClick();
                                         }
                                     }}
+
 
                                     loading={<Loader />}
                                     onMouseUp={handleMouseUp}
