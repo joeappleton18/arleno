@@ -8,6 +8,7 @@ import 'rangy/lib/rangy-textrange';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import Typography from '@material-ui/core/Typography';
 import AskQuestionDialog from '../components/AskQuestionDialog';
+import AnswerQuestionDialog from "../components/AnswerQuestionDialog";
 import { matchQuote } from '../utils/match-quote';
 import {
     getBoundingClientRect,
@@ -76,6 +77,11 @@ const options = {
 };
 
 export default function Sample() {
+    const [question, setQuestion] = useState({});
+    const [answerTextHighlight, setAnswerTextHighlight] = useState("");
+    const [questionID, setQuestionID] = useState("");
+    const [annotations, setAnnotations] = useState([]);
+    const [openAnswerBox, setOpenAnswerBox] = useState(false);
     const [file, setFile] = useState('sample2.pdf');
     const [highlighter, setHighlighter] = useState();
     const [numPages, setNumPages] = useState(null);
@@ -101,14 +107,13 @@ export default function Sample() {
 
     useEffect(() => {
         pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-        rangy.init();
 
     }, [])
 
 
     function onDocumentLoadSuccess({ numPages: nextNumPages }) {
         setNumPages(nextNumPages);
-        // getAnnotations();
+        setTimeout(getAnnotations, 3000)
     }
 
     function onLoadError(error) {
@@ -131,12 +136,36 @@ export default function Sample() {
         highlightRange(range, annotation.id);
     }
 
+
+    async function handleAnnotationClick(e) {
+        const id = e.target.getAttribute('annotationid');
+        e.preventDefault();
+        e.stopPropagation();
+
+
+        const annotationRef = await fb.document.readAnnotations(documentID, id);
+        const { exact, question_id } = annotationRef.data();
+        const questionRef = await fb.question.read(question_id);
+        const question = questionRef.data();
+
+        setQuestionID(question_id);
+        setAnswerTextHighlight(exact);
+        setQuestion(question.question);
+        setOpenAnswerBox(true);
+        debugger;
+    }
+
     async function getAnnotations() {
 
         const annotations = [];
         const annotationsRef = await fb.document.readAnnotations(documentID);
         annotationsRef.forEach(annotationRef => annotations.push({ ...annotationRef.data(), id: annotationRef.id }));
         annotations.forEach(annotation => deSerialise(annotation));
+        setAnnotations(annotations);
+
+        document.querySelectorAll('hypothesis-highlight').forEach(e => {
+            e.addEventListener('click', handleAnnotationClick);
+        })
 
     }
 
@@ -153,11 +182,12 @@ export default function Sample() {
             answers: 0,
 
         }
-
-        debugger;
         try {
+
+            const range = window.getSelection().getRangeAt(0);
             const questionResult = await fb.question.create(qx);
             const result = await fb.document.createAnnotation({ ...focusedAnnotation, type: 'question', question_id: questionResult.id }, documentID);
+            // temporary highlight range 
             highlightRange(range, result.id);
             setOpenQuestionDialog(false);
 
@@ -221,6 +251,7 @@ export default function Sample() {
 
     return (
         <div className="Example">
+
             <AskQuestionDialog open={openQuestionDialog} highlight={focusedAnnotation.exact} onSave={handleQuestionSave} onClose={() => { setOpenQuestionDialog(false) }} />
             <Popover
                 elevation={1}
@@ -252,6 +283,14 @@ export default function Sample() {
 
             </Popover>
 
+            <AnswerQuestionDialog manualOpen={openAnswerBox} onClose={() => setOpenAnswerBox(false)} question={question}>
+
+                {openAnswerBox && answerTextHighlight}
+
+            </AnswerQuestionDialog>
+
+
+
 
             <div className="Example__container" id="document">
 
@@ -271,9 +310,6 @@ export default function Sample() {
                             Array.from(
                                 new Array(numPages),
                                 (el, index) => {
-                                    if (index + 1 === numPages) {
-                                        setTimeout(getAnnotations, 0)
-                                    }
                                     return (
                                         <Page
                                             scale={2.0}

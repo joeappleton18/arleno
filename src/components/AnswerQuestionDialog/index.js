@@ -134,7 +134,7 @@ const Dialog = withStyles((theme) => ({
 
 const AnswerQuestionDialog = (props) => {
 
-  const { children, id, question } = props;
+  const { children, id, question, manualOpen, onClose } = props;
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [photoURL, setPhotoURL] = useState("");
@@ -209,6 +209,8 @@ const AnswerQuestionDialog = (props) => {
   };
   const handleClose = () => {
     setOpen(false);
+    debugger;
+    onClose();
   };
 
   const handleSubmit = async (answer, isUpdate = false) => {
@@ -313,20 +315,16 @@ const AnswerQuestionDialog = (props) => {
     </>)
   }
 
-
-
-
-
   return (
     <div>
-      <div className={classes.text} onClick={handleClickOpen}>
+      {!manualOpen && (<div className={classes.text} onClick={handleClickOpen}>
         {children}
-      </div>
+      </div>)}
 
       <Dialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
-        open={open}
+        open={open || manualOpen}
       >
         <DialogTitle
           id="customized-dialog-title"
@@ -382,6 +380,11 @@ const AnswerQuestionDialog = (props) => {
       </Dialog>
     </div >
   );
+}
+
+
+AnswerQuestionDialog.defaultProps = {
+  onClose: () => { }
 }
 
 export default AnswerQuestionDialog;

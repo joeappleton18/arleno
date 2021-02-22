@@ -16,8 +16,11 @@ class documentService {
     return id ? this.ref.doc(id).get() : this.ref.get();
   }
 
-  readAnnotations(id) {
-    return this.ref.doc(id).collection('annotations').get();
+  readAnnotations(id, annotationId = null) {
+    return annotationId ? this.ref.doc(id).collection('annotations')
+      .doc(annotationId)
+      .get()
+      : this.ref.doc(id).collection('annotations').get();
   }
 }
 
