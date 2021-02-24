@@ -26,6 +26,13 @@ service cloud.firestore {
             }
         } 
 
+        // a user can read a document, but only an admin can create one 
+
+        match /documents/{documentId} {
+            allow read : if request.auth !=  null;
+            allow create, delete, update: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.type == "A";
+        }
+
         // a user can create their own annotations
 
         match /documents/{documentId}/annotations/{anotationID} {

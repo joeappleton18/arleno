@@ -12,6 +12,11 @@ class documentService {
       collection("annotations").add(annotation);
   }
 
+  create(document, id = null) {
+    document.created = this.timeStamp;
+    return id ? this.ref.doc(id).set(document) : this.ref.add(document);
+  }
+
   read(id = null) {
     return id ? this.ref.doc(id).get() : this.ref.get();
   }

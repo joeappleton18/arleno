@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { htmlToText } from 'html-to-text';
-import rangy from 'rangy';
 import 'rangy/lib/rangy-classapplier';
 import 'rangy/lib/rangy-highlighter';
 import 'rangy/lib/rangy-serializer';

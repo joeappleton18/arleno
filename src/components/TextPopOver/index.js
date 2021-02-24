@@ -2,10 +2,11 @@ import Popover from '@material-ui/core/Popover';
 import { makeStyles } from '@material-ui/core/styles';
 import highlightSVG from '../../assets/customIcons/highlight.svg';
 import IconButton from '@material-ui/core/IconButton';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 
 
 const useStyles = makeStyles((theme) => ({
-    popOver: {
+    root: {
         background: 'rgb(41, 41, 41)',
         borderRadius: '3px',
         height: '40px',
@@ -14,13 +15,13 @@ const useStyles = makeStyles((theme) => ({
         overflow: 'hidden'
     },
     margin: {
-        margin: theme.spacing(1),
+        margin: theme.spacing(0),
     },
     highlightSVG: {
 
         width: '25px',
         height: '25px',
-
+        color: 'white'
     },
 }));
 
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 const TextPopOver = (props) => {
 
     const classes = useStyles();
-    const { anchorPosition, onClose, onHighlight, id, open } = props;
+    const { anchorPosition, onClose, onHighlight, onQuestion, id, open } = props;
 
 
     return (
@@ -49,9 +50,13 @@ const TextPopOver = (props) => {
                 alignItems: 'center'
             }}
         >
-            <div className={classes.popOver}>
+            <div className={classes.root}>
                 <IconButton aria-label="delete" onClick={onHighlight} className={classes.margin}>
                     <img src={highlightSVG} className={classes.highlightSVG} />
+                </IconButton>
+
+                <IconButton aria-label="delete" onClick={onQuestion} className={classes.margin}>
+                    <HelpOutlineIcon className={classes.highlightSVG} />
                 </IconButton>
             </div>
 
