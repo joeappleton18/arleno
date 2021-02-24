@@ -6,7 +6,6 @@ const uiStore = () => {
   const [alertOpen, setAlertOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [hideMenu, setHideMenu] = useState(false);
-  const [rawView, setRawView] = useState(false);
 
   const deployAlert = (message, type) => {
     setAlertOpen(true);

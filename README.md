@@ -51,14 +51,60 @@
 
 User can ask questions by selecting a range  https://github.com/timdown/rangy
 
+### Hypothesis Documentation 
+
+[Hypothosis Client Notes](https://h.readthedocs.io/projects/client/en/latest/)
+
+
+[Threads are where the annotation scroll is stored](https://github.com/hypothesis/client/blob/bd5b2de0444ea2107dd8d22ef6c94ec357309140/src/sidebar/components/ThreadCard.js)
 
 ### PDF Integration Notes 
 
 [https://www.pdftron.com/documentation/web/get-started/react/](https://www.pdftron.com/documentation/web/get-started/react/) - Looks interesting, but not free or open source
+### Range selections
+
+https://github.com/aaronshaf/react-text-selection
 
 
 [https://github.com/wojtekmaj/react-pdf](PDF annotation library, seems fairly up-to-date)
 
+## Pop Over
+
+https://www.npmjs.com/package/react-tiny-popover
+
+## Interesting post on Annotations
 
 
-[Student Papers From Stanford](https://hci.stanford.edu/courses/cs376/2012/student-papers/)
+
+## Possible solution 
+
+![an idea about selecting text](https://github.com/timdown/rangy/issues/438)
+
+
+# Perhaps a better highlighting lib
+https://bvaughn.github.io/react-highlight-words/
+
+
+this looks good 
+
+http://coolwanglu.github.io/pdf2htmlEX/ - seems to work well and is used by the below:
+
+
+Here is a node wrapper - https://www.npmjs.com/package/pdftohtmljs
+
+convert to html !!! (https://cloudconvert.com/pdf-to-html) a cloud option
+
+## Like Products
+
+https://glose.com/what-is-glose
+
+
+### Fuzzy annotation
+
+https://web.hypothes.is/blog/fuzzy-anchoring/
+
+https://www.youtube.com/watch?v=FJyqfRcyYIQ&ab_channel=CodeGenius3
+
+Turn the dom to text 
+Fuzz match 
+Traverse the dom and find the starting text node 

@@ -9,11 +9,18 @@ import { FirebaseProvider, useFirebase } from "./../services/firebase";
 import { StoresProvider, useStores } from "./../stores";
 import CoreLayout from "../layouts/Core";
 import notesConfig from "../config/notes";
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css'
+
 import {
   createMuiTheme,
   Theme,
   MuiThemeProvider,
 } from "@material-ui/core/styles";
+
+/** Global css */
+import '../assets/main.css';
+//import 'react-pdf-highlighter/build/style/All.css'
+
 
 export const defaultTheme = createMuiTheme({
   palette: {
@@ -72,7 +79,6 @@ const AuthListener = () => {
     }
 
     authService.auth.onAuthStateChanged(async (user) => {
-      debugger;
       if (!user || !user.uid) {
         return;
       }

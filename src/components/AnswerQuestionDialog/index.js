@@ -12,8 +12,6 @@ import FollowIcon from "@material-ui/icons/RssFeed";
 import AnswerIcon from "@material-ui/icons/Create";
 import { useStores } from "../../stores/";
 import { useFirebase } from "../../services/firebase";
-import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
-import AvatarGroup from "../AvatarGroup/";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import Editor from "../RichEditor/";
@@ -136,7 +134,7 @@ const Dialog = withStyles((theme) => ({
 
 const AnswerQuestionDialog = (props) => {
 
-  const { children, id, question } = props;
+  const { children, id, question, manualOpen, onClose } = props;
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [photoURL, setPhotoURL] = useState("");
@@ -206,7 +204,6 @@ const AnswerQuestionDialog = (props) => {
 
       }
     }
-
     setQuestion(fb, id, userStore.user, question, children);
   }, [id, fb, userStore.user, question, children])
 
@@ -215,6 +212,8 @@ const AnswerQuestionDialog = (props) => {
   };
   const handleClose = () => {
     setOpen(false);
+    debugger;
+    onClose();
   };
 
   const handleSubmit = async (answer, isUpdate = false) => {
@@ -319,20 +318,16 @@ const AnswerQuestionDialog = (props) => {
     </>)
   }
 
-
-
-
-
   return (
     <div>
-      <div className={classes.text} onClick={handleClickOpen}>
+      {!manualOpen && (<div className={classes.text} onClick={handleClickOpen}>
         {children}
-      </div>
+      </div>)}
 
       <Dialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
-        open={open}
+        open={open || manualOpen}
       >
         <DialogTitle
           id="customized-dialog-title"
@@ -388,6 +383,11 @@ const AnswerQuestionDialog = (props) => {
       </Dialog>
     </div >
   );
+}
+
+
+AnswerQuestionDialog.defaultProps = {
+  onClose: () => { }
 }
 
 export default AnswerQuestionDialog;

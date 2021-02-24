@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import Router from 'next/router'
 import AppBar from "@material-ui/core/AppBar";
 import Container from "@material-ui/core/Container";
 import clsx from "clsx";
@@ -155,6 +156,8 @@ const Core = ({ children }) => {
     setDrawerOpen(false);
   };
 
+  Router.events.on('routeChangeComplete', () => setDrawerOpen(false));
+
   useEffect(() => {
     if (
       userStore.user &&
@@ -167,7 +170,8 @@ const Core = ({ children }) => {
   }, [userStore.user]);
 
   useEffect(() => {
-    setDrawerOpen(desktop);
+    //setDrawerOpen(desktop);
+
   }, [desktop]);
 
   useEffect(() => {

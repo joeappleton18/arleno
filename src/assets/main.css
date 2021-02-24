@@ -1,0 +1,19 @@
+.highlight {
+    background-color: #ff0000;
+    opacity: 0.3;
+}
+
+hypothesis-highlight {
+    background-color: #0084ff;
+    opacity: 0.3; 
+    cursor: pointer; 
+}
+
+.note {
+    background-color: limegreen;
+    opacity: 0.5;
+}
+
+#summary {
+    border: dotted orange 1px;
+}
