@@ -5,6 +5,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/database";
 import "firebase/analytics";
+import "firebase/storage";
 
 
 
@@ -40,6 +41,8 @@ class firebaseService {
     const rtdb = firebase.database();
     const auth = firebase.auth;
     this.auth = new authService(auth);
+
+    this.storage = firebase.storage();
 
 
     this.presence = new presenceService(

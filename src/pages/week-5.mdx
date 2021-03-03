@@ -1,72 +1,146 @@
-import {questionIDs} from '../config/questions';
+import { questionIDs } from "../config/questions";
 import SCREENLAYOUT from "../public/images/screen-layout.png";
 import MuiAlert from "@material-ui/lab/Alert";
 import AnswerQuestionDialog from "../components/AnswerQuestionDialog";
+import { SessionSchedule } from "../components/ContentBlocks";
 
-# Week 5 (Getting to Grips With the Assessment)
+# Week 5 (Referencing and academic integrity)
 
-This week we are going to take a step away from the technical side and consider the assessment. The overarching
-goal is for us to discuss and get a clear idea with regards to what you need to do to achieve the best possible grade in the 
-assessment.
+<center>
+  <img src="https://firebasestorage.googleapis.com/v0/b/computing-notes/o/images%2Ffirst-university.png?alt=media&token=1833a3cb-40da-4e27-aadc-1b9826104c49" />
+</center>
+<em>
+  {" "}
+  Figure 1: The university of Bologna. The world’s oldest university. Founded in
+  1066.{" "}
+</em>
 
-To do this, we are going to form groups and decided on a example assessment idea. Next, we are going to work though the keys aspects of the assessment and consider how we are going to address these aspects. 
+<a href=""> Lecture Presentation </a>
 
-## The Fundamental Idea
+## Practical Session Schedule
 
-This assessment requires you to create, test, and deploy a proof of concept data-driven full stack web-application. 
-
-The above statement suggests that we need to create a proof of concept data driven web application. 
-A proof of concept means this application does not need to be overly sophisticated. Rather, we are just trying to show that a proposed solution to a given problem is feasible. It is vital that this problem is clearly defined; otherwise, when I am marking your assessment I won't know to what extent your solution addresses the problem you set out to solve. 
+<SessionSchedule
+  sc={[
+    { time: "0 - 10", activity: "Students: Arrive" },
+    {
+      time: "10 - 20",
+      activity:
+        "Tutor: Introduces the session, highlighting the importance of avoiding academic misconduct",
+    },
+    {
+      time: "20 - 40",
+      activity:
+        "Tutor: Shares a [padlett](https://padlet.com/) and introduces task 1",
+    },
+    {
+      time: "40 - 85",
+      activity: "Students: Complete task 2",
+    },
+    {
+      time: "85 - end of session",
+      activity: "Tutor:  Summarises results of task",
+    },
+  ]}
+/>
 
 ## Introduction
 
-### The problem statement 
+This week we look at how you can avoid academic misconduct. Specifically, we will focus on how you can correctly use the work of others to underpin your ideas. Throughout this week we will be addressing the following question:
 
-**The problem statement should form part of your introduction.**
+#### How can I use good quality evidence to underpin my academic work, while ensuring academic integrity?
 
-The problem statement should:
+## What is academic integrity
 
-- Identify an issue
-- How your project will address the issue
+[I am sure you have read the student academic misconduct policy document, yes, such a document exists](https://staff.solent.ac.uk/official-documents/quality-management/academic-handbook/2l-student-academic-misconduct-policy.pdf). The policy outlines four areas of misconduct which you should be aware of: plagiarism, collusion, falsification and replication.
 
-**Example**
+Plagiarism and collusion are the most common forms of academic misconduct and can result in a referral to the academic misconduct panel.
 
-Currently, at Solent University, there is no central database containing key features (e.g. capacity, equipment) regarding teaching space. Rather, this information is stored in a spread sheet which needs to be manually inspected; this is a time consuming process. This project proposes to construct a, proof of concept, web application that moves this process online. 
+- **plagiarism.** Where the student passes off someone else's ideas or work their own. This can be one of the most serious forms of academic misconduct, akin to fraud. It should be noted that outsourcing your work, or getting a third party to do it for you is also plagiarism.
 
-## Task 1  (30 mins)
+- **collusion.** Where the student/s in the same cohort knowingly allows their work to be viewed by another student and this work is subsequently incorporated in, or represented as, this students work.
 
-Break way into your alloted groups. 
+Further examples of academic misconduct include falsification and replication, and could, in theory, see you referred to academic misconduct. However, in reality, you will probably just loose marks, or have to re-submit the assessment in the referral period, capped at 40%.
 
-- Discuss potential problems that you feel could be a candidate for this assessment .
-- Discuss how this problem could be articulated.
+Now that the possible breaches of academic integrity have been defined. Let's briefly explore, why universities take academic integrity so seriously. To understand, these ideas, we firstly need to consider what a university is.
 
-<AnswerQuestionDialog question={"List below 1 or 2 model problem statements."} id={questionIDs.find(q => q.count === 2).id}>
+Now that the possible breaches of academic integrity have been defined. Let's briefly explore, why universities take academic integrity so seriously.
 
-- Finally, nominate one team member to write out the problem statement and submit by clicking on this pice of text.
+## Why Academic Integrity is Serious
 
-</AnswerQuestionDialog>
+Post 19th century we saw a marked change in universities. They gradually transformed from places teaching rigid bodies of knowledge, dictated by the church and the state, to institutions that actively create new knowledge. This reform can be credited to Wilhelm von Humboldt who invented the modern research university.
+
+> > Man is born to inquire and create. And when a man or a child chooses to inquire or create out of his own free choice, then he becomes in his own terms an artist rather than a tool of production or a well-trained parrot. - Humboldt
+
+The idea of knowledge creation is the key difference between university and college/six form. A role of a lecturer in a given university, is, in part to create new knowledge. This is the fundamental difference, between a teacher and a lecturer. A traditional school teacher teaches a state-provided body of knowledge and does not necessarily have the academic freedom to add to the knowledge base. As such, in higher education, passing off other peoples ideas as your own goes against the culture of original knowledge creation.
+
+Now we have defined the role of universities, we can move on to how we can base our ideas on this new knowledge that the university system creates.
+
+## Referencing
+
+Currently academic journals are our main mechanism for sharing and advancing science. Journal articles, will be your highest quality sources.
+
+When we base our work on a given source, journal or otherwise, it is important to credit this source. Beyond, just avoiding plagiarism, referencing can add credibility to your work - pushing up your grade. Further to this it shows:
+
+- shows the depth and quality of your research
+- shows awareness of what’s already been done in the area
+- shows awareness of what’s already been done in the area
+- backs up your arguments and justify the points made – give them validity
+
+### Harvard Referencing System
+
+[Solent uses the Harvard Referencing system](https://libguides.solent.ac.uk/ld.php?content_id=32039810).
+
+While many different referencing systems exist, Harvard is the most popular. Harvard is just a baseline standard, and it can differ by institution. [Solent have developed their own referencing system based on Harvard](https://libguides.solent.ac.uk/ld.php?content_id=32039810). You should ensure you read the Solent referencing guide in full, I will not cover it in this article. Instead, let us consider a few ways of how you can effectively use referencing.
+
+<MuiAlert severity="info">
+  <AlertTitle>
+    <strong> Tip </strong>
+  </AlertTitle>
+  Always try and summaries other peoples work. Avoid picking small sections of a
+  given study, and re-writing in your own words. Such an approach is not representative
+  of the actual study.
+</MuiAlert>
+
+### A single source
+
+There are two ways attribute work:
+
+**Author Focused**
+Appleton (2018) concluded, after conducting in-depth interviews with 20 second-year computing students, that students largely struggle to learn functional programming.
+
+**Topic Focused**
+It has been argued that students struggle to learn functional programming (Appleton 2018)
+
+### Multiple Sources
+
+Using multiple sources can be an excellent way to show that there is a widespread agreement with the point that you are trying to argue.
+
+Decreasing mental health within the HE system is a growing issue and can be used to explain the increasing attrition rates among undergraduate university students (Appleton 2018; Ried 2009; Muskett, 2015)
+
+## Task 1 - Plagiarism and Ethics
+
+<MuiAlert severity="success">
+  <AlertTitle>
+    <strong> Task 1 - Plagiarism and Ethics </strong>
+  </AlertTitle>
 
 
-## The System Overview 
+The purpose of this session's task is to, in your groups, help us build a collaborative resource that can be used to help second year computing and networking students avoid plagiarism.
 
-The system overview is going to be a high level overview of your, completed, application. You will want to include screen shots, a system diagram (we will look at this later). 
+Within your project groups, you should conduct research and provide advice, guidance, information and tips about how other students can avoid plagiarising. You should share this advice on the padlet link provided by your tutor.
 
-## Key Design Decisions
+**You should be as useful, practical and creative as possible.**
 
-<img src={SCREENLAYOUT} />
+This is a beneficial activity to undertake because you must first understand, and become familiar with, what is meant by plagiarism before you can offer advice to others.
 
-If you are using a non-relational database, I suggest you present a wire frame of the views in your application. Continuing with the above idea of a room exploration system. Above, is a very simplified version of what some basic layouts could look like. Wire frames like this are fine; however, you will want to be more detailed. 
+Consider discussing and sharing the following points:
 
-## Task 2  (40 mins)
+- Understand what is meant by plagiarism and what it covers
+- Use the correct referencing procedure
+- What are block quotes?
+- Think about plagiarism in relation to social media or tweeting
+- Is paraphrasing plagiarism?
+- What's the difference between summarising and paraphrasing?
 
-Individually:
-
-- Use [https://wireframe.cc/](https://wireframe.cc/), to mock up some key interfaces in your groups application.
-
-
-## Task 2  Ensure you have finished the tasks from last week
-
-Complete the tasks from last week. If you need any help, you can find the solutions [here](https://github.com/joeappleton18/db-starter-project/tree/week-4-solutions)
-
-
+</MuiAlert>
 

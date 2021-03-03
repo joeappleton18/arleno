@@ -56,7 +56,7 @@ const WeekItem = ({ item }) => {
                 href={
                   (item.pageName.split(".")[0] == "index"
                     ? ""
-                    : item.pageName.split(".")[0]) +
+                    : "/" + item.pageName.split(".")[0]) +
                   "/#" +
                   textTOHash(h.children[0].value)
                 }

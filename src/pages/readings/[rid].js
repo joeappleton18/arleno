@@ -171,9 +171,17 @@ const Readings = () => {
     }, [])
 
 
+
+    const setFileDisplay = async (rid) => {
+        const storagePath = await fb.storage.refFromURL(`gs://computing-notes/files/${rid}.pdf`);
+        const url = await storagePath.getDownloadURL();
+        debugger;
+        setFile(url);
+    }
+
     useEffect(() => {
         if (rid && !file) {
-            setFile(`/${rid}.pdf`);
+            setFileDisplay(rid);
         }
         if (user.user && rid) {
             setDocument(rid);
