@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Draw = (props) => {
+const ReadingDrawer = (props) => {
   const { drawerOpen, onDrawerClose } = props;
   const classes = useStyles();
   const theme = useTheme();
@@ -50,8 +50,8 @@ const Draw = (props) => {
           {theme.direction === "ltr" ? (
             <ChevronLeftIcon />
           ) : (
-            <ChevronRightIcon />
-          )}
+              <ChevronRightIcon />
+            )}
         </IconButton>
       </div>
       <Divider />
@@ -61,4 +61,4 @@ const Draw = (props) => {
   );
 };
 
-export default Draw;
+export default ReadingDrawer;

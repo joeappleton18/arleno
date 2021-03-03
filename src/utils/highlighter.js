@@ -347,10 +347,32 @@ export function removeHighlights(highlights) {
  * @param {HighlightElement[]} highlights
  * @param {boolean} focused
  */
-export function setHighlightsFocused(highlights, focused) {
+/*export function setHighlightsFocused(highlights, focused) {
   highlights.forEach(h =>
     h.classList.toggle('hypothesis-highlight-focused', focused)
   );
+}*/
+
+
+/**
+ * Sets the a focused highlight
+ *  
+ * @param {array} nodes 
+ * @param {boolean} scrollTo  
+ */
+export function setFocusedHighlight(nodes, scrollTo = true) {
+
+  document.querySelectorAll(".highlight-focused").forEach(node => {
+    node.classList.remove('highlight-focused');
+  })
+
+  nodes.forEach(node => {
+    node.classList.toggle('highlight-focused');
+  })
+
+  if (scrollTo) {
+    nodes[0].scrollIntoView({ behavior: 'smooth' });
+  }
 }
 
 /**

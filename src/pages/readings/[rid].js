@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import clsx from "clsx";
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { useFirebase } from '../../services/firebase/';
 import { useStores } from '../../stores/';
@@ -10,22 +13,41 @@ import { TextRange } from '../../utils/text-range';
 import AskQuestionDialog from '../../components/AskQuestionDialog';
 import { matchQuote } from '../../utils/match-quote';
 import AnswerQuestionDialog from "../../components/AnswerQuestionDialog";
+import Button from '@material-ui/core/Button';
+import NotesIcon from '@material-ui/icons/Notes';
+import ReadingDrawer from "../../components/ReadingDrawer";
 import {
-    getBoundingClientRect,
-    getHighlightsContainingNode,
+    setFocusedHighlight,
     highlightRange,
-    removeHighlights,
-    removeAllHighlights,
-    setHighlightsFocused,
-    setHighlightsVisible,
+    removeHighlights
+
 } from '../../utils/highlighter';
 
 const useStyles = makeStyles((theme) => ({
     pdfRoot: {
         marginTop: '2rem',
         display: 'flex',
-        width: '90vw',
+        justifyContent: 'center',
+        width: '80vw',
+        [theme.breakpoints.up('lg')]: {
+            width: '100vw',
+        },
         fontSize: '40px !important'
+    },
+
+
+    contentShiftLeft: {
+
+        transition: theme.transitions.create("margin", {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+
+        paddingRight: theme.drawer.width + 50,
+    },
+
+    readingDrawer: {
+        marginTop: '64px'
     },
 
     popOver: {
@@ -54,6 +76,17 @@ const useStyles = makeStyles((theme) => ({
         marginTop: '0.5rem',
         maxWidth: 'calc(~"100% - 2em")',
         boxShadow: '0 0 8px rgba(0, 0, 0, .5);'
+    },
+
+    sideTab: {
+        top: '10',
+        right: '0',
+        zIndex: '1000',
+        display: 'flex',
+        position: 'fixed',
+        borderTopLefRadius: '18px',
+
+
     },
 
     loader: {
@@ -86,7 +119,7 @@ const Readings = () => {
 
     const router = useRouter();
     const { rid } = router.query;
-    const { user } = useStores();
+    const { user, uiStore } = useStores();
     const [file, setFile] = useState('');
     const [answerTextHighlight, setAnswerTextHighlight] = useState("");
     const [questionID, setQuestionID] = useState("");
@@ -114,6 +147,7 @@ const Readings = () => {
         const range = TextRange.fromOffsets(root, match.start, match.end).toRange();
         highlightRange(range, annotation.id);
     }
+
 
 
     async function handleAnnotationClick(e) {
@@ -168,6 +202,10 @@ const Readings = () => {
 
     useEffect(() => {
         pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+        uiStore.setReadingMode(true);
+        return () => {
+            uiStore.setReadingMode(false);
+        }
     }, [])
 
 
@@ -259,33 +297,55 @@ const Readings = () => {
 
             const range = window.getSelection().getRangeAt(0);
             const questionResult = await fb.question.create(qx);
-            await fb.document.createAnnotation({ ...focusedAnnotation, type: 'question', question_id: questionResult.id }, rid);
+            await fb.document.createAnnotation({ ...focusedAnnotation, type: 'question', question: qx, question_id: questionResult.id }, rid);
             setOpenQuestionDialog(false);
             handlePopOverClose();
+            getAnnotations();
 
         } catch (e) {
             console.log('error could not create question', e)
         }
     }
 
-
-
-
-
-
-
     const options = {
         cMapUrl: 'cmaps/',
         cMapPacked: true,
     };
 
+    const handleSideBarHighlightClick = (id) => {
+        const nodes = document.querySelectorAll(`[annotationid="${id}"]`);
+        setFocusedHighlight(nodes);
 
+    }
+
+    const handleSideBarHighlightHover = (id) => {
+        const nodes = document.querySelectorAll(`[annotationid="${id}"]`);
+        setFocusedHighlight(nodes, false);
+
+    }
 
 
 
     return (
 
-        < div className={classes.pdfRoot} >
+        <div className={clsx({ [classes.pdfRoot]: true, [classes.contentShiftLeft]: uiStore.readingDrawOpen })} >
+
+
+            <div className={classes.sideTab}>
+                <p style={{
+                    'writing-mode': 'vertical-l',
+                    'text-orientation': 'upright-right'
+                }}>
+                    <Fab color="primary" aria-label="add">
+                        <NotesIcon onClick={() => { uiStore.setReadingDrawOpen(true) }} />
+                    </Fab>
+                </p>
+            </div>
+            <ReadingDrawer
+                annotations={annotations}
+                onAnnotationClick={handleSideBarHighlightClick}
+                onAnnotationHover={handleSideBarHighlightHover}
+            />
             <AnswerQuestionDialog id={questionID} manualOpen={openAnswerBox} onClose={() => setOpenAnswerBox(false)} question={question}>
 
                 {openAnswerBox && answerTextHighlight}

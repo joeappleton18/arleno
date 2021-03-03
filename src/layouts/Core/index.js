@@ -15,7 +15,7 @@ import InputBase from "@material-ui/core/InputBase";
 import Badge from "@material-ui/core/Badge";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { MDXProvider } from "@mdx-js/react";
-import Draw from "./Draw";
+import Drawer from "./Drawer";
 import notesConfig from "../../config/notes";
 import RemarkComponents from "../../components/Remark";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -29,6 +29,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import LoggedInMenu from "./LoggedInMenu";
 import ArrowDropDownCircleIcon from "@material-ui/icons/ArrowDropDownCircle";
 import AvatarGroup from "../../components/AvatarGroup";
+
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -52,6 +53,17 @@ const useStyles = makeStyles((theme) => ({
     }),
     marginLeft: theme.drawer.width,
   },
+
+  contentShiftLeft: {
+
+    transition: theme.transitions.create("margin", {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+
+    paddingRight: theme.drawer.width + 50,
+  },
+
 
   profileName: {
     marginTop: theme.spacing(2),
@@ -255,6 +267,7 @@ const Core = ({ children }) => {
         elevation={0}
         className={clsx({
           [classes.appBarShift]: drawerOpen,
+          [classes.contentShiftLeft]: uiStore.readingDrawOpen
         })}
       >
         <Toolbar className={classes.toolBar}>
@@ -342,13 +355,19 @@ const Core = ({ children }) => {
           </div>
         </Toolbar>
       </AppBar>
-      <Draw drawerOpen={drawerOpen} onDrawerClose={handleDrawerClose} />
+      <Drawer drawerOpen={drawerOpen} onDrawerClose={handleDrawerClose} />
+
+
+      {/** we can adjust based on the draw being open (drawerOpen ? "md" : "md"). However, for now,
+       * I am only differentiating between reading and non reading mode
+       */}
+
       <Container
         className={clsx({
           [classes.contentShift]: drawerOpen,
           [classes.container]: true,
         })}
-        maxWidth={drawerOpen ? "md" : "md"}
+        maxWidth={!uiStore.readingMode ? "md" : "xl"}
         id="content"
       >
         <MDXProvider components={RemarkComponents}>  {children}</MDXProvider>

@@ -1,5 +1,5 @@
-.highlight {
-    background-color: #ff0000;
+.highlight-focused {
+    background-color: #ff0000 !important;
     opacity: 0.3;
 }
 
