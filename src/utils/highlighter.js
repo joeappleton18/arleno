@@ -362,6 +362,7 @@ export function removeHighlights(highlights) {
  */
 export function setFocusedHighlight(nodes, scrollTo = true) {
 
+
   document.querySelectorAll(".highlight-focused").forEach(node => {
     node.classList.remove('highlight-focused');
   })
@@ -371,7 +372,9 @@ export function setFocusedHighlight(nodes, scrollTo = true) {
   })
 
   if (scrollTo) {
-    nodes[0].scrollIntoView({ behavior: 'smooth' });
+    const y = nodes[0].getBoundingClientRect().top + window.pageYOffset - 100;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+    //nodes[0].scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
   }
 }
 
