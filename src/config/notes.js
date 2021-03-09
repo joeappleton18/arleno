@@ -13,6 +13,9 @@ const notes = {
       "week-6",
       "topic-writing-and-communication",
       "week-7",
+      "week-8",
+      "topic-methods",
+      "week-9",
       "literature-review-protocol",
       "research"
     ],
