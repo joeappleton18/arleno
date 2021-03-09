@@ -12,12 +12,15 @@
 
 #### Essential Build and Management Research Features 
 
+- 
 - [ ]  As an admin, I should be able to deploy a static version of the site, so things run on hosting as opposed to functions
-- [ ] As a admin, I should be able to deploy to a new version of the project
+- [X] As a admin, I should be able to deploy to a new version of the project
+- [X] As a admin, I should be able to delete my annotations, so I can remove them  
+- [X] As a admin, I should be able to moderate 
 
 
 #### Essential User Features
-- [ ] The menu should close after a page load  ⬅ 
+- [X] The menu should close after a page load  ⬅ 
 - [ ] As a user, I should see a floating answer count box  
 - [ ]  As a user, I should see a summary of all answers 
 - [ ]  As a user, I should see a leader-board (this needs a little bit of thought)

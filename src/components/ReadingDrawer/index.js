@@ -1,6 +1,9 @@
-import React from 'react';
+import { useState } from 'react';
 import { useStores } from '../../stores';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Drawer from '@material-ui/core/Drawer';
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
@@ -44,15 +47,78 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+const EditDeleteAnnotation = (props) => {
+
+    const { onUpdate } = props;
+
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+
+    const options = [
+        'Edit',
+        'Delete'
+    ];
+
+    const handleEditDelete = (item) => {
+        setAnchorEl(null);
+        onUpdate(item.toLowerCase());
+    }
+
+    const handleUpdateClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    }
+    const handleUpdateClose = (event) => {
+        setAnchorEl(null);
+    }
+
+
+    const ITEM_HEIGHT = 48;
+
+
+    return (
+        <>
+            <IconButton
+                aria-label="more"
+                aria-controls="long-menu"
+                aria-haspopup="true"
+                onClick={handleUpdateClick}
+            >
+                <MoreVertIcon />
+            </IconButton>
+            <Menu
+                id="long-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={open}
+                onClose={handleUpdateClose}
+                PaperProps={{
+                    style: {
+                        maxHeight: ITEM_HEIGHT * 4.5,
+                        width: '20ch',
+                    },
+                }}
+            >
+                {options.map((option) => (
+                    <MenuItem key={option} onClick={() => handleEditDelete(option)}>
+                        {option}
+                    </MenuItem>
+                ))}
+            </Menu>
+
+        </>
+    );
+}
+
+
 const AnnotationItem = (props) => {
     const { annotation, onAnnotationClick, onAnnotationHover } = props;
     const classes = useStyles();
-    const { uiStore } = useStores();
     return (
         <List className={classes.list}>
             <ListItem button key={annotation.id} onClick={() => onAnnotationClick(annotation.id)} onMouseOver={() => onAnnotationHover(annotation.id)}>
                 <ListItemIcon> {annotation.type == "question" ? <HelpIcon /> : <InfoIcon />}</ListItemIcon>
                 <ListItemText primary={annotation.question.question} />
+                <EditDeleteAnnotation />
             </ListItem>
         </List>
     );
@@ -65,7 +131,7 @@ const ReadingDrawer = (props) => {
 
     const classes = useStyles();
     const theme = useTheme();
-    const { uiStore } = useStores();
+    const { uiStore, user } = useStores();
 
     return (
         <React.Fragment {...other}>

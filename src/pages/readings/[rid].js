@@ -152,8 +152,6 @@ const Readings = () => {
 
     async function handleAnnotationClick(e) {
 
-        console.log('fired');
-
         e.preventDefault();
         e.stopPropagation();
         const id = e.target.getAttribute('annotationid');
@@ -334,11 +332,12 @@ const Readings = () => {
             <div className={classes.sideTab}>
                 <p style={{
                     'writing-mode': 'vertical-l',
-                    'text-orientation': 'upright-right'
+                    'text-orientation': 'upright-right',
+                    'margin-right': '0.5rem'
                 }}>
-                    <Fab color="primary" aria-label="add">
+                    {annotations && <Fab color="primary" aria-label="add">
                         <NotesIcon onClick={() => { uiStore.setReadingDrawOpen(true) }} />
-                    </Fab>
+                    </Fab>}
                 </p>
             </div>
             <ReadingDrawer
