@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useStores } from "../../stores/";
-import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import AvatarGroup from "../AvatarGroup/";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
@@ -11,7 +10,6 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import UpArrow from '@material-ui/icons/ForwardOutlined';
 import Typography from "@material-ui/core/Typography";
 import UpArrowFilled from '@material-ui/icons/Forward';
-
 import IconButton from '@material-ui/core/IconButton';
 
 const useStyles = makeStyles((theme) => ({
@@ -47,7 +45,7 @@ const AnswerSection = ({ upvotes, onUpvote, onUnvote }) => {
         setUserVoted(userVoted);
     }, [upvotes])
 
-    
+
     return (<Grid container direction="row" justify="flexStart">
         <Grid item xs={9} md={5} style={{ display: 'flex' }}>
             {userVoted && (<span onClick={(e) => onUnvote(e)} >

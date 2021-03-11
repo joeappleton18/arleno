@@ -6,6 +6,22 @@ class documentService {
   }
 
 
+  updateAnnotation(annotation, documentId, id) {
+    annotation.updated = this.timeStamp;
+    return this.ref.doc(documentId)
+      .collection("annotations")
+      .doc(id)
+      .update(annotation);
+  }
+
+
+  deleteAnnotation(documentId, id) {
+    return this.ref.doc(documentId)
+      .collection("annotations")
+      .doc(id)
+      .delete();
+  }
+
   createAnnotation(annotation, id) {
     annotation.created = this.timeStamp;
     return this.ref.doc(id).

@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 
 const EditDeleteAnnotation = (props) => {
 
-    const { onUpdate } = props;
+    const { onEdit, onDelete } = props;
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -59,9 +59,15 @@ const EditDeleteAnnotation = (props) => {
         'Delete'
     ];
 
-    const handleEditDelete = (item) => {
+    const handleEditDelete = (item, event) => {
+        event.preventDefault();
+        event.stopPropagation();
         setAnchorEl(null);
-        onUpdate(item.toLowerCase());
+        if (item.toLowerCase() === 'edit') {
+            onEdit();
+            return;
+        }
+        onDelete();
     }
 
     const handleUpdateClick = (event) => {
@@ -99,7 +105,7 @@ const EditDeleteAnnotation = (props) => {
                 }}
             >
                 {options.map((option) => (
-                    <MenuItem key={option} onClick={() => handleEditDelete(option)}>
+                    <MenuItem key={option} onClick={(event) => handleEditDelete(option, event)}>
                         {option}
                     </MenuItem>
                 ))}
@@ -109,16 +115,20 @@ const EditDeleteAnnotation = (props) => {
     );
 }
 
-
 const AnnotationItem = (props) => {
-    const { annotation, onAnnotationClick, onAnnotationHover } = props;
+    const { annotation, onAnnotationClick, onAnnotationHover, onDelete, onEdit } = props;
     const classes = useStyles();
+    const { user } = useStores();
+
+    const handleDelete = () => onDelete(annotation.id);
+    const handleEdit = () => onEdit(annotation.id);
+
     return (
         <List className={classes.list}>
             <ListItem button key={annotation.id} onClick={() => onAnnotationClick(annotation.id)} onMouseOver={() => onAnnotationHover(annotation.id)}>
                 <ListItemIcon> {annotation.type == "question" ? <HelpIcon /> : <InfoIcon />}</ListItemIcon>
                 <ListItemText primary={annotation.question.question} />
-                <EditDeleteAnnotation />
+                {user.user.type == "A" && <EditDeleteAnnotation onDelete={handleDelete} onEdit={handleEdit} />}
             </ListItem>
         </List>
     );
@@ -126,7 +136,7 @@ const AnnotationItem = (props) => {
 
 const ReadingDrawer = (props) => {
 
-    const { onClose, onAnnotationClick, onAnnotationHover, annotations, ...other } = props;
+    const { onClose, onAnnotationDelete, onAnnotationEdit, onAnnotationClick, onAnnotationHover, annotations, ...other } = props;
 
 
     const classes = useStyles();
@@ -156,7 +166,12 @@ const ReadingDrawer = (props) => {
                         annotations.map(annotation => (
 
                             <React.Fragment>
-                                <AnnotationItem annotation={annotation} onAnnotationClick={onAnnotationClick} onAnnotationHover={onAnnotationHover} />
+                                <AnnotationItem onDelete={onAnnotationDelete}
+                                    onEdit={onAnnotationEdit}
+                                    onDelete={onAnnotationDelete}
+                                    annotation={annotation}
+                                    onAnnotationClick={onAnnotationClick}
+                                    onAnnotationHover={onAnnotationHover} />
                                 <Divider />
                             </React.Fragment>))
 
@@ -171,73 +186,6 @@ const ReadingDrawer = (props) => {
 
 }
 
-// const ReadingDrawer = (props) => {
-//     const classes = useStyles();
-//     const [state, setState] = React.useState({
-//         top: false,
-//         left: false,
-//         bottom: false,
-//         right: true,
-//     });
-
-//     const toggleDrawer = (anchor, open) => (event) => {
-//         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-//             return;
-//         }
-
-//         setState({...state, [anchor]: open });
-//     };
-
-//     const list = (anchor) => (
-//         <div
-//             className={clsx(classes.list, {
-//                 [classes.fullList]: anchor === 'top' || anchor === 'bottom',
-//             })}
-//             role="presentation"
-//             onClick={toggleDrawer(anchor, false)}
-//             onKeyDown={toggleDrawer(anchor, false)}
-//         >
-//             <List>
-//                 {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-//                     <ListItem button key={text}>
-//                         <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-//                         <ListItemText primary={text} />
-//                     </ListItem>
-//                 ))}
-//             </List>
-//             <Divider />
-//             <List>
-//                 {['All mail', 'Trash', 'Spam'].map((text, index) => (
-//                     <ListItem button key={text}>
-//                         <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-//                         <ListItemText primary={text} />
-//                     </ListItem>
-//                 ))}
-//             </List>
-//         </div>
-//     );
-
-//     return (
-//         <div>
-
-//             <React.Fragment key={anchor}>
-//                 <Drawer anchor={anchor} open={state[anchor]} onClose={toggleDrawer(anchor, false)}>
-//                     {list(anchor)}
-//                 </Drawer>
-//             </React.Fragment>
-
-
-//             {['left', 'right', 'top', 'bottom'].map((anchor) => (
-//                 <React.Fragment key={anchor}>
-//                     <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
-//                     <Drawer anchor={"right"} open={true} onClose={toggleDrawer(anchor, false)}>
-//                         {list(anchor)}
-//                     </Drawer>
-//                 </React.Fragment>
-//             ))}
-//         </div>
-//     );
-// }
 
 
 ReadingDrawer.defaultProps = {

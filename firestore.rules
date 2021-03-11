@@ -33,11 +33,11 @@ service cloud.firestore {
             allow create, delete, update: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.type == "A";
         }
 
-        // a user can create their own annotations
+        // a user can create and delete their own annotations
 
         match /documents/{documentId}/annotations/{anotationID} {
-            allow update, delete, create: if request.auth.uid == request.resource.data.uid;
             allow read:  if request.auth.uid !=  null; 
+            allow create, delete, update: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.type == "A";
         }
 
     }

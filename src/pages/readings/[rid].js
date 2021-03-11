@@ -124,7 +124,7 @@ const Readings = () => {
     const [answerTextHighlight, setAnswerTextHighlight] = useState("");
     const [questionID, setQuestionID] = useState("");
     const [question, setQuestion] = useState("");
-    const [annotations, setAnnotations] = useState();
+    const [annotations, setAnnotations] = useState([]);
     const [openAnswerBox, setOpenAnswerBox] = useState(false);
     const [openQuestionDialog, setOpenQuestionDialog] = useState(false);
     const [openPopover, setOpenPopover] = useState(false);
@@ -203,6 +203,7 @@ const Readings = () => {
         uiStore.setReadingMode(true);
         return () => {
             uiStore.setReadingMode(false);
+            uiStore.setReadingDrawOpen(false);
         }
     }, [])
 
@@ -214,6 +215,14 @@ const Readings = () => {
         debugger;
         setFile(url);
     }
+
+    useEffect(() => {
+
+        if (annotations.length === 0) {
+            uiStore.setReadingDrawOpen(false);
+        }
+
+    }, [annotations])
 
     useEffect(() => {
         if (rid && !file) {
@@ -284,12 +293,39 @@ const Readings = () => {
 
     const handleQuestionSave = async (question) => {
 
+        if (focusedAnnotation.question) {
+            /**
+             * check to see if a new question value has been set, 
+             * if there is no value we can just return 
+             * 
+             */
+
+            if (question === focusedAnnotation.question.question) {
+                setOpenQuestionDialog(false);
+                return;
+            }
+
+            try {
+                await fb.question.update({ question: question }, focusedAnnotation.question_id);
+                await fb.document.updateAnnotation({ question: { question: question } }, rid, focusedAnnotation.id);
+                const message = "😎 You've updated your annotation 😎";
+                uiStore.deployAlert(message, "success");
+                getAnnotations();
+
+            } catch (e) {
+                uiStore.deployAlert("Ohhh I could not update the annotation", "error");
+                console.log('could not update annotation', e);
+            }
+            setOpenQuestionDialog(false);
+            return;
+        }
+
+
         const qx = {
             userName: user.user.firstName + user.user.lastName,
             question: question,
             photoURL: user.user.photoURL,
             answers: 0,
-
         }
         try {
 
@@ -310,16 +346,38 @@ const Readings = () => {
         cMapPacked: true,
     };
 
-    const handleSideBarHighlightClick = (id) => {
+    const handleAnnotationHighlightClick = (id) => {
         const nodes = document.querySelectorAll(`[annotationid="${id}"]`);
         setFocusedHighlight(nodes);
 
     }
 
-    const handleSideBarHighlightHover = (id) => {
+    const handleAnnotationHighlightHover = (id) => {
         const nodes = document.querySelectorAll(`[annotationid="${id}"]`);
         setFocusedHighlight(nodes, false);
 
+    }
+
+    const handleAnnotationEdit = (id) => {
+        const nodes = document.querySelectorAll(`[annotationid="${id}"]`);
+        setFocusedAnnotation(annotations.find((a) => a.id === id));
+        setOpenQuestionDialog(true);
+        // set annotation highlight
+        debugger;
+    }
+
+    const handleAnnotationDelete = async (id) => {
+        try {
+            await fb.document.deleteAnnotation(rid, id);
+            const nodes = document.querySelectorAll(`[annotationid="${id}"]`);
+            uiStore.deployAlert("💩 You've deleted your annotation 💩", "success");
+            removeHighlights(nodes);
+            getAnnotations();
+
+        } catch (e) {
+            uiStore.deployAlert("Oh, there was an issue deleting annotation", "error");
+            console.log('error, could not delete annotation', e);
+        }
     }
 
 
@@ -335,16 +393,18 @@ const Readings = () => {
                     'text-orientation': 'upright-right',
                     'margin-right': '0.5rem'
                 }}>
-                    {annotations && <Fab color="primary" aria-label="add">
+                    {annotations.length > 0 && <Fab color="primary" aria-label="add">
                         <NotesIcon onClick={() => { uiStore.setReadingDrawOpen(true) }} />
                     </Fab>}
                 </p>
             </div>
-            <ReadingDrawer
+            {<ReadingDrawer
                 annotations={annotations}
-                onAnnotationClick={handleSideBarHighlightClick}
-                onAnnotationHover={handleSideBarHighlightHover}
-            />
+                onAnnotationClick={handleAnnotationHighlightClick}
+                onAnnotationHover={handleAnnotationHighlightHover}
+                onAnnotationDelete={handleAnnotationDelete}
+                onAnnotationEdit={handleAnnotationEdit}
+            />}
             <AnswerQuestionDialog id={questionID} manualOpen={openAnswerBox} onClose={() => setOpenAnswerBox(false)} question={question}>
 
                 {openAnswerBox && answerTextHighlight}
@@ -354,6 +414,7 @@ const Readings = () => {
             <AskQuestionDialog
                 open={openQuestionDialog}
                 highlight={focusedAnnotation.exact}
+                textValue={focusedAnnotation.question && focusedAnnotation.question.question}
                 onSave={handleQuestionSave}
                 onClose={() => { setOpenQuestionDialog(false) }}
             />

@@ -42,7 +42,7 @@ class questionService {
   }
 
   update(question, id) {
-    user.updated = this.timeStamp;
+    question.updated = this.timeStamp;
     return this.ref.doc(id).update(question);
   }
 
