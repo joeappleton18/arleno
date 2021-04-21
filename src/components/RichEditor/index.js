@@ -1,14 +1,10 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import MUIRichTextEditor, { TMUIRichTextEditorRef } from "mui-rte";
 import { createMuiTheme, MuiThemeProvider, makeStyles } from "@material-ui/core/styles";
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import { EditorState, convertToRaw } from 'draft-js'
-import { convertToHTML, convertFromHTML } from 'draft-convert';
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { EditorState, convertFromHTML, convertToRaw } from 'draft-js'
+
 
 export const defaultTheme = createMuiTheme({
   palette: {
@@ -99,7 +95,7 @@ const ReadEditor = ({ data }) => {
 
 
 const WriteEditor = (props) => {
-  const { onSubmit, onCancel, data } = props;
+  const { onSubmit, onCancel, data, submitButtonText, editorPlaceholderText } = props;
 
 
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -127,20 +123,17 @@ const WriteEditor = (props) => {
     onCancel();
   }
 
-
-
-
   return (
     <>
       <MuiThemeProvider theme={writeTheme}>
         <Grid container spacing={1}>
           <Grid item xs={12}>
-            <MUIRichTextEditor onChange={handleChange} editorState={editorState} onSave={handleSave} defaultValue={data} ref={ref} label="Enter your answer here... 😊" controls={["title", "bold", "italic", "underline", "strikethrough", "link", "numberList", "bulletList", "quote", "code"]} />
+            <MUIRichTextEditor onChange={handleChange} editorState={editorState} onSave={handleSave} defaultValue={data} ref={ref} label={editorPlaceholderText} controls={["title", "bold", "italic", "underline", "strikethrough", "link", "numberList", "bulletList", "quote", "code"]} />
           </Grid>
           <Grid item xs={12} >
             <Button disabled={disabled} onClick={handleSubmitClick} elevation={1} variant="contained" color="secondary">
-              Submit Answer
-          </Button>
+              {submitButtonText}
+            </Button>
             <Button onClick={handleCancelClick} variant="outlined" elevation={0} style={{ marginLeft: '10px' }} variant="contained" color="primary">
               Cancel
           </Button>
@@ -153,17 +146,26 @@ const WriteEditor = (props) => {
 
 
 const RichEditor = (props) => {
-
-  const { onSubmit, readOnly, data, onCancel } = props;
-
-  if (!readOnly) { return <WriteEditor onSubmit={onSubmit} data={data} onCancel={onCancel} /> }
+  const { onSubmit, readOnly, data, onCancel, submitButtonText, editorPlaceholderText } = props;
+  if (!readOnly) {
+    return <WriteEditor
+      onSubmit={onSubmit}
+      data={data}
+      onCancel={onCancel}
+      submitButtonText={submitButtonText}
+      editorPlaceholderText={editorPlaceholderText}
+    />
+  }
   if (readOnly) { return <ReadEditor data={data} /> }
 
 }
 
 RichEditor.defaultProps = {
   readOnly: false,
-  data: null
+  data: null,
+  submitButtonText: 'Submit Answer',
+  editorPlaceholderText: 'Enter your answer here... 😊',
+  cancelButtonText: 'Cancel'
 }
 
 export default RichEditor;

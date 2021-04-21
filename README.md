@@ -111,3 +111,8 @@ https://www.youtube.com/watch?v=FJyqfRcyYIQ&ab_channel=CodeGenius3
 Turn the dom to text 
 Fuzz match 
 Traverse the dom and find the starting text node 
+
+
+# Interesting Lib
+
+https://www.serverless.com/

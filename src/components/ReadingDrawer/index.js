@@ -1,9 +1,6 @@
 import { useState } from 'react';
 import { useStores } from '../../stores';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Drawer from '@material-ui/core/Drawer';
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
@@ -18,6 +15,7 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import clsx from "clsx";
 import InfoIcon from '@material-ui/icons/Info';
 import HelpIcon from '@material-ui/icons/Help';
+import UpdateDeleteToggle from '../UpdateDeleteToggle';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -47,74 +45,6 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const EditDeleteAnnotation = (props) => {
-
-    const { onEdit, onDelete } = props;
-
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
-
-    const options = [
-        'Edit',
-        'Delete'
-    ];
-
-    const handleEditDelete = (item, event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        setAnchorEl(null);
-        if (item.toLowerCase() === 'edit') {
-            onEdit();
-            return;
-        }
-        onDelete();
-    }
-
-    const handleUpdateClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    }
-    const handleUpdateClose = (event) => {
-        setAnchorEl(null);
-    }
-
-
-    const ITEM_HEIGHT = 48;
-
-
-    return (
-        <>
-            <IconButton
-                aria-label="more"
-                aria-controls="long-menu"
-                aria-haspopup="true"
-                onClick={handleUpdateClick}
-            >
-                <MoreVertIcon />
-            </IconButton>
-            <Menu
-                id="long-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={open}
-                onClose={handleUpdateClose}
-                PaperProps={{
-                    style: {
-                        maxHeight: ITEM_HEIGHT * 4.5,
-                        width: '20ch',
-                    },
-                }}
-            >
-                {options.map((option) => (
-                    <MenuItem key={option} onClick={(event) => handleEditDelete(option, event)}>
-                        {option}
-                    </MenuItem>
-                ))}
-            </Menu>
-
-        </>
-    );
-}
-
 const AnnotationItem = (props) => {
     const { annotation, onAnnotationClick, onAnnotationHover, onDelete, onEdit } = props;
     const classes = useStyles();
@@ -128,7 +58,7 @@ const AnnotationItem = (props) => {
             <ListItem button key={annotation.id} onClick={() => onAnnotationClick(annotation.id)} onMouseOver={() => onAnnotationHover(annotation.id)}>
                 <ListItemIcon> {annotation.type == "question" ? <HelpIcon /> : <InfoIcon />}</ListItemIcon>
                 <ListItemText primary={annotation.question.question} />
-                {user.user.type == "A" && <EditDeleteAnnotation onDelete={handleDelete} onEdit={handleEdit} />}
+                {user.user.type == "A" && <UpdateDeleteToggle onDelete={handleDelete} onEdit={handleEdit} />}
             </ListItem>
         </List>
     );

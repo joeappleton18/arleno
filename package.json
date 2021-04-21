@@ -16,7 +16,9 @@
     "deploy": "firebase deploy --only functions,hosting",
     "deploy:rules": "firebase deploy --only firestore:rules",
     "logs": "firebase functions:log",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@hookform/resolvers": "^0.1.1",
@@ -41,7 +43,7 @@
     "immer": "^7.0.9",
     "md5": "^2.3.0",
     "mui-rte": "^1.25.0",
-    "next": "^9.3.4",
+    "next": "^10.0.8",
     "next-images": "^1.6.2",
     "next-transpile-modules": "^4.1.0",
     "prettier": "^2.1.2",
@@ -63,11 +65,20 @@
     "yup": "^0.29.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.13.10",
     "@imaginary-cloud/eslint-config-react": "1.0.1",
+    "@storybook/addon-actions": "^6.1.21",
+    "@storybook/addon-essentials": "^6.1.21",
+    "@storybook/addon-links": "^6.1.21",
+    "@storybook/react": "^6.1.21",
     "@testing-library/dom": "^7.24.3",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.0.4",
+    "@testing-library/user-event": "^12.8.3",
+    "@types/node": "^14.14.33",
+    "@types/react": "^17.0.3",
     "babel-jest": "^26.3.0",
+    "babel-loader": "^8.2.2",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-import": "^2.20.2",
@@ -78,7 +89,8 @@
     "firebase-functions-test": "^0.1.6",
     "firebase-tools": "^9.2.1",
     "jest": "^26.4.2",
-    "jest-dom": "^4.0.0"
+    "jest-dom": "^4.0.0",
+    "typescript": "^4.2.3"
   },
   "license": "MIT"
 }

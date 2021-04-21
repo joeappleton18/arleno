@@ -16,6 +16,7 @@ const notes = {
       "week-8",
       "topic-methods",
       "week-9",
+      "week-10",
       "literature-review-protocol",
       "research"
     ],
