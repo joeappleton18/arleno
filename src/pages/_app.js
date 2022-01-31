@@ -9,7 +9,7 @@ import { FirebaseProvider, useFirebase } from "./../services/firebase";
 import { StoresProvider, useStores } from "./../stores";
 import CoreLayout from "../layouts/Core";
 import notesConfig from "../config/notes";
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css'
+import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 
 import {
   createMuiTheme,
@@ -18,9 +18,8 @@ import {
 } from "@material-ui/core/styles";
 
 /** Global css */
-import '../assets/main.css';
+import "../assets/main.css";
 //import 'react-pdf-highlighter/build/style/All.css'
-
 
 export const defaultTheme = createMuiTheme({
   palette: {

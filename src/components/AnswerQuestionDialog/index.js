@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect } from "react";
 import { useState } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import MuiDialog from "@material-ui/core/Dialog";
@@ -15,7 +15,7 @@ import { useFirebase } from "../../services/firebase";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import Editor from "../RichEditor/";
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from "@material-ui/core/IconButton";
 import Answer from "./Answer";
 const useStyles = makeStyles((theme) => ({
   text: { background: theme.palette.primary.main, cursor: "pointer" },
@@ -28,11 +28,11 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1rem",
     color: "grey",
     display: "flex",
-    '& li': {
+    "& li": {
       textDecoration: "underline",
       listStyle: "none",
-      marginLeft: "2%"
-    }
+      marginLeft: "2%",
+    },
   },
   buttonRoot: {
     display: "flex",
@@ -128,12 +128,7 @@ const Dialog = withStyles((theme) => ({
   },
 }))(MuiDialog);
 
-
-
-
-
 const AnswerQuestionDialog = (props) => {
-
   const { children, id, question, manualOpen, onClose } = props;
   const classes = useStyles();
   const [open, setOpen] = useState(false);
@@ -148,27 +143,23 @@ const AnswerQuestionDialog = (props) => {
   const userStore = useStores().user;
   const uiStore = useStores().uiStore;
 
-
   useEffect(() => {
     setCurrentAnswer(null);
-    const answer = answers.find(a => userStore.user.uid === a.id);
+    const answer = answers.find((a) => userStore.user.uid === a.id);
     if (!answer) {
       return;
     }
     setCurrentAnswer(answer.data);
-  }, [answers])
+  }, [answers]);
 
   useEffect(() => {
-
     if (!userStore.user) {
       return;
     }
 
-
     const setQuestion = async (fb, id, user, question) => {
-
-      // we place this line in to check that the question service exists 
-      if (!fb.question) return
+      // we place this line in to check that the question service exists
+      if (!fb.question) return;
 
       const questionRef = await fb.question.read(id);
       if (!questionRef.exists) {
@@ -177,35 +168,34 @@ const AnswerQuestionDialog = (props) => {
           question: question,
           photoURL: user.photoURL,
           answers: 0,
-
-
-        }
+        };
 
         try {
           await fb.question.create(qx, id);
           setPhotoURL(qx.photoURL);
           setUserName(qx.userName);
         } catch (e) {
-          console.log('error could not create question', e)
+          console.log("error could not create question", e);
         }
-
-      } else { // in this instance the question exists 
-        debugger;
+      } else {
+        // in this instance the question exists
         const qx = await questionRef.data();
+        debugger;
         setPhotoURL(qx.photoURL);
         setUserName(qx.userName);
         setDate(qx.created.toDate());
         fb.question.realtimeRead(id, (answersRef) => {
           setAnswers([]);
-          const tmpArray = []
-          answersRef.forEach(a => tmpArray.push({ ...a.data(), ...{ id: a.id } }));
+          const tmpArray = [];
+          answersRef.forEach((a) =>
+            tmpArray.push({ ...a.data(), ...{ id: a.id } })
+          );
           setAnswers(tmpArray);
-        })
-
+        });
       }
-    }
+    };
     setQuestion(fb, id, userStore.user, question, children);
-  }, [id, fb, userStore.user, question, children])
+  }, [id, fb, userStore.user, question, children]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -218,111 +208,139 @@ const AnswerQuestionDialog = (props) => {
 
   const handleSubmit = async (answer, isUpdate = false) => {
     try {
-      await fb.question.createAnswer({ ...answer, ...userStore.user, ...{ upvotes_count: 0 } }, id, userStore.user.uid);
-      const message = isUpdate ? "😎 You've updated your answer 😎" : "😎 You've answered the question 😎";
+      await fb.question.createAnswer(
+        { ...answer, ...userStore.user, ...{ upvotes_count: 0 } },
+        id,
+        userStore.user.uid
+      );
+      const message = isUpdate
+        ? "😎 You've updated your answer 😎"
+        : "😎 You've answered the question 😎";
       uiStore.deployAlert(message, "success");
       setShowAnswerBox(false);
     } catch (e) {
       debugger;
       uiStore.deployAlert("Ohhh there was an issue tell Joe", "success");
-      console.log('error could not answer question', e);
-
+      console.log("error could not answer question", e);
     }
-  }
-
+  };
 
   const handleClickAnswer = () => {
     if (!showAnswerBox) {
       buttonRef.current.scrollIntoView();
     }
     setShowAnswerBox(!showAnswerBox);
-
-  }
+  };
   const handleCancel = () => {
     setShowAnswerBox(false);
-  }
+  };
   const AnswerBlock = ({ answer }) => {
     const [editable, setEditable] = useState(false);
 
     const handleCancel = () => {
-      setEditable(false)
-    }
+      setEditable(false);
+    };
 
     const handleDelete = async () => {
       try {
         await fb.question.deleteAnswer(id, answer.id);
         uiStore.deployAlert("💩 You've deleted your answer 💩", "success");
       } catch (e) {
-        uiStore.deployAlert("Oh, there was an issue deleting your answer, tell Joe", "error");
-        console.log('error, could not delete answer', e);
+        uiStore.deployAlert(
+          "Oh, there was an issue deleting your answer, tell Joe",
+          "error"
+        );
+        console.log("error, could not delete answer", e);
       }
-    }
+    };
 
     const handleUnvote = async (e) => {
       e.preventDefault();
-      let newUpvotes = (answer.upvotes.filter(x => x.uid !== userStore.user.uid));
+      let newUpvotes = answer.upvotes.filter(
+        (x) => x.uid !== userStore.user.uid
+      );
       try {
         await fb.question.updateAnswer({ upvotes: newUpvotes }, id, answer.id);
       } catch (e) {
-        uiStore.deployAlert("Oh, there was an issue with un voting, tell Joe", "error");
-        console.log('error, could not delete answer', e);
+        uiStore.deployAlert(
+          "Oh, there was an issue with un voting, tell Joe",
+          "error"
+        );
+        console.log("error, could not delete answer", e);
       }
-    }
+    };
     const handleUpvote = async () => {
       try {
         //updateAnswer(answer, questionId, id)
-        let userVoted = (answer.upvotes.filter(x => x.uid === userStore.user.uid)).length > 0;
+        let userVoted =
+          answer.upvotes.filter((x) => x.uid === userStore.user.uid).length > 0;
         if (!userVoted) {
-          await fb.question.updateAnswer({
-            upvotes: [
-              ...answer.upvotes,
-              ...[{
-                uid: userStore.user.uid,
-                photoURL: userStore.user.photoURL,
-                firstName: userStore.user.firstName,
-                lastName: userStore.user.lastName
-              }]]
-          }, id, answer.id);
+          await fb.question.updateAnswer(
+            {
+              upvotes: [
+                ...answer.upvotes,
+                ...[
+                  {
+                    uid: userStore.user.uid,
+                    photoURL: userStore.user.photoURL,
+                    firstName: userStore.user.firstName,
+                    lastName: userStore.user.lastName,
+                  },
+                ],
+              ],
+            },
+            id,
+            answer.id
+          );
         }
-
       } catch (e) {
-        uiStore.deployAlert("Oh, there was an issue with up voting, tell Joe", "error");
-        console.log('error, could not delete answer', e);
+        uiStore.deployAlert(
+          "Oh, there was an issue with up voting, tell Joe",
+          "error"
+        );
+        console.log("error, could not delete answer", e);
       }
-    }
+    };
 
-
-    return (<>
-      <Answer
-        answer={answer}
-        onUpvote={handleUpvote}
-        onUnvote={handleUnvote}
-        showEdit={userStore.user.uid === answer.id}
-        onUpdate={(type) => type === "edit" ? setEditable(true) : handleDelete(answer.id)}
-        photo={
-          <ProfilePicture
-            name={{ first: answer.firstName, last: answer.lastName }}
-            photoURL={answer.photoURL}
-            date={answer.created && answer.created.toDate()}
-            size={50}
-            center={false}
+    return (
+      <>
+        <Answer
+          answer={answer}
+          onUpvote={handleUpvote}
+          onUnvote={handleUnvote}
+          showEdit={userStore.user.uid === answer.id}
+          onUpdate={(type) =>
+            type === "edit" ? setEditable(true) : handleDelete(answer.id)
+          }
+          photo={
+            <ProfilePicture
+              name={{ first: answer.firstName, last: answer.lastName }}
+              photoURL={answer.photoURL}
+              date={answer.created && answer.created.toDate()}
+              size={50}
+              center={false}
+            />
+          }
+        >
+          <Editor
+            readOnly={!editable}
+            onSubmit={(answer) => handleSubmit(answer, true)}
+            onCancel={handleCancel}
+            data={answer.data}
           />
-        }
-
-
-      >
-        <Editor readOnly={!editable} onSubmit={(answer) => handleSubmit(answer, true)} onCancel={handleCancel} data={answer.data} />
-      </Answer>
-      <Divider style={{ marginTop: "2%", marginBottom: "1%" }} />
-
-    </>)
-  }
+        </Answer>
+        <Divider style={{ marginTop: "2%", marginBottom: "1%" }} />
+      </>
+    );
+  };
 
   return (
     <div>
-      {!manualOpen && (<div className={classes.text} onClick={handleClickOpen}>
-        {children}
-      </div>)}
+      {!manualOpen && (
+        <div className={classes.text} onClick={handleClickOpen}>
+          {children}
+        </div>
+      )}
 
       <Dialog
         onClose={handleClose}
@@ -341,53 +359,72 @@ const AnswerQuestionDialog = (props) => {
           </Grid>
         </DialogTitle>
 
-        {!userStore.user.uid && <Typography align="center" style={{ marginTop: "10%" }} variant="h2"> Sorry, but to maintain the privacy of you and your peers you will need to join in order to view this content. </Typography>}
-
-        {userStore.user.uid && (<DialogContent dividers>
-
-          <ProfilePicture
-            name={userName}
-            size={50}
-            photoURL={photoURL}
-            center={false}
-            date={date}
-          />
-          <Typography variant="h6" className={classes.question} gutterBottom>
-            {question}
+        {!userStore.user.uid && (
+          <Typography align="center" style={{ marginTop: "10%" }} variant="h2">
+            {" "}
+            Sorry, but to maintain the privacy of you and your peers you will
+            need to join in order to view this content.{" "}
           </Typography>
+        )}
 
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={4} className={classes.buttonRoot}>
-              <IconButton aria-label="close" className={classes.button}>
-                <AnswerIcon onClick={handleClickAnswer} />
-              </IconButton>
-              <Typography style={{ cursor: "pointer" }} onClick={handleClickAnswer}> {currentAnswer ? "Edit Answer" : "Answer"} </Typography>
-              {/*<IconButton aria-label="close" className={classes.button}>
+        {userStore.user.uid && (
+          <DialogContent dividers>
+            <ProfilePicture
+              name={userName}
+              size={50}
+              photoURL={photoURL}
+              center={false}
+              date={date}
+            />
+            <Typography variant="h6" className={classes.question} gutterBottom>
+              {question}
+            </Typography>
+
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={4} className={classes.buttonRoot}>
+                <IconButton aria-label="close" className={classes.button}>
+                  <AnswerIcon onClick={handleClickAnswer} />
+                </IconButton>
+                <Typography
+                  style={{ cursor: "pointer" }}
+                  onClick={handleClickAnswer}
+                >
+                  {" "}
+                  {currentAnswer ? "Edit Answer" : "Answer"}{" "}
+                </Typography>
+                {/*<IconButton aria-label="close" className={classes.button}>
                 <FollowIcon />
               </IconButton>
               <Typography> Follow </Typography> */}
+              </Grid>
+              {showAnswerBox && (
+                <Grid item xs={12}>
+                  <Editor
+                    onSubmit={handleSubmit}
+                    data={currentAnswer}
+                    onCancel={handleCancel}
+                  />
+                </Grid>
+              )}
             </Grid>
-            {showAnswerBox && <Grid item xs={12}>
-              <Editor onSubmit={handleSubmit} data={currentAnswer} onCancel={handleCancel} />
-            </Grid>}
-          </Grid>
-          <Grid container spacing={2} ref={buttonRef}>
-            <Grid item xs={12} className={classes.answerArea}>
-              <Divider style={{ marginBottom: "2%" }} />
+            <Grid container spacing={2} ref={buttonRef}>
+              <Grid item xs={12} className={classes.answerArea}>
+                <Divider style={{ marginBottom: "2%" }} />
 
-              {answers.map(answer => <AnswerBlock key={answer.id} answer={answer} />)}
-
+                {answers.map((answer) => (
+                  <AnswerBlock key={answer.id} answer={answer} />
+                ))}
+              </Grid>
             </Grid>
-          </Grid>
-        </DialogContent>)}
+          </DialogContent>
+        )}
       </Dialog>
-    </div >
+    </div>
   );
-}
-
+};
 
 AnswerQuestionDialog.defaultProps = {
-  onClose: () => { }
-}
+  onClose: () => {},
+};
 
 export default AnswerQuestionDialog;

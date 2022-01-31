@@ -1,7 +1,11 @@
 {
   "hosting": {
     "public": "public",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
     "rewrites": [
       {
         "source": "**",
@@ -12,10 +16,12 @@
   "functions": {
     "source": ".",
     "predeploy": [],
-    "runtime": "nodejs10"
+    "runtime": "nodejs14"
   },
-
   "firestore": {
-      "rules" : "firestore.rules"
+    "rules": "firestore.rules"
+  },
+  "storage": {
+    "rules": "storage.rules"
   }
 }

@@ -1,5 +1,7 @@
 import Table from "@material-ui/core/Table";
 import MuiAlert from "@material-ui/lab/Alert";
+import { questionIDs } from "../config/questions";
+import AnswerQuestionDialog from "../components/AnswerQuestionDialog";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -80,7 +82,7 @@ We will be framing this week through the following questions:
    Don't worry, the team work will be fairly informal and only counts towards 20% of the unit.
 
 
-   <a href="https://learn.solent.ac.uk/course/view.php?id=38079&section=1">Click here to self select your teams </a>
+   <a href="https://learn.solent.ac.uk/mod/groupselect/view.php?id=2306845">Click here to self select your teams </a>
    
 </MuiAlert>
 
@@ -167,22 +169,29 @@ For instance, many students develop some sort of software application for their 
   <AlertTitle>
     <strong> Task 2 - Is there such a things as an objective reality, or, does it depend?</strong>
   </AlertTitle>
-  
-<br />
 
+
+<br />
 
 Form groups and discuss the following ideas:
 
-<p>
-  Is there a reality that exists beyond that is constructed beyond human
-  conscious?
-</p>
-
+<AnswerQuestionDialog
+  question={
+    "Is there such a things as an objective reality, or, does it depend?"
+  }
+  id={questionIDs.find((q) => q.count === 1).id}
+>
+   <p>Is there a reality that exists beyond that is constructed beyond human
+  conscious?  </p>
 <p>
   Behavioral psychology, or behaviorism, is a theory suggesting that environment
   shapes human behavior. Therefore, we are independent of our environment. To
   what extent do you believe this to be true?
 </p>
+
+
+</AnswerQuestionDialog>
+
 
   </MuiAlert>
 

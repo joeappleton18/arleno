@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "computing-notes"
+    "default": "computing-notes",
+    "rm-2022": "research-methods-2022-notes"
   }
 }
