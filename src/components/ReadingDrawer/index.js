@@ -69,7 +69,7 @@ const AnnotationItem = (props) => {
           {" "}
           {annotation.type == "question" ? <HelpIcon /> : <InfoIcon />}
         </ListItemIcon>
-        {/* <ListItemText primary={annotation.question.question} /> */}
+        {<ListItemText primary={annotation.question.question} />}
         {user.user.type == "A" && (
           <UpdateDeleteToggle onDelete={handleDelete} onEdit={handleEdit} />
         )}
@@ -89,6 +89,7 @@ const ReadingDrawer = (props) => {
     ...other
   } = props;
 
+  debugger;
   const classes = useStyles();
   const theme = useTheme();
   const { uiStore, user } = useStores();
