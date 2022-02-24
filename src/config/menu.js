@@ -6,7 +6,7 @@ const menu = [
   { page: "week-3.mdx" },
   { page: "topic-reading-and-referencing.mdx" },
   { page: "week-4.mdx" },
-  // { page: "week-5.mdx" },
+  { page: "week-5.mdx" },
   // { page: "week-6.mdx" },
   // { page: "topic-writing-and-communication.mdx" },
   // { page: "week-7.mdx" },

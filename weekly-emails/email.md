@@ -20,3 +20,13 @@ This week, we are considering how to frame a final year project in a researchery
 I look forward to seeing you all on Thursday,
 
 Joe
+
+
+### subject: Research Methods (Week 4)
+Hello Researchers,
+
+This week, we are considering how to act ethically! [As always, I have prepared a quick lecture that you should listen to/watch before the practicals](https://solent.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=51ba32c5-c2e3-46c9-843a-ae450109ffb9). 
+
+I look forward to seeing you all on Thursday,
+
+Joe
