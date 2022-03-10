@@ -30,3 +30,13 @@ This week, we are considering how to act ethically! [As always, I have prepared 
 I look forward to seeing you all on Thursday,
 
 Joe
+
+
+### subject: Research Methods (Week 6)
+Hello Researchers,
+
+This week, we are considering what critical thinking is. And, more importantly, we are going to learn how to apply criticality in our university and work lives! [As always, I have prepared a quick lecture that you should listen to/watch before the practicals](https://solent.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=8312d3ce-c84b-4ee0-8c63-ae4b01031926). 
+
+I look forward to seeing you all on Thursday,
+
+Joe
