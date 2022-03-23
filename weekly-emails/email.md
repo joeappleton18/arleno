@@ -40,3 +40,20 @@ This week, we are considering what critical thinking is. And, more importantly, 
 I look forward to seeing you all on Thursday,
 
 Joe
+
+
+### subject: Research Methods (Week 9)
+
+Hello Researchers,
+
+It's the final countdown, we are into the last two weeks of delivered content. 
+
+I am very excited to also announce that we are now starting a learning block: methods. 
+
+Methods are vital in evaluating your final year project; as such, we need to have a basic understanding regarding what they are.
+
+[As always, I have prepared a quick lecture that you should listen to/watch before the practicals](https://solent.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=f1ee8d84-9ef5-431e-97c8-ae6001189e19).
+
+I look forward to seeing you all on Thursday,
+
+Joe
