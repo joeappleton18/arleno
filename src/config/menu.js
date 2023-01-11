@@ -13,7 +13,7 @@ const menu = [
   { page: "week-8.mdx" },
   { page: "topic-methods.mdx" },
   { page: "week-9.mdx" },
-  // { page: "week-10.mdx" },
+  { page: "week-10.mdx" },
   { page: "literature-review-protocol.mdx" },
   { page: "research.mdx" },
 ];
