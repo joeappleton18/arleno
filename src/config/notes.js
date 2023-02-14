@@ -1,3 +1,6 @@
+/**
+ * Controls the titles
+ */
 const notes = {
   course: "RM",
   sidebar:

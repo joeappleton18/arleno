@@ -91,7 +91,7 @@ const ReadingDrawer = (props) => {
 
   debugger;
   const classes = useStyles();
-  const theme = useTheme();
+const theme = useTheme();
   const { uiStore, user } = useStores();
 
   return (

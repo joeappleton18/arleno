@@ -1,5 +1,12 @@
 # Social Annotations Project 
 
+## Config Files 
+
+To add amend the notes, update the following: 
+
+-  to control the layout of the notes : `src/config/menu.js`
+- Then, run the indexer: `node indexer`
+
 
 ## Installation
 
@@ -12,8 +19,7 @@
 
 #### Essential Build and Management Research Features 
 
-- 
-- [ ]  As an admin, I should be able to deploy a static version of the site, so things run on hosting as opposed to functions
+- [ ] As an admin, I should be able to deploy to hosting, as opposed to cloud functions 
 - [X] As a admin, I should be able to deploy to a new version of the project
 - [X] As a admin, I should be able to delete my annotations, so I can remove them  
 - [X] As a admin, I should be able to moderate 
@@ -22,16 +28,14 @@
 #### Essential User Features
 - [X] The menu should close after a page load  ⬅ 
 - [ ] As a user, I should see a floating answer count box  
-- [ ]  As a user, I should see a summary of all answers 
-- [ ]  As a user, I should see a leader-board (this needs a little bit of thought)
-- [ ]  As a admin, I should be able to update and delete answers
+- [X]  As a user, I should see a summary of all answers 
+- [X]  As a user, I should see a leader-board (this needs a little bit of thought)
+- [X]  As a admin, I should be able to update and delete answers
 - [ ]  As a users, I should be able to agree or disagree with answers
 - [ ]  As a user, I want to be able to hover over avatars an reveal their names
 - [X] As a user, I should be able to register using my social platform of choice
 - [X] As a user, I should be able to update my profile
 - [X] As a user, I should be able to see, in real-time other users online
-
-
 - [X]  As an admin, I should be able add a new question 
 - [X]  As a user, I should be able to  answer a question, **only once**
     - [X] As a user, I should be able to edit/delete/update my questions 
