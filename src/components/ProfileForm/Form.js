@@ -6,17 +6,6 @@ import { FormButton } from "../Buttons/index";
 import { useForm } from "react-hook-form";
 import { useStores } from "../../stores/";
 import Typography from "@material-ui/core/Typography";
-import { yupResolver } from "@hookform/resolvers";
-import * as yup from "yup";
-
-const schema = yup.object().shape({
-  firstName: yup.string().required("Your First Name Is Required"),
-  lastName: yup.string().required("Your Last Name Is Required"),
-  email: yup
-    .string()
-    .required("Your Email Is Required")
-    .email("You Must Enter a Valid Email"),
-});
 
 const useStyles = makeStyles((theme) => ({
   form: { marginTop: theme.spacing(3) },
@@ -28,7 +17,6 @@ const Form = (props) => {
   const classes = useStyles();
   const userStore = useStores().user;
   const { register, handleSubmit, watch, errors, reset } = useForm({
-    resolver: yupResolver(schema),
     defaultValues: userStore.user,
   });
 
@@ -59,8 +47,7 @@ const Form = (props) => {
           />
           {errors.firstName && (
             <Typography className={classes.error} color="error">
-              {" "}
-              {errors.firstName.message}
+               First Name Is Required
             </Typography>
           )}
         </Grid>
@@ -79,8 +66,7 @@ const Form = (props) => {
 
           {errors.lastName && (
             <Typography className={classes.error} color="error">
-              {" "}
-              {errors.lastName.message}
+               Last Name Is Required
             </Typography>
           )}
         </Grid>
@@ -95,13 +81,12 @@ const Form = (props) => {
             label="Email *"
             defaultValue=""
             variant="filled"
-            inputRef={register({ required: true })}
+            inputRef={register({ required: true, pattern: /^\S+@\S+$/i})}
           />
 
           {errors.email && (
             <Typography className={classes.error} color="error">
-              {" "}
-              {errors.email.message}
+                You Must Enter a Valid Email
             </Typography>
           )}
         </Grid>
