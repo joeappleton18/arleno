@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' next dev src/",
     "build": "next build src/",
-    "start": "next start src/",
+    "start": "next start src/.next",
     "serve": "npm run build && firebase emulators:start --only functions,hosting",
     "shell": "npm run build && firebase functions:shell",
     "predeploy": "npm --prefix \"$PROJECT_DIR\" install && npm --prefix \"$PROJECT_DIR\" run build",
