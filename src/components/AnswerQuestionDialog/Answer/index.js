@@ -1,49 +1,117 @@
-import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
-import UpdateDeleteToggle from "../../UpdateDeleteToggle";
-import { AnswerSection } from './AnswerSection';
 
-export const useStyles = makeStyles((theme) => ({
-
-	photoSection: {
-		display: "flex",
-
-	},
+import Divider from "@material-ui/core/Divider";
+import { useState } from "react";
+import { useFirebase } from "../../../services/firebase";
+import { useStores } from "../../../stores/";
+import ProfilePicture from "../../ProfilePicture";
+import Editor from "../../RichEditor";
+import Answer from "./Answer";
 
 
-}))
+const AnswerBlock = ({ answer, id, onAnswerUpdate }) => {
+	const fb = useFirebase();
+	const userStore = useStores().user;
+	const uiStore = useStores().uiStore;
+
+	const [editable, setEditable] = useState(false);
+	const handleCancel = () => {
+		setEditable(false);
+	};
 
 
-const Answer = (props) => {
-	const { answer, photo, children, onUpdate, showEdit, onUpvote, onUnvote } = props;
-	const classes = useStyles();
-	const handleEditDelete = (item) => {
-		onUpdate(item.toLowerCase());
-	}
+	const handleDelete = async () => {
+		try {
+			await fb.question.deleteAnswer(id, answer.id);
+			uiStore.deployAlert("💩 You've deleted your answer 💩", "success");
+		} catch (e) {
+			uiStore.deployAlert(
+				"Oh, there was an issue deleting your answer, tell Joe",
+				"error"
+			);
+			console.log("error, could not delete answer", e);
+		}
+	};
+
+	const handleUnvote = async (e) => {
+		e.preventDefault();
+		let newUpvotes = answer.upvotes.filter(
+			(x) => x.uid !== userStore.user.uid
+		);
+		try {
+			await fb.question.updateAnswer({ upvotes: newUpvotes }, id, answer.id);
+		} catch (e) {
+			uiStore.deployAlert(
+				"Oh, there was an issue with un voting, tell Joe",
+				"error"
+			);
+			console.log("error, could not delete answer", e);
+		}
+	};
+	const handleUpvote = async () => {
+		try {
+			//updateAnswer(answer, questionId, id)
+			let userVoted =
+				answer.upvotes.filter((x) => x.uid === userStore.user.uid).length > 0;
+			if (!userVoted) {
+				await fb.question.updateAnswer(
+					{
+						upvotes: [
+							...answer.upvotes,
+							...[
+								{
+									uid: userStore.user.uid,
+									photoURL: userStore.user.photoURL,
+									firstName: userStore.user.firstName,
+									lastName: userStore.user.lastName,
+								},
+							],
+						],
+					},
+					id,
+					answer.id
+				);
+			}
+		} catch (e) {
+			uiStore.deployAlert(
+				"Oh, there was an issue with up voting, tell Joe",
+				"error"
+			);
+			console.log("error, could not delete answer", e);
+		}
+	};
+
+
 
 	return (
-		<Grid container spacing={0}>
-
-			<Grid item xs={12} className={classes.photoSection}>
-				{photo}
-				{showEdit &&
-					<UpdateDeleteToggle onDelete={() => handleEditDelete('delete')} onEdit={() => handleEditDelete('edit')} />
-
+		<>
+			<Answer
+				answer={answer}
+				onUpvote={handleUpvote}
+				onUnvote={handleUnvote}
+				showEdit={userStore.user.uid === answer.id}
+				onUpdate={(type) =>
+					type === "edit" ? setEditable(true) : handleDelete(answer.id)
 				}
-
-			</Grid>
-
-			<Grid item xs={12}>
-				{children}
-			</Grid>
-			<AnswerSection upvotes={answer.upvotes} onUnvote={(e) => onUnvote(e)} onUpvote={() => onUpvote()} />
-
-		</Grid >
+				photo={
+					<ProfilePicture
+						name={{ first: answer.firstName, last: answer.lastName }}
+						photoURL={answer.photoURL}
+						date={answer.created && answer.created.toDate()}
+						size={50}
+						center={false}
+					/>
+				}
+			>
+				<Editor
+					readOnly={!editable}
+					onSubmit={(answer) => onAnswerUpdate(answer, true)}
+					onCancel={handleCancel}
+					data={answer.data}
+				/>
+			</Answer>
+			<Divider style={{ marginTop: "2%", marginBottom: "1%" }} />
+		</>
 	);
 };
 
-Answer.defaultProps = {
-	showEdit: false
-}
-
-export default Answer;
+export default AnswerBlock;

@@ -1,34 +1,30 @@
-import { useState, useRef, useEffect } from "react";
-import Router from 'next/router'
 import AppBar from "@material-ui/core/AppBar";
+import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
-import clsx from "clsx";
+import IconButton from "@material-ui/core/IconButton";
+import Menu from "@material-ui/core/Menu";
+import Snackbar from "@material-ui/core/Snackbar";
+import { fade, makeStyles, useTheme } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles, fade, useTheme } from "@material-ui/core/styles";
-import SearchIcon from "@material-ui/icons/Search";
-import IconButton from "@material-ui/core/IconButton";
-import Button from "@material-ui/core/Button";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import ArrowDropDownCircleIcon from "@material-ui/icons/ArrowDropDownCircle";
 import MenuIcon from "@material-ui/icons/Menu";
 import MoreIcon from "@material-ui/icons/MoreVert";
-import InputBase from "@material-ui/core/InputBase";
-import Badge from "@material-ui/core/Badge";
-import NotificationsIcon from "@material-ui/icons/Notifications";
+import MuiAlert from "@material-ui/lab/Alert";
 import { MDXProvider } from "@mdx-js/react";
-import Drawer from "./Drawer";
-import notesConfig from "../../config/notes";
-import RemarkComponents from "../../components/Remark";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useStores } from "../../stores/";
-import { useFirebase } from "../../services/firebase";
-import Menu from "@material-ui/core/Menu";
+import clsx from "clsx";
+import Router from 'next/router';
+import { useEffect, useState } from "react";
+import AvatarGroup from "../../components/AvatarGroup";
 import Login from "../../components/Login";
 import ProfileFrom from "../../components/ProfileForm";
-import MuiAlert from "@material-ui/lab/Alert";
-import Snackbar from "@material-ui/core/Snackbar";
+import RemarkComponents from "../../components/Remark";
+import notesConfig from "../../config/notes";
+import { useFirebase } from "../../services/firebase";
+import { useStores } from "../../stores/";
+import Drawer from "./Drawer";
 import LoggedInMenu from "./LoggedInMenu";
-import ArrowDropDownCircleIcon from "@material-ui/icons/ArrowDropDownCircle";
-import AvatarGroup from "../../components/AvatarGroup";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -137,9 +133,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Core = ({ children }) => {
+
+  const theme = useTheme();
+
   const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const theme = useTheme();
+
   const desktop = useMediaQuery(theme.breakpoints.up("sm"));
   const [anchorEl, setAnchorEl] = useState(null);
   const [profileFormOpen, setProfileFormOpen] = useState(false);
@@ -178,6 +177,10 @@ const Core = ({ children }) => {
     ) {
       setFirstProfileFormComplete(true);
       setTimeout(setProfileFormOpen(true), 0);
+    }
+
+    if (desktop) {
+      setDrawerOpen(true);
     }
   }, [userStore.user]);
 

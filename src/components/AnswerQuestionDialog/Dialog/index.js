@@ -1,17 +1,16 @@
+import { Grid } from "@material-ui/core";
 import MuiDialog from "@material-ui/core/Dialog";
-import MuiDialogActions from "@material-ui/core/DialogActions";
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
-import { useState } from "react";
 
 const styles = (theme) => ({
 	root: {
 		margin: 0,
-		padding: theme.spacing(2),
+		padding: theme.spacing(3),
 		background: "white",
 	},
 
@@ -36,18 +35,26 @@ const DialogTitle = withStyles(styles)((props) => {
 	const { children, classes, onClose, title, ...other } = props;
 	return (
 		<MuiDialogTitle disableTypography className={classes.root} {...other}>
-			<Typography gutterBottom variant="h6" className={classes.quote}>
-				{children}
-			</Typography>
-			{onClose ? (
-				<IconButton
-					aria-label="close"
-					className={classes.closeButton}
-					onClick={onClose}
-				>
-					<CloseIcon />
-				</IconButton>
-			) : null}
+
+			<Grid container spacing={1} style={{ display: "flex" }}>
+				<Grid xs={11}>
+					<Typography gutterBottom variant="h6" className={classes.quote}>
+						{children}
+					</Typography>
+				</Grid>
+				<Grid xs={1}>
+					<IconButton
+						aria-label="close"
+						className={classes.closeButton}
+						onClick={onClose}
+					>
+						<CloseIcon />
+					</IconButton>
+
+				</Grid>
+
+
+			</Grid>
 		</MuiDialogTitle>
 	);
 });
@@ -58,12 +65,7 @@ const DialogContent = withStyles((theme) => ({
 	},
 }))(MuiDialogContent);
 
-const DialogActions = withStyles((theme) => ({
-	root: {
-		margin: 0,
-		padding: theme.spacing(1),
-	},
-}))(MuiDialogActions);
+
 
 const Dialog = withStyles((theme) => ({
 	root: {
@@ -82,17 +84,11 @@ const Dialog = withStyles((theme) => ({
 
 const RenderDialog = (props) => {
 
-	const { open, title, children, classes } = props;
-
-	const [isOpen, setIsOpen] = useState(open);
-
-	const handleClose = () => {
-		setIsOpen(false);
-	}
+	const { open, title, children, onClose } = props;
 
 	return (
-		<Dialog open={isOpen} onClose={handleClose}>
-			<DialogTitle onClose={handleClose}>
+		<Dialog open={open} onClose={onClose}>
+			<DialogTitle onClose={onClose}>
 				{title}
 			</DialogTitle>
 			<DialogContent dividers>
