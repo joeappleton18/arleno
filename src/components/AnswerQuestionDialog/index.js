@@ -1,22 +1,24 @@
-import { useRef, useEffect } from "react";
-import { useState } from "react";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
 import MuiDialog from "@material-ui/core/Dialog";
-import MuiDialogTitle from "@material-ui/core/DialogTitle";
-import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
-import CloseIcon from "@material-ui/icons/Close";
-import Typography from "@material-ui/core/Typography";
-import ProfilePicture from "../ProfilePicture";
-import FollowIcon from "@material-ui/icons/RssFeed";
-import AnswerIcon from "@material-ui/icons/Create";
-import { useStores } from "../../stores/";
-import { useFirebase } from "../../services/firebase";
-import Grid from "@material-ui/core/Grid";
+import MuiDialogContent from "@material-ui/core/DialogContent";
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import Divider from "@material-ui/core/Divider";
-import Editor from "../RichEditor/";
+import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
-import Answer from "./Answer";
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import CloseIcon from "@material-ui/icons/Close";
+import AnswerIcon from "@material-ui/icons/Create";
+import FilterIcon from "@material-ui/icons/FilterList";
+
+import { useEffect, useRef, useState } from "react";
+import { useFirebase } from "../../services/firebase";
+import { useStores } from "../../stores/";
+import ProfilePicture from "../ProfilePicture";
+import Editor from "../RichEditor/";
+import Answer from "./Answer/";
 const useStyles = makeStyles((theme) => ({
   text: { background: theme.palette.primary.main, cursor: "pointer" },
   question: { marginTop: theme.spacing(2) },
@@ -143,6 +145,8 @@ const AnswerQuestionDialog = (props) => {
   const userStore = useStores().user;
   const uiStore = useStores().uiStore;
 
+  const [filterAnchorEl, setFilterAnchorEl] = useState(null);
+
   useEffect(() => {
     setCurrentAnswer(null);
     const answer = answers.find((a) => userStore.user.uid === a.id);
@@ -152,11 +156,23 @@ const AnswerQuestionDialog = (props) => {
     setCurrentAnswer(answer.data);
   }, [answers]);
 
+
+  const getAnswers = async (id, orderBy = "upvotes_count", order = "desc") => {
+    fb.question.realtimeRead(id, (answersRef) => {
+      setAnswers([]);
+      const tmpArray = [];
+      answersRef.forEach((a) =>
+        tmpArray.push({ ...a.data(), ...{ id: a.id } })
+      );
+
+      setAnswers(tmpArray);
+    }, orderBy, order);
+  }
+
   useEffect(() => {
     if (!userStore.user) {
       return;
     }
-
     const setQuestion = async (fb, id, user, question) => {
       // we place this line in to check that the question service exists
       if (!fb.question) return;
@@ -184,14 +200,7 @@ const AnswerQuestionDialog = (props) => {
         setPhotoURL(qx.photoURL);
         setUserName(qx.userName);
         setDate(qx.created.toDate());
-        fb.question.realtimeRead(id, (answersRef) => {
-          setAnswers([]);
-          const tmpArray = [];
-          answersRef.forEach((a) =>
-            tmpArray.push({ ...a.data(), ...{ id: a.id } })
-          );
-          setAnswers(tmpArray);
-        });
+        getAnswers(id);
       }
     };
     setQuestion(fb, id, userStore.user, question, children);
@@ -302,6 +311,8 @@ const AnswerQuestionDialog = (props) => {
       }
     };
 
+
+
     return (
       <>
         <Answer
@@ -333,6 +344,32 @@ const AnswerQuestionDialog = (props) => {
       </>
     );
   };
+
+  const handleFilterOpen = (e) => {
+    setFilterAnchorEl(e.currentTarget);
+  }
+
+  const handleFilterClose = (options) => {
+    debugger;
+    switch (options) {
+      case "answers_inc":
+        getAnswers(id, "created", "asc");
+        break;
+
+      case "answers_desc":
+        getAnswers(id, "created", "desc");
+        break;
+      case "upvotes_inc":
+        getAnswers(id, "upvotes_count", "asc");
+        break;
+      case "upvotes_desc":
+        getAnswers(id, "upvotes_count", "desc");
+        break;
+      default:
+        break;
+    }
+    setFilterAnchorEl(null);
+  }
 
   return (
     <div>
@@ -369,18 +406,15 @@ const AnswerQuestionDialog = (props) => {
 
         {userStore.user.uid && (
           <DialogContent dividers>
-            <ProfilePicture
-              name={userName}
-              size={50}
-              photoURL={photoURL}
-              center={false}
-              date={date}
-            />
-            <Typography variant="h6" className={classes.question} gutterBottom>
-              {question}
-            </Typography>
-
             <Grid container spacing={2}>
+              <Typography variant="h6" className={classes.question} gutterBottom>
+                {question}
+              </Typography>
+
+
+            </Grid>
+
+            <Grid container spacing={2} style={{ display: "flex", justifyContent: "space-between" }}>
               <Grid item xs={12} sm={4} className={classes.buttonRoot}>
                 <IconButton aria-label="close" className={classes.button}>
                   <AnswerIcon onClick={handleClickAnswer} />
@@ -389,13 +423,24 @@ const AnswerQuestionDialog = (props) => {
                   style={{ cursor: "pointer" }}
                   onClick={handleClickAnswer}
                 >
-                  {" "}
                   {currentAnswer ? "Edit Answer" : "Answer"}{" "}
                 </Typography>
-                {/*<IconButton aria-label="close" className={classes.button}>
-                <FollowIcon />
-              </IconButton>
-              <Typography> Follow </Typography> */}
+
+              </Grid>
+              <Grid item xs={12} sm={1} className={classes.buttonRoot}>
+                <IconButton> <FilterIcon onClick={handleFilterOpen} /> </IconButton>
+                <Menu
+                  id="simple-menu"
+                  anchorEl={filterAnchorEl}
+                  keepMounted
+                  open={Boolean(filterAnchorEl)}
+                  onClose={handleFilterClose}
+                >
+                  <MenuItem onClick={() => handleFilterClose("upvotes_desc")}>Most Upvotes</MenuItem>
+                  <MenuItem onClick={() => handleFilterClose("upvotes_inc")}>Least Upvotes</MenuItem>
+                  <MenuItem onClick={() => handleFilterClose("answers_desc")}>Newest Answer</MenuItem>
+                  <MenuItem onClick={() => handleFilterClose("answers_inc")}>Oldest Answer</MenuItem>
+                </Menu>
               </Grid>
               {showAnswerBox && (
                 <Grid item xs={12}>
@@ -424,7 +469,9 @@ const AnswerQuestionDialog = (props) => {
 };
 
 AnswerQuestionDialog.defaultProps = {
-  onClose: () => {},
+  onClose: () => { },
 };
 
 export default AnswerQuestionDialog;
+
+
