@@ -198,7 +198,7 @@ const AnswerQuestionDialog = (props) => {
             <>
               <Grid container spacing={2}>
                 <Typography variant="h6" className={classes.question} gutterBottom>
-                  {question} = {JSON.stringify(filter)}
+                  {question} 
                 </Typography>
               </Grid>
               <Grid container spacing={2} style={{ display: "flex", justifyContent: "space-between" }}>
