@@ -1,27 +1,23 @@
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import clsx from "clsx";
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
+import { makeStyles } from '@material-ui/core/styles';
+import NotesIcon from '@material-ui/icons/Notes';
+import clsx from "clsx";
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
+import AnswerQuestionDialog from "../../components/AnswerQuestionDialog";
+import AskQuestionDialog from '../../components/AskQuestionDialog';
+import ReadingDrawer from "../../components/ReadingDrawer";
+import TextPopover from '../../components/TextPopOver';
 import { useFirebase } from '../../services/firebase/';
 import { useStores } from '../../stores/';
-import { makeStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import TextPopover from '../../components/TextPopOver';
-import { TextRange } from '../../utils/text-range';
-import AskQuestionDialog from '../../components/AskQuestionDialog';
-import { matchQuote } from '../../utils/match-quote';
-import AnswerQuestionDialog from "../../components/AnswerQuestionDialog";
-import Button from '@material-ui/core/Button';
-import NotesIcon from '@material-ui/icons/Notes';
-import ReadingDrawer from "../../components/ReadingDrawer";
 import {
-    setFocusedHighlight,
     highlightRange,
-    removeHighlights
-
+    removeHighlights, setFocusedHighlight
 } from '../../utils/highlighter';
+import { matchQuote } from '../../utils/match-quote';
+import { TextRange } from '../../utils/text-range';
 
 const useStyles = makeStyles((theme) => ({
     pdfRoot: {
@@ -151,19 +147,28 @@ const Readings = () => {
 
 
     async function handleAnnotationClick(e) {
-
         e.preventDefault();
         e.stopPropagation();
+        debugger;
         const id = e.target.getAttribute('annotationid');
-        const annotationRef = await fb.document.readAnnotations(rid, id);
-        const { exact, question_id } = annotationRef.data();
-        const questionRef = await fb.question.read(question_id);
-        const question = questionRef.data();
 
-        setQuestionID(question_id);
-        setAnswerTextHighlight(exact);
-        setQuestion(question.question);
-        setOpenAnswerBox(true);
+        try {
+            debugger;
+            const annotationRef = await fb.document.readAnnotations(rid, id);
+            const { exact, question_id } = annotationRef.data();
+            debugger;
+            const questionRef = await fb.question.read(question_id);
+            const question = questionRef.data();
+
+            setQuestionID(question_id);
+            setAnswerTextHighlight(exact);
+            setQuestion(question.question);
+            setOpenAnswerBox(true);
+
+        } catch (error) {
+            console.error(error);
+        }
+
 
     }
 

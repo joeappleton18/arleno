@@ -90,6 +90,7 @@ const AnswerQuestionDialog = (props) => {
   var subscription = null;
 
   const getAnswers = async (id) => {
+    if (!id) return;
     if (subscription) subscription();
     subscription = fb.question.realtimeRead(id, (answersRef) => {
       setAnswers([]);
@@ -186,7 +187,7 @@ const AnswerQuestionDialog = (props) => {
           {children}
         </div>
       )}
-      <RenderDialog open={open} onClose={handleClose} title={children}>
+      <RenderDialog open={open || manualOpen} onClose={handleClose} title={children}>
         <>
           {!userStore.user.uid && (
             <Typography align="center" style={{ marginTop: "10%" }} variant="h2">
@@ -198,7 +199,7 @@ const AnswerQuestionDialog = (props) => {
             <>
               <Grid container spacing={2}>
                 <Typography variant="h6" className={classes.question} gutterBottom>
-                  {question} 
+                  {question}
                 </Typography>
               </Grid>
               <Grid container spacing={2} style={{ display: "flex", justifyContent: "space-between" }}>

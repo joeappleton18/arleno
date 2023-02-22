@@ -1,20 +1,17 @@
-import { useState } from "react";
-import { useStores } from "../../stores";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import List from "@material-ui/core/List";
-import IconButton from "@material-ui/core/IconButton";
 import Divider from "@material-ui/core/Divider";
-import Typography from "@material-ui/core/Typography";
+import Drawer from "@material-ui/core/Drawer";
+import IconButton from "@material-ui/core/IconButton";
+import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import clsx from "clsx";
-import InfoIcon from "@material-ui/icons/Info";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import HelpIcon from "@material-ui/icons/Help";
+import InfoIcon from "@material-ui/icons/Info";
+import { useStores } from "../../stores";
 import UpdateDeleteToggle from "../UpdateDeleteToggle";
 
 const useStyles = makeStyles((theme) => ({
@@ -89,9 +86,8 @@ const ReadingDrawer = (props) => {
     ...other
   } = props;
 
-  debugger;
   const classes = useStyles();
-const theme = useTheme();
+  const theme = useTheme();
   const { uiStore, user } = useStores();
 
   return (
@@ -124,7 +120,6 @@ const theme = useTheme();
               <AnnotationItem
                 onDelete={onAnnotationDelete}
                 onEdit={onAnnotationEdit}
-                onDelete={onAnnotationDelete}
                 annotation={annotation}
                 onAnnotationClick={onAnnotationClick}
                 onAnnotationHover={onAnnotationHover}
