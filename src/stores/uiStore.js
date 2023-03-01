@@ -7,7 +7,8 @@ const uiStore = () => {
   const [alertOpen, setAlertOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [hideMenu, setHideMenu] = useState(false);
-  const [readingDrawOpen, setReadingDrawOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(true); // side menu on all layouts
+  const [readingDrawerOpen, setReadingDrawerOpen] = useState(false);
 
   const deployAlert = (message, type) => {
     setAlertOpen(true);
@@ -28,8 +29,10 @@ const uiStore = () => {
     setHideMenu,
     readingMode,
     setReadingMode,
-    readingDrawOpen,
-    setReadingDrawOpen
+    readingDrawerOpen,
+    setReadingDrawerOpen,
+    drawerOpen,
+    setDrawerOpen
   };
 };
 

@@ -160,11 +160,11 @@ const Core = ({ children }) => {
   };
 
   const handleDrawerOpen = () => {
-    setDrawerOpen(true);
+    uiStore.setDrawerOpen(true);
   };
 
   const handleDrawerClose = () => {
-    setDrawerOpen(false);
+    uiStore.setDrawerOpen(false);
   };
 
   Router.events.on('routeChangeComplete', () => setDrawerOpen(false));
@@ -263,18 +263,17 @@ const Core = ({ children }) => {
 
   return (
     <div className={classes.grow}>
-      {" "}
       <AppBar
         position="fixed"
-        className={classes.appBar}
+        // className={classes.appBar}
         elevation={0}
         className={clsx({
-          [classes.appBarShift]: drawerOpen,
-          [classes.contentShiftLeft]: uiStore.readingDrawOpen
-        })}
+          [classes.appBarShift]: uiStore.drawerOpen,
+          [classes.contentShiftLeft]: uiStore.readingDrawerOpen
+        }, classes.appBar)}
       >
         <Toolbar className={classes.toolBar}>
-          {!drawerOpen && (
+          {!uiStore.drawerOpen && (
             <IconButton
               edge="start"
               className={classes.menuButton}
@@ -285,7 +284,7 @@ const Core = ({ children }) => {
               <MenuIcon />
             </IconButton>
           )}
-          {!drawerOpen && (
+          {!uiStore.drawerOpen && (
             <Typography className={classes.title} variant="h6" noWrap>
               {notesConfig.course}
 
@@ -308,7 +307,6 @@ const Core = ({ children }) => {
                 </IconButton>*/}
                 {/* <ProfilePhoto size={40} />{" "} */}
                 <Typography className={classes.profileName}>
-                  {" "}
                   {userStore.user.firstName}
                 </Typography>
                 <IconButton
@@ -358,7 +356,7 @@ const Core = ({ children }) => {
           </div>
         </Toolbar>
       </AppBar>
-      <Drawer drawerOpen={drawerOpen} onDrawerClose={handleDrawerClose} />
+      <Drawer drawerOpen={uiStore.drawerOpen} onDrawerClose={handleDrawerClose} />
 
 
       {/** we can adjust based on the draw being open (drawerOpen ? "md" : "md"). However, for now,
@@ -367,10 +365,10 @@ const Core = ({ children }) => {
 
       <Container
         className={clsx({
-          [classes.contentShift]: drawerOpen,
+          [classes.contentShift]: uiStore.drawerOpen,
           [classes.container]: true,
         })}
-        maxWidth={!uiStore.readingMode ? "md" : "xl"}
+        maxWidth={!uiStore.readingMode ? "xl" : ""}
         id="content"
       >
         <MDXProvider components={RemarkComponents}>  {children}</MDXProvider>

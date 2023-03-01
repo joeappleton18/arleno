@@ -96,13 +96,13 @@ const ReadingDrawer = (props) => {
         variant="persistent"
         className={classes.drawer}
         anchor={"right"}
-        open={uiStore.readingDrawOpen}
+        open={uiStore.readingDrawerOpen}
       >
         <div className={classes.drawerHeader}>
           <IconButton onClick={onClose}>
             {theme.direction === "ltr" ? (
               <ChevronRightIcon
-                onClick={() => uiStore.setReadingDrawOpen(false)}
+                onClick={() => uiStore.setReadingDrawerOpen(false)}
                 className={classes.chevron}
               />
             ) : (

@@ -206,9 +206,10 @@ const Readings = () => {
     useEffect(() => {
         pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
         uiStore.setReadingMode(true);
+
         return () => {
             uiStore.setReadingMode(false);
-            uiStore.setReadingDrawOpen(false);
+            uiStore.setReadingDrawerOpen(false);
         }
     }, [])
 
@@ -224,7 +225,7 @@ const Readings = () => {
     useEffect(() => {
 
         if (annotations.length === 0) {
-            uiStore.setReadingDrawOpen(false);
+            uiStore.setReadingDrawerOpen(false);
         }
 
     }, [annotations])
@@ -389,7 +390,7 @@ const Readings = () => {
 
     return (
 
-        <div className={clsx({ [classes.pdfRoot]: true, [classes.contentShiftLeft]: uiStore.readingDrawOpen })} >
+        <div className={clsx({ [classes.pdfRoot]: true, [classes.contentShiftLeft]: uiStore.readingDrawerOpen })} >
 
 
             <div className={classes.sideTab}>
@@ -399,7 +400,7 @@ const Readings = () => {
                     'margin-right': '0.5rem'
                 }}>
                     {annotations.length > 0 && <Fab color="primary" aria-label="add">
-                        <NotesIcon onClick={() => { uiStore.setReadingDrawOpen(true) }} />
+                        <NotesIcon onClick={() => { uiStore.setReadingDrawerOpen(true) }} />
                     </Fab>}
                 </p>
             </div>
