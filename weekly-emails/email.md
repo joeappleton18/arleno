@@ -42,6 +42,19 @@ I look forward to seeing you all on Thursday,
 Joe
 
 
+### subject: Research Methods (Week 7)
+Hello All,
+
+Welcome to week 7, and a change of topic!
+
+This week, we will transition into our writing and communication topic. Writing, at least clearly, is something many people struggle with. However, with a few tips, it’s possible to make a significant improvement in written communication skills.
+
+Please watch the pre-practical lecture video; it's particularly important: deconstructing what good writing looks like.
+
+Kind Regards,
+
+Joe
+
 ### subject: Research Methods (Week 9)
 
 Hello Researchers,
