@@ -132,8 +132,20 @@ const Schedule = () => (
             </TableCell>
         </TableRow>
         <TableRow>
+          <TableCell align="left">
+            8
+          </TableCell>
+          <TableCell align="left">
+            Assessment Workshop
+          </TableCell>
+          <TableCell align="left">
+           Due to train strikes, this is an experimental, online co-created assessment criteria session
+          </TableCell>
+
+        </TableRow>
+        <TableRow>
         <TableCell align="left">
-              8
+              9
             </TableCell>
           <TableCell align="left">
               Proof Reading, Editing and Restructuring 
@@ -149,7 +161,7 @@ const Schedule = () => (
         </TableRow>
         <TableRow>
           <TableCell align="left">
-                9
+                
               </TableCell>
             <TableCell align="left">
               What are Methods

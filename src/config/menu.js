@@ -13,7 +13,7 @@ const menu = [
   { page: "week-6.mdx" },
   { page: "topic-writing-and-communication.mdx" },
   { page: "week-7.mdx" },
-  // { page: "week-8.mdx" },
+  { page: "week-8.mdx" },
   // { page: "topic-methods.mdx" },
   // { page: "week-9.mdx" },
   // { page: "week-10.mdx" },
