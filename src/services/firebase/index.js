@@ -30,7 +30,8 @@ class firebaseService {
     if (typeof window == "undefined") {
       return;
     }
-
+    console.log("we are in the firebase service", process.env.NAME, process.env.NEXT_PUBLIC_ANALYTICS_ID);
+    console.log(JSON.stringify(process.env))
     if (!firebase.apps.length) {
       firebase.initializeApp(
         env === "production"
