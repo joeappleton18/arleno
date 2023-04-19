@@ -13,7 +13,7 @@
 
 This project is free to use; however, I am refactoring it to make it more accessible to general developers. Currently, I am working on the  TODO list below. Please feel free to fork the project and open a pull request addressing one of the below items:
 
-[ ] Add environment variables to allow more flexibility with Firebase projects
-[ ] Migrate from Firebase to Prisma and PostgreSQL.
-[ ] Migrate from Material UI to Tailwind 
+- [ ] Add environment variables to allow more flexibility with Firebase projects
+- [ ] Migrate from Firebase to Prisma and PostgreSQL.
+- [ ] Migrate from Material UI to Tailwind 
 
